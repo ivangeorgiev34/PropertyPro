@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using PropertyPro.Extensions;
+using PropertyPro.Infrastructure.Data;
 
 namespace PropertyPro
 {
@@ -6,9 +8,15 @@ namespace PropertyPro
     {
         public static void Main(string[] args)
         {
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            builder.Services.AddDbContext<PropertyProDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("PropertyProConnectionString"));
+            });
 
             ServiceCollectionExtension.AddServices(builder.Services);
 
