@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PropertyPro.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PropertyPro.Infrastructure.Data
 {
-    public class PropertyProDbContext : DbContext
+    public class PropertyProDbContext : IdentityDbContext<User,IdentityRole<Guid>,Guid>
     {
         public PropertyProDbContext(DbContextOptions<PropertyProDbContext> options) : base(options)
         {
@@ -18,7 +20,6 @@ namespace PropertyPro.Infrastructure.Data
         {
         }
 
-        public DbSet<User>? Users { get; set; }
 
         public DbSet<Tenant>? Tenants { get; set; }
 
