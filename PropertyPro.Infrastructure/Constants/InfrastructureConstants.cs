@@ -12,12 +12,10 @@ namespace PropertyPro.Infrastructure.Constants
         {
             public const string FIRST_NAME_REQUIRED_ERROR_MESSAGE = "First name is required";
             public const string LAST_NAME_REQUIRED_ERROR_MESSAGE = "Last name is required";
-            public const string PHONE_NUMBER_REQUIRED_ERROR_MESSAGE = "Phone number is required";
-            public const string PHONE_NUMBER_VALIDATION_ERROR_MESSAGE = "Phone number is required";
-            public const string EMAIL_REQUIRED_ERROR_MESSAGE = "Email is required";
-            public const string EMAIL_VALIDATION_ERROR_MESSAGE = "Invalid email";
-            public const string PASSWORDHASH_REQUIRED_ERROR_MESSAGE = "Password is required";
-
+            public const string MIDDLE_NAME_REQUIRED_ERROR_MESSAGE = "Last name is required";
+            public const int AGE_MIN_VALUE = 18;
+            public const int AGE_MAX_VALUE = 150;
+            public const string AGE_REQUIRED_ERROR_MESSAGE = "Age is required";
         }
 
         public static class Booking
