@@ -49,5 +49,19 @@ namespace PropertyPro.Infrastructure.Constants
             public const string REVIEW_PROPERTY_REQUIRED_ERROR_MESSAGE = "Every review must have a property";
             public const string REVIEW_TENANT_REQUIRED_ERROR_MESSAGE = "Every review must have a tenant";
         }
+
+        public static class LoginDto
+        {
+            public const string LOGIN_DTO_EMAIL_REQUIRED_ERROR_MESSAGE = "Email is required";
+            public const string LOGIN_DTO_EMAIL_INVALID_ERROR_MESSAGE = "Invalid email";
+
+            public const string LOGIN_DTO_PASSWORD_REQUIRED_ERROR_MESSAGE = "Password is required";
+        }
+
+        public static class RegisterDto
+        {
+            public const string REGISTER_DTO_PASSWORDS_MATCH_ERROR_MESSAGE = "Passwords do not match";
+            public const string REGISTER_DTO_PHONE_INVALID_ERROR_MESSAGE = "Invalid phone number";
+        }
     }
 }
