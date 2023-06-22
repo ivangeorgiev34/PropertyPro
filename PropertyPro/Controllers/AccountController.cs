@@ -97,7 +97,8 @@ namespace PropertyPro.Controllers
                 await roleManager.CreateAsync(landlordRole);
 
                 await userManager.AddToRolesAsync(user, new List<string>() { "Landlord" });
-            }
+
+            await landlordService.CreateLandlordAsync(user.Id);
 
             return Ok(new { Status = "Success", Message = "User created successfully!" });
         }
@@ -139,6 +140,10 @@ namespace PropertyPro.Controllers
             {
                 var tenantRole = new IdentityRole<Guid>("Tenant");
                 await roleManager.CreateAsync(tenantRole);
+            }
+            await userManager.AddToRolesAsync(user, new List<string>() { "Tenant" });
+
+            await tenantService.CreateTenantAsync(user.Id);
 
                 await userManager.AddToRolesAsync(user, new List<string>() { "Tenant" });
             }
