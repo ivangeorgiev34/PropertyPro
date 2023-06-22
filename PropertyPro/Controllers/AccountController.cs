@@ -31,7 +31,7 @@ namespace PropertyPro.Controllers
             this.roleManager = roleManager;
             this.configuration = _configuration;
             this.landlordService = _landlordService;
-            this.tenantService = _tenantService];
+            this.tenantService = _tenantService;
         }
 
         [HttpPost]
