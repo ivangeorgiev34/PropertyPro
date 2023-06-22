@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using PropertyPro.Core.Contracts;
 using PropertyPro.Infrastructure.Dtos.Account;
 using PropertyPro.Infrastructure.Models;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,12 +18,20 @@ namespace PropertyPro.Controllers
         private readonly UserManager<User> userManager;
         private readonly RoleManager<IdentityRole<Guid>> roleManager;
         private readonly IConfiguration configuration;
+        private readonly ILandlordService landlordService;
+        private readonly ITenantService tenantService;
 
-        public AccountController(UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager, IConfiguration _configuration)
+        public AccountController(UserManager<User> userManager,
+            RoleManager<IdentityRole<Guid>> roleManager,
+            IConfiguration _configuration,
+            ILandlordService _landlordService,
+            ITenantService _tenantService)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.configuration = _configuration;
+            this.landlordService = _landlordService;
+            this.tenantService = _tenantService];
         }
 
         [HttpPost]
@@ -39,6 +48,7 @@ namespace PropertyPro.Controllers
                 {
                     user = new
                     {
+                        Id = user.Id,
                         FirstName = user.FirstName,
                         MiddleName = user.MiddleName,
                         LastName = user.LastName,
@@ -53,8 +63,9 @@ namespace PropertyPro.Controllers
                 }); ;
             }
 
-            return Unauthorized(new
+            return NotFound(new
             {
+                Status = "Error",
                 Message = "User with such email doesn't exist"
             });
         }
@@ -68,7 +79,7 @@ namespace PropertyPro.Controllers
             if (userExists != null)
                 return Unauthorized(new
                 {
-                    Status="Error",
+                    Status = "Error",
                     Message = "User already exists"
                 });
 
@@ -89,14 +100,16 @@ namespace PropertyPro.Controllers
 
             var result = await userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded)
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "User creation failed! Please check user details and try again.",Errors=result.Errors });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "User creation failed! Please check user details and try again.", Errors = result.Errors });
 
             if (!await roleManager.RoleExistsAsync("Landlord"))
             {
                 var landlordRole = new IdentityRole<Guid>("Landlord");
                 await roleManager.CreateAsync(landlordRole);
 
-                await userManager.AddToRolesAsync(user, new List<string>() { "Landlord" });
+            }
+
+            await userManager.AddToRolesAsync(user, new List<string>() { "Landlord" });
 
             await landlordService.CreateLandlordAsync(user.Id);
 
@@ -145,8 +158,6 @@ namespace PropertyPro.Controllers
 
             await tenantService.CreateTenantAsync(user.Id);
 
-                await userManager.AddToRolesAsync(user, new List<string>() { "Tenant" });
-            }
 
             return Ok(new { Status = "Success", Message = "User created successfully!" });
         }
