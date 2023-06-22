@@ -69,13 +69,42 @@ namespace PropertyPro.Core.Services
                      Description = p.Description,
                      MaxGuestsCount = p.MaxGuestsCount,
                      Town = p.Town,
-                     FirstImage  = Convert.ToBase64String(p.FirstImage),
+                     FirstImage = Convert.ToBase64String(p.FirstImage),
                      SecondImage = p.SecondImage == null ? null : Convert.ToBase64String(p.SecondImage),
                      ThirdImage = p.ThirdImage == null ? null : Convert.ToBase64String(p.ThirdImage)
                  })
                  .ToListAsync();
 
             return properties;
+        }
+
+        public async Task<List<GetLandlordsPropertiesDto>?> GetLandlordsPropertiesAsync(string userId)
+        {
+
+            var landlordsProperties = await repo.All<Landlord>()
+                .Include(l => l.Properties)
+                .Where(l => l.UserId == Guid.Parse(userId))
+                .Select(l => l.Properties
+                .Select(p => new GetLandlordsPropertiesDto
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Type = p.Type,
+                    BathroomsCount = p.BathroomsCount,
+                    BedroomsCount = p.BedroomsCount,
+                    BedsCount = p.BedsCount,
+                    Country = p.Country,
+                    Description = p.Description,
+                    MaxGuestsCount = p.MaxGuestsCount,
+                    Town = p.Town,
+                    FirstImage = Convert.ToBase64String(p.FirstImage),
+                    SecondImage = p.SecondImage == null ? null : Convert.ToBase64String(p.SecondImage),
+                    ThirdImage = p.ThirdImage == null ? null : Convert.ToBase64String(p.ThirdImage)
+                })
+                .ToList())
+            .FirstOrDefaultAsync();
+
+            return landlordsProperties;
         }
     }
 }
