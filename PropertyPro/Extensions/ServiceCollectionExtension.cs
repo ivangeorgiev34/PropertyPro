@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using PropertyPro.Core.Contracts;
+using PropertyPro.Core.Services;
 using PropertyPro.Infrastructure.Common;
 using PropertyPro.Infrastructure.Data;
 using PropertyPro.Infrastructure.Models;
@@ -24,9 +26,16 @@ namespace PropertyPro.Extensions
                 .AddDefaultTokenProviders();
             services.AddCors(options =>
             {
+                //options.AddPolicy("LocalServer", policy =>
+                //{
+                //    policy.WithOrigins("http://127.0.0.1:5500")
+                //    .AllowAnyMethod()
+                //    .AllowAnyHeader();
+                //});
+
                 options.AddPolicy("LocalServer", policy =>
                 {
-                    policy.WithOrigins("http://127.0.0.1:5500")
+                    policy.AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader();
                 });
@@ -36,6 +45,7 @@ namespace PropertyPro.Extensions
             services.AddScoped<IRepository,Repository>();
             services.AddScoped<IPropertyService, PropertyService>();
             services.AddScoped<ILandlordService, LandlordService>();
+            services.AddScoped<ITenantService,TenantService>();
         }
     }
 }
