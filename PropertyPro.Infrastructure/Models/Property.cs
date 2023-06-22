@@ -46,6 +46,13 @@ namespace PropertyPro.Infrastructure.Models
         [Required(ErrorMessage = InfrastructureConstants.Property.PROPERTY_BATHROOMS_COUNT_REQUIRED_ERROR_MESSAGE)]
         public int BathroomsCount { get; set; }
 
+        [Required(ErrorMessage = InfrastructureConstants.Property.PROPERTY_FIRST_IMAGE_REQUIRED_ERROR_MESSAGE)]
+        public byte[] FirstImage { get; set; } = null!;
+
+        public byte[]? SecondImage { get; set; }
+
+        public byte[]? ThirdImage { get; set; }
+
         public ICollection<Booking>? Bookings { get; set; }
 
         public ICollection<Review>? Reviews { get; set; }
