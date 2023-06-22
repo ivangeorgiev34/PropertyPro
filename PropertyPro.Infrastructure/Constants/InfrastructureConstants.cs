@@ -39,6 +39,7 @@ namespace PropertyPro.Infrastructure.Constants
             public const string PROPERTY_LANDLORD_REQUIRED_ERROR_MESSAGE = "Every property must have a landlord";
             public const string PROPERTY_TOWN_REQUIRED_ERROR_MESSAGE = "Town is required";
             public const string PROPERTY_COUNTRY_REQUIRED_ERROR_MESSAGE = "Country is required";
+            public const string PROPERTY_FIRST_IMAGE_REQUIRED_ERROR_MESSAGE = "First image is required";
         }
 
         public static class Review
