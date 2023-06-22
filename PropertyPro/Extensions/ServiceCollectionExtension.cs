@@ -34,6 +34,8 @@ namespace PropertyPro.Extensions
            
 
             services.AddScoped<IRepository,Repository>();
+            services.AddScoped<IPropertyService, PropertyService>();
+            services.AddScoped<ILandlordService, LandlordService>();
         }
     }
 }
