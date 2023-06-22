@@ -10,5 +10,7 @@ namespace PropertyPro.Core.Contracts
     public interface IPropertyService
     {
         Task<List<GetAllPropertiesDto>> GetAllPropertiesAsync();
+
+        Task CreatePropertyAsync(string userId,CreatePropertyDto createPropertyDto, byte[] firstImageBytes, byte[]? secondImageBytes, byte[]? thirdImageBytes);
     }
 }
