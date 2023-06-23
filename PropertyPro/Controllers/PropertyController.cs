@@ -11,7 +11,6 @@ namespace PropertyPro.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles ="Landlord,Tenant",AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
     public class PropertyController : BaseController
     {
         private readonly IPropertyService propertyService;
@@ -77,11 +76,42 @@ namespace PropertyPro.Controllers
         }
 
         [HttpGet]
+        [Route("properties/{userId}/{propertyId}")]
+        [Authorize(Roles = "Landlord,Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetAll(string userId, string propertyId)
+        {
+            if (userId == null || Guid.TryParse(userId, out Guid userIdResult) == false)
+            {
+                return NotFound(new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = "User with such id doesn't exist"
+                });
+            }
+
+            if (propertyId == null || Guid.TryParse(propertyId, out Guid propertyIdResult) == false)
+            {
+                return NotFound(new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = "Property with such id doesn't exist"
+                });
+            }
+
+            var property = await propertyService.GetPropertyByIdAsync(propertyId, userId);
+
+            return Ok(new
+            {
+                Property = property
+            });
+        }
+
+        [HttpGet]
         [Route("properties/{userId?}")]
         [Authorize(Roles = "Landlord", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetLandlordsProperties(string? userId)
         {
-            if (userId == null)
+            if (userId == null || Guid.TryParse(userId, out Guid userIdResult) == false)
             {
                 return NotFound(new
                 {
@@ -102,9 +132,10 @@ namespace PropertyPro.Controllers
         [HttpPut]
         [Route("edit/{propertyId?}")]
         [Authorize(Roles = "Landlord", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> EditProperty([FromForm]EditPropertyDto editPropertyDto, string? propertyId)
+        public async Task<IActionResult> EditProperty([FromForm] EditPropertyDto editPropertyDto, string? propertyId)
         {
-            if (await propertyService.PropertyExistsAsync(propertyId) == false)
+
+            if (await propertyService.PropertyExistsAsync(propertyId) == false || propertyId == null ||Guid.TryParse(propertyId, out Guid propertyIdResult) == false)
             {
                 return NotFound(new
                 {
@@ -130,7 +161,7 @@ namespace PropertyPro.Controllers
 
             try
             {
-                await propertyService.EditPropertyAsync(editPropertyDto, propertyId!, firstImageBytes!,secondImageBytes,thirdImageBytes);
+                await propertyService.EditPropertyAsync(editPropertyDto, propertyId!, firstImageBytes!, secondImageBytes, thirdImageBytes);
 
                 var responseProperty = new PropertyDto()
                 {
@@ -166,7 +197,36 @@ namespace PropertyPro.Controllers
             }
         }
 
-       
+        [HttpDelete]
+        [Route("delete/{propertyId?}")]
+        [Authorize(Roles = "Landlord", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> DeleteProperty(string? propertyId)
+        {
+            if (await propertyService.PropertyExistsAsync(propertyId) == false || propertyId == null || Guid.TryParse(propertyId, out Guid propertyIdResult) == false)
+            {
+                return NotFound(new
+                {
+                    Status = "Error",
+                    Message = "Property doesn't exist!"
+                });
+            }
+
+            var userId = GetUserId(HttpContext);
+
+            if (await propertyService.LandlordOwnsPropertyById(propertyId, userId) == false)
+            {
+                return NotFound(new
+                {
+                    Status = "Error",
+                    Message = "You are not the landlord of this property!"
+                });
+            }
+
+            await propertyService.DeletePropertyAsync(propertyId);
+
+            return NoContent();
+        }
+
         private async Task<byte[]?> ConvertImageToByteArrayAsync(IFormFile? image)
         {
             byte[]? byteArray = null;
