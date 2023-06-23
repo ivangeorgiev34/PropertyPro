@@ -1,4 +1,5 @@
-﻿using PropertyPro.Infrastructure.Constants;
+﻿using Microsoft.AspNetCore.Http;
+using PropertyPro.Infrastructure.Constants;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -38,10 +39,10 @@ namespace PropertyPro.Infrastructure.Dtos.Property
         public int BathroomsCount { get; set; }
 
         [Required(ErrorMessage = InfrastructureConstants.Property.PROPERTY_FIRST_IMAGE_REQUIRED_ERROR_MESSAGE)]
-        public byte[] FirstImage { get; set; } = null!;
+        public IFormFile FirstImage { get; set; } = null!;
 
-        public byte[]? SecondImage { get; set; }
+        public IFormFile? SecondImage { get; set; }
 
-        public byte[]? ThirdImage { get; set; }
+        public IFormFile? ThirdImage { get; set; }
     }
 }
