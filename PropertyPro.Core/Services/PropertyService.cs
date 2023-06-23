@@ -57,6 +57,38 @@ namespace PropertyPro.Core.Services
             await repo.SaveChangesAsync();
         }
 
+        public async Task DeletePropertyAsync(string propertyId)
+        {
+            await repo.DeleteAsync<Property>(Guid.Parse(propertyId));
+
+            await repo.SaveChangesAsync();
+        }
+
+        public async Task EditPropertyAsync(EditPropertyDto editPropertyDto, string propertyId, byte[] firstImage, byte[]? secondImage, byte[]? thirdImage)
+        {
+            var property = await GetPropertyByIdAsync(propertyId);
+
+            if (property == null)
+            {
+                throw new InvalidOperationException("Unexpected error");
+            }
+
+            property.Title= editPropertyDto.Title;
+            property.Description = editPropertyDto.Description;
+            property.BathroomsCount = editPropertyDto.BathroomsCount;
+            property.BedroomsCount = editPropertyDto.BedroomsCount;
+            property.Type = editPropertyDto.Type;
+            property.Town = editPropertyDto.Town;
+            property.Country = editPropertyDto.Country;
+            property.MaxGuestsCount = editPropertyDto.MaxGuestsCount;
+            property.BedsCount = editPropertyDto.BedsCount;
+            property.FirstImage = firstImage;
+            property.SecondImage = secondImage;
+            property.ThirdImage = thirdImage;
+
+            await repo.SaveChangesAsync();
+        }
+
         public async Task<List<GetAllPropertiesDto>> GetAllPropertiesAsync()
         {
             var properties = await repo.AllReadonly<Property>()
@@ -139,6 +171,76 @@ namespace PropertyPro.Core.Services
             .FirstOrDefaultAsync();
 
             return landlordsProperties;
+        }
+
+        public async Task<Property?> GetPropertyByIdAsync(string? propertyId)
+        {
+            if (propertyId == null)
+            {
+                return null!;
+            }
+
+            var property = await repo.All<Property>()
+                .Include(p => p.Landlord)
+                .FirstOrDefaultAsync(p => p.Id == Guid.Parse(propertyId));
+
+            return property;
+        }
+
+        public async Task<PropertyDto?> GetPropertyByIdAsync(string propertyId, string userId)
+        {
+            var propertyDto = await repo.All<Property>()
+                .Where(p=>p.Id == Guid.Parse(propertyId) && p.Landlord.UserId == Guid.Parse(userId) && p.IsActive == true)
+                .Select(p=>new PropertyDto()
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Type = p.Type,
+                    BathroomsCount = p.BathroomsCount,
+                    BedroomsCount = p.BedroomsCount,
+                    BedsCount = p.BedsCount,
+                    Country = p.Country,
+                    Description = p.Description,
+                    MaxGuestsCount = p.MaxGuestsCount,
+                    Town = p.Town,
+                    FirstImage = Convert.ToBase64String(p.FirstImage),
+                    SecondImage = p.SecondImage == null ? null : Convert.ToBase64String(p.SecondImage),
+                    ThirdImage = p.ThirdImage == null ? null : Convert.ToBase64String(p.ThirdImage),
+                    Landlord = new LandlordDto()
+                    {
+                        Id = p.Landlord.User.Id,
+                        Email = p.Landlord.User.Email,
+                        Age = p.Landlord.User.Age,
+                        FirstName = p.Landlord.User.FirstName,
+                        MiddleName = p.Landlord.User.MiddleName,
+                        LastName = p.Landlord.User.LastName,
+                        Gender = p.Landlord.User.Gender,
+                        PhoneNumber = p.Landlord.User.PhoneNumber,
+                        Username = p.Landlord.User.UserName
+                    }
+                })
+                .FirstOrDefaultAsync();
+
+            return propertyDto;
+        }
+
+        public async Task<bool> LandlordOwnsPropertyById(string? propertyId,string? userId)
+        {
+            if (propertyId == null || userId==null)
+            {
+                return false;
+            }
+
+            if (await PropertyExistsAsync(propertyId) == false)
+            {
+                return false;
+            }
+
+            var landlordOwnsProperty = await repo.AllReadonly<Property>()
+                .Include(p => p.Landlord)
+                .AnyAsync(p => p.Landlord.UserId == Guid.Parse(userId) && p.Id == Guid.Parse(propertyId));
+
+            return landlordOwnsProperty;
         }
 
         public async Task<bool> PropertyExistsAsync(string? propertyId)
