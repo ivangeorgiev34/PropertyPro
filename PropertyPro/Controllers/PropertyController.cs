@@ -78,7 +78,7 @@ namespace PropertyPro.Controllers
         [HttpGet]
         [Route("properties/{userId}/{propertyId}")]
         [Authorize(Roles = "Landlord,Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetAll(string userId, string propertyId)
+        public async Task<IActionResult> GetLandlordsProperty(string userId, string propertyId)
         {
             if (userId == null || Guid.TryParse(userId, out Guid userIdResult) == false)
             {
