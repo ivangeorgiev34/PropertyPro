@@ -11,6 +11,8 @@ namespace PropertyPro.Core.Contracts
     {
         Task<List<GetAllPropertiesDto>> GetAllPropertiesAsync();
 
+        Task<bool> PropertyExistsAsync(string? propertyId);
+
         Task<List<GetLandlordsPropertiesDto>?> GetLandlordsPropertiesAsync(string userId);
 
         Task CreatePropertyAsync(string userId,CreatePropertyDto createPropertyDto, byte[] firstImageBytes, byte[]? secondImageBytes, byte[]? thirdImageBytes);
