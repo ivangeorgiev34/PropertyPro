@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PropertyPro.Infrastructure.Dtos.Landlord;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,5 +34,7 @@ namespace PropertyPro.Infrastructure.Dtos.Property
         public string? SecondImage { get; set; }
 
         public string? ThirdImage { get; set; }
+
+        public LandlordDto Landlord { get; set; } = null!;
     }
 }
