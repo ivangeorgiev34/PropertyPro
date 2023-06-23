@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PropertyPro.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using PropertyPro.Infrastructure.Data;
 namespace PropertyPro.Infrastructure.Migrations
 {
     [DbContext(typeof(PropertyProDbContext))]
-    partial class PropertyProDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230622161712_AddIsActiveColumnToBookingPropertyAndReviewTables")]
+    partial class AddIsActiveColumnToBookingPropertyAndReviewTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,6 +167,9 @@ namespace PropertyPro.Infrastructure.Migrations
                     b.Property<int>("Guests")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("PropertyId")
                         .HasColumnType("uniqueidentifier");
 
@@ -225,6 +230,9 @@ namespace PropertyPro.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("LandlordId")
                         .HasColumnType("uniqueidentifier");
 
@@ -265,6 +273,9 @@ namespace PropertyPro.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<Guid?>("LandlordId")
                         .HasColumnType("uniqueidentifier");
