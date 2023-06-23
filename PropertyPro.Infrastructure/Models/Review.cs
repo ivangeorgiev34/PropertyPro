@@ -1,6 +1,7 @@
 ﻿using PropertyPro.Infrastructure.Constants;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace PropertyPro.Infrastructure.Models
         public double Stars { get; set; }
 
         public string? Description { get; set; }
+
+        public bool IsActive { get; set; }
 
         [Required(ErrorMessage = InfrastructureConstants.Review.REVIEW_PROPERTY_REQUIRED_ERROR_MESSAGE)]
         [ForeignKey(nameof(Property))]

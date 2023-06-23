@@ -1,6 +1,7 @@
 ﻿using PropertyPro.Infrastructure.Constants;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace PropertyPro.Infrastructure.Models
 
         [Required(ErrorMessage =InfrastructureConstants.Booking.BOOKING_GUESTS_REQUIRED_ERROR_MESSAGE)]
         public int Guests { get; set; }
+
+        public bool IsActive { get; set; }
 
         [Required(ErrorMessage =InfrastructureConstants.Booking.BOOKING_TENANT_REQUIRED_ERROR_MESSAGE)]
         [ForeignKey(nameof(Tenant))]

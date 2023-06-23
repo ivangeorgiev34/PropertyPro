@@ -1,6 +1,7 @@
 ﻿using PropertyPro.Infrastructure.Constants;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -52,6 +53,8 @@ namespace PropertyPro.Infrastructure.Models
         public byte[]? SecondImage { get; set; }
 
         public byte[]? ThirdImage { get; set; }
+
+        public bool IsActive { get; set; } 
 
         public ICollection<Booking>? Bookings { get; set; }
 
