@@ -33,9 +33,8 @@ namespace PropertyPro.Core.Services
         public async Task<Landlord?> GetLandlordByUserIdAsync(string userId)
         {
             var landlord =await repo.All<Landlord>()
+                .Include(l=>l.User)
                 .FirstOrDefaultAsync(l=>l.UserId == Guid.Parse(userId));
-
-            var landlords = repo.All<Landlord>().ToList();
 
             return landlord;
         }
