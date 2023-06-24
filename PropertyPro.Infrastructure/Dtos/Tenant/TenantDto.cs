@@ -10,6 +10,7 @@ namespace PropertyPro.Infrastructure.Dtos.Tenant
 {
     public class TenantDto
     {
+        public Guid Id { get; set; }
         public string FirstName { get; set; } = null!;
 
         public string MiddleName { get; set; } = null!;
