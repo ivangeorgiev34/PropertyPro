@@ -12,5 +12,15 @@ namespace PropertyPro.Controllers
 
             return userIdClaim?.Value;
         }
+
+        protected bool IsIdValidGuidAndNotNull(string id)
+        {
+            if (id == null || Guid.TryParse(id,out Guid result) == false)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }
