@@ -54,7 +54,9 @@ namespace PropertyPro.Controllers
                         LastName = user.LastName,
                         Email = user.Email,
                         Gender = user.Gender,
-                        ProfilePicture = user.ProfilePicture,
+                        ProfilePicture = user.ProfilePicture != null
+                        ? Convert.ToBase64String(user.ProfilePicture)
+                        : null,
                         PhoneNumber = user.PhoneNumber,
                         Age = user.Age
                     },
