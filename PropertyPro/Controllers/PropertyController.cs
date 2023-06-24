@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PropertyPro.Constants;
 using PropertyPro.Core.Contracts;
 using PropertyPro.Infrastructure.Dtos.Property;
+using PropertyPro.Infrastructure.Models;
 using PropertyPro.Utilities;
 using System.Security.Claims;
 
@@ -14,9 +16,15 @@ namespace PropertyPro.Controllers
     public class PropertyController : BaseController
     {
         private readonly IPropertyService propertyService;
-        public PropertyController(IPropertyService _propertyService)
+        private readonly IReviewService reviewService;
+        private readonly UserManager<User> userManager;
+        public PropertyController(IPropertyService _propertyService,
+            IReviewService _reviewService,
+            UserManager<User> _userManager)
         {
             this.propertyService = _propertyService;
+            this.reviewService = _reviewService;
+            this.userManager = _userManager;
         }
 
         [HttpGet]
@@ -107,6 +115,42 @@ namespace PropertyPro.Controllers
         }
 
         [HttpGet]
+        [Route("properties/{userId}/{propertyId}/reviews")]
+        [Authorize(Roles = "Landlord,Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetLandlordsPropertyReviews(string userId, string propertyId)
+        {
+            if (await userManager.FindByIdAsync(userId) == null||userId == null || Guid.TryParse(userId, out Guid userIdResult) == false)
+            {
+                return BadRequest(new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = "User with such id doesn't exist"
+                });
+            }
+
+            if (propertyId == null || Guid.TryParse(propertyId, out Guid propertyIdResult) == false)
+            {
+                return BadRequest(new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = "Property with such id doesn't exist"
+                });
+            }
+
+            var reviews = await reviewService.GetPropertyReviews(userId, propertyId);
+
+            return Ok(new Response()
+            {
+                Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+                Message = "Reviews retrieved successfully",
+                Content = new
+                {
+                    Reviews = reviews
+                }
+            });
+        }
+
+        [HttpGet]
         [Route("properties/{userId?}")]
         [Authorize(Roles = "Landlord", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetLandlordsProperties(string? userId)
@@ -135,7 +179,7 @@ namespace PropertyPro.Controllers
         public async Task<IActionResult> EditProperty([FromForm] EditPropertyDto editPropertyDto, string? propertyId)
         {
 
-            if (await propertyService.PropertyExistsAsync(propertyId) == false || propertyId == null ||Guid.TryParse(propertyId, out Guid propertyIdResult) == false)
+            if (await propertyService.PropertyExistsAsync(propertyId) == false || propertyId == null || Guid.TryParse(propertyId, out Guid propertyIdResult) == false)
             {
                 return NotFound(new
                 {
