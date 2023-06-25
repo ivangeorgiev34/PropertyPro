@@ -84,7 +84,7 @@ namespace PropertyPro.Controllers
 
                 return Ok(new Response()
                 {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
                     Message = "Review edited successfully",
                     Content = new
                     {
@@ -98,6 +98,36 @@ namespace PropertyPro.Controllers
                 {
                     Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
                     Message = e.Message
+                });
+            }
+        }
+
+        [HttpDelete]
+        [Route("delete/{reviewId}")]
+        [Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> DeleteReview(string reviewId)
+        {
+            if (IsIdValidGuidAndNotNull(reviewId) == false || await reviewService.ReviewExistsAsync(reviewId) == false)
+            {
+                return BadRequest(new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = "Review doesn't exist"
+                });
+            }
+
+            try
+            {
+                await reviewService.DeleteReviewByIdAsync(reviewId);
+
+                return NoContent();
+            }
+            catch (NullReferenceException e)
+            {
+                return BadRequest(new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message =e.Message
                 });
             }
 
