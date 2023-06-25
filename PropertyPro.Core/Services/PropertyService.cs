@@ -61,6 +61,11 @@ namespace PropertyPro.Core.Services
         {
             var property = await GetPropertyByIdAsync(propertyId);
 
+            if (property == null)
+            {
+                throw new NullReferenceException("Property doesn't exist");
+            }
+
             property.IsActive = false;
 
             await repo.SaveChangesAsync();
@@ -159,7 +164,7 @@ namespace PropertyPro.Core.Services
                     Landlord = new LandlordDto()
                     {
                         Id = Guid.Parse(userId),
-                        Email = landlord.User.Email,
+                        Email = landlord!.User.Email,
                         Age = landlord.User.Age,
                         FirstName = landlord.User.FirstName,
                         LastName = landlord.User.LastName,
