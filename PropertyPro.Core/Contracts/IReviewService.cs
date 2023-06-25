@@ -21,5 +21,9 @@ namespace PropertyPro.Core.Contracts
         Task<bool> ReviewExistsAsync(string reviewId);
 
         Task<ReviewDto> EditReviewAsync(EditReviewDto editReviewDto, string reviewId, string propertyId);
+
+        Task DeleteReviewByIdAsync(string reviewId);
+
+        Task<Review?> GetReviewByIdAsync(string reviewId);
     }
 }
