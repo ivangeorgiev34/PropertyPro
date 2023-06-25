@@ -25,5 +25,7 @@ namespace PropertyPro.Core.Contracts
         Task DeleteReviewByIdAsync(string reviewId);
 
         Task<Review?> GetReviewByIdAsync(string reviewId);
+
+        Task<ReviewDto?> GetReviewDtoByIdAsync(string reviewId);
     }
 }
