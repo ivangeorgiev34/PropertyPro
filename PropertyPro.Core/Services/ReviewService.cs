@@ -113,6 +113,7 @@ namespace PropertyPro.Core.Services
                     Description = r.Description,
                     Tenant = new TenantDto()
                     {
+                        Id = r.Tenant.UserId,
                         FirstName = r.Tenant.User.FirstName,
                         MiddleName = r.Tenant.User.MiddleName,
                         LastName = r.Tenant.User.LastName,
@@ -135,6 +136,35 @@ namespace PropertyPro.Core.Services
                 .FirstOrDefaultAsync(r => r.IsActive == true && r.Id == Guid.Parse(reviewId));
 
             return review;
+        }
+
+        public async Task<ReviewDto?> GetReviewDtoByIdAsync(string reviewId)
+        {
+            var reviewDto = await repo.All<Review>()
+                .Include(r => r.Tenant)
+                .ThenInclude(t => t.User)
+                .Where(r => r.IsActive == true && r.Id == Guid.Parse(reviewId))
+                .Select(r => new ReviewDto()
+                {
+                    Id = r.Id,
+                    Stars = r.Stars,
+                    Description = r.Description,
+                    Tenant = new TenantDto()
+                    {
+                        Id = r.Tenant.UserId,
+                        FirstName = r.Tenant.User.FirstName,
+                        MiddleName = r.Tenant.User.MiddleName,
+                        LastName = r.Tenant.User.LastName,
+                        Age = r.Tenant.User.Age,
+                        Gender = r.Tenant.User.Gender,
+                        ProfilePicture = r.Tenant.User.ProfilePicture != null
+                        ? Convert.ToBase64String(r.Tenant.User.ProfilePicture)
+                        : null
+                    }
+                })
+                .FirstOrDefaultAsync();
+
+            return reviewDto; 
         }
 
         public async Task<Review?> GetReviewInPropertyById(string reviewId, string propertyId)
