@@ -1,4 +1,5 @@
 ﻿using PropertyPro.Infrastructure.Dtos.Review;
+using PropertyPro.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,9 @@ namespace PropertyPro.Core.Contracts
         Task<ReviewDto> CreateReviewAsync(CreateReviewDto createReviewDto,string userId, string propertyId);
 
         Task<bool> ReviewExistsInPropertyAsync(string reviewId, string propertyId);
+
+        Task<Review?> GetReviewInPropertyById(string reviewId, string propertyId);
+
+        Task<ReviewDto> EditReviewAsync(EditReviewDto editReviewDto, string reviewId, string propertyId);
     }
 }
