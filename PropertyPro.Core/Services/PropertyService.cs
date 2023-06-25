@@ -59,7 +59,9 @@ namespace PropertyPro.Core.Services
 
         public async Task DeletePropertyAsync(string propertyId)
         {
-            await repo.DeleteAsync<Property>(Guid.Parse(propertyId));
+            var property = await GetPropertyByIdAsync(propertyId);
+
+            property.IsActive = false;
 
             await repo.SaveChangesAsync();
         }
@@ -73,7 +75,7 @@ namespace PropertyPro.Core.Services
                 throw new InvalidOperationException("Unexpected error");
             }
 
-            property.Title= editPropertyDto.Title;
+            property.Title = editPropertyDto.Title;
             property.Description = editPropertyDto.Description;
             property.BathroomsCount = editPropertyDto.BathroomsCount;
             property.BedroomsCount = editPropertyDto.BedroomsCount;
@@ -93,7 +95,7 @@ namespace PropertyPro.Core.Services
         {
             var properties = await repo.AllReadonly<Property>()
                  .Include(p => p.Landlord)
-                 .ThenInclude(l=>l.User)
+                 .ThenInclude(l => l.User)
                  .Where(p => p.IsActive == true)
                  .Select(p => new GetAllPropertiesDto
                  {
@@ -112,17 +114,17 @@ namespace PropertyPro.Core.Services
                      ThirdImage = p.ThirdImage == null ? null : Convert.ToBase64String(p.ThirdImage),
                      Landlord = new LandlordDto()
                      {
-                        Id = p.Landlord.User.Id,
-                        Email = p.Landlord.User.Email,
-                        Age=p.Landlord.User.Age,
-                        FirstName=p.Landlord.User.FirstName,
-                        MiddleName=p.Landlord.User.MiddleName,
-                        LastName=p.Landlord.User.LastName,
-                        Gender=p.Landlord.User.Gender,
-                        PhoneNumber=p.Landlord.User.PhoneNumber,
-                        Username=p.Landlord.User.UserName
+                         Id = p.Landlord.User.Id,
+                         Email = p.Landlord.User.Email,
+                         Age = p.Landlord.User.Age,
+                         FirstName = p.Landlord.User.FirstName,
+                         MiddleName = p.Landlord.User.MiddleName,
+                         LastName = p.Landlord.User.LastName,
+                         Gender = p.Landlord.User.Gender,
+                         PhoneNumber = p.Landlord.User.PhoneNumber,
+                         Username = p.Landlord.User.UserName
                      }
-                     
+
                  })
                  .ToListAsync();
 
@@ -156,15 +158,15 @@ namespace PropertyPro.Core.Services
                     ThirdImage = p.ThirdImage == null ? null : Convert.ToBase64String(p.ThirdImage),
                     Landlord = new LandlordDto()
                     {
-                        Id= Guid.Parse(userId),
-                        Email =landlord.User.Email,
-                        Age=landlord.User.Age,
-                        FirstName=landlord.User.FirstName,
-                        LastName=landlord.User.LastName,
-                        MiddleName=landlord.User.MiddleName,
-                        Gender=landlord.User.Gender,
-                        PhoneNumber=landlord.User.PhoneNumber,
-                        Username=landlord.User.UserName,
+                        Id = Guid.Parse(userId),
+                        Email = landlord.User.Email,
+                        Age = landlord.User.Age,
+                        FirstName = landlord.User.FirstName,
+                        LastName = landlord.User.LastName,
+                        MiddleName = landlord.User.MiddleName,
+                        Gender = landlord.User.Gender,
+                        PhoneNumber = landlord.User.PhoneNumber,
+                        Username = landlord.User.UserName,
                     }
                 })
                 .ToList())
@@ -190,8 +192,8 @@ namespace PropertyPro.Core.Services
         public async Task<PropertyDto?> GetPropertyByIdAsync(string propertyId, string userId)
         {
             var propertyDto = await repo.All<Property>()
-                .Where(p=>p.Id == Guid.Parse(propertyId) && p.Landlord.UserId == Guid.Parse(userId) && p.IsActive == true)
-                .Select(p=>new PropertyDto()
+                .Where(p => p.Id == Guid.Parse(propertyId) && p.Landlord.UserId == Guid.Parse(userId) && p.IsActive == true)
+                .Select(p => new PropertyDto()
                 {
                     Id = p.Id,
                     Title = p.Title,
@@ -224,9 +226,9 @@ namespace PropertyPro.Core.Services
             return propertyDto;
         }
 
-        public async Task<bool> LandlordOwnsPropertyById(string? propertyId,string? userId)
+        public async Task<bool> LandlordOwnsPropertyById(string? propertyId, string? userId)
         {
-            if (propertyId == null || userId==null)
+            if (propertyId == null || userId == null)
             {
                 return false;
             }
