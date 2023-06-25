@@ -18,6 +18,8 @@ namespace PropertyPro.Core.Contracts
 
         Task<Review?> GetReviewInPropertyById(string reviewId, string propertyId);
 
+        Task<bool> ReviewExistsAsync(string reviewId);
+
         Task<ReviewDto> EditReviewAsync(EditReviewDto editReviewDto, string reviewId, string propertyId);
     }
 }
