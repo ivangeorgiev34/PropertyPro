@@ -12,5 +12,7 @@ namespace PropertyPro.Core.Contracts
         Task<List<ReviewDto>> GetPropertyReviews(string userId,string propertyId);
 
         Task<ReviewDto> CreateReviewAsync(CreateReviewDto createReviewDto,string userId, string propertyId);
+
+        Task<bool> ReviewExistsInPropertyAsync(string reviewId, string propertyId);
     }
 }
