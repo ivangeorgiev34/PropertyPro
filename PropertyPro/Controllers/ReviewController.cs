@@ -127,11 +127,42 @@ namespace PropertyPro.Controllers
                 return BadRequest(new Response()
                 {
                     Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message =e.Message
+                    Message = e.Message
+                });
+            }
+        }
+
+        [HttpGet]
+        [Route("{reviewId}")]
+        [Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetReviewById(string reviewId)
+        {
+            if (IsIdValidGuidAndNotNull(reviewId) == false || await reviewService.ReviewExistsAsync(reviewId) == false)
+            {
+                return BadRequest(new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = "Review doesn't exist"
                 });
             }
 
+            var review = await reviewService.GetReviewDtoByIdAsync(reviewId);
 
+            return review == null
+                ? BadRequest(new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = "Review doesn't exist"
+                })
+                : Ok(new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+                    Message = "Review found",
+                    Content = new
+                    {
+                        Review = review
+                    }
+                });
         }
     }
 }
