@@ -266,9 +266,21 @@ namespace PropertyPro.Controllers
                 });
             }
 
-            await propertyService.DeletePropertyAsync(propertyId);
+            try
+            {
+                await propertyService.DeletePropertyAsync(propertyId);
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (NullReferenceException e)
+            {
+                return BadRequest(new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = e.Message
+                });
+            }
+
         }
 
         private async Task<byte[]?> ConvertImageToByteArrayAsync(IFormFile? image)
