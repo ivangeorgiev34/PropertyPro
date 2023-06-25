@@ -53,6 +53,42 @@ namespace PropertyPro.Core.Services
             return reviewDto;
         }
 
+        public async Task<ReviewDto> EditReviewAsync(EditReviewDto editReviewDto, string reviewId, string propertyId)
+        {
+            var review = await GetReviewInPropertyById(reviewId, propertyId);
+
+            if (review == null)
+            {
+                throw new NullReferenceException("Review cannot be found");
+            }
+
+            review.Stars = editReviewDto.Stars;
+            review.Description = editReviewDto.Description;
+
+            await repo.SaveChangesAsync();
+
+            var reviewDto = new ReviewDto()
+            {
+                Id = review.Id,
+                Description = review.Description,
+                Stars = review.Stars,
+                Tenant = new TenantDto()
+                {
+                    Id = review.Tenant.UserId,
+                    FirstName = review.Tenant.User.FirstName,
+                    MiddleName = review.Tenant.User.MiddleName,
+                    LastName = review.Tenant.User.LastName,
+                    Age = review.Tenant.User.Age,
+                    Gender = review.Tenant.User.Gender,
+                    ProfilePicture = review.Tenant.User.ProfilePicture != null
+                        ? Convert.ToBase64String(review.Tenant.User.ProfilePicture)
+                        : null
+                }
+            };
+
+            return reviewDto;
+        }
+
         public async Task<List<ReviewDto>> GetPropertyReviews(string userId, string propertyId)
         {
             var reviews = await repo.All<Review>()
@@ -85,12 +121,24 @@ namespace PropertyPro.Core.Services
 
         }
 
-        public async Task<bool> ReviewExistsInPropertyAsync(string reviewId,string propertyId)
+        public async Task<Review?> GetReviewInPropertyById(string reviewId, string propertyId)
+        {
+            var review = await repo.All<Review>()
+                .Include(r => r.Tenant)
+                .ThenInclude(t => t.User)
+                .FirstOrDefaultAsync(r => r.IsActive == true && r.PropertyId == Guid.Parse(propertyId) && r.Id == Guid.Parse(reviewId));
+
+            return review;
+        }
+
+        public async Task<bool> ReviewExistsInPropertyAsync(string reviewId, string propertyId)
         {
             var reviewExists = await repo.All<Review>()
                 .AnyAsync(r => r.IsActive == true && r.Id == Guid.Parse(reviewId) && r.PropertyId == Guid.Parse(propertyId));
 
             return reviewExists;
         }
+
+
     }
 }
