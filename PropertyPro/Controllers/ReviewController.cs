@@ -40,7 +40,7 @@ namespace PropertyPro.Controllers
 
             var userId = GetUserId(HttpContext);
 
-            var review = await reviewService.CreateReviewAsync(createReviewDto, userId!,propertyId);
+            var review = await reviewService.CreateReviewAsync(createReviewDto, userId!, propertyId);
 
             return Ok(new Response()
             {
@@ -51,6 +51,56 @@ namespace PropertyPro.Controllers
                     Review = review
                 }
             });
+
+        }
+
+        [HttpPut]
+        [Route("edit/{reviewId}/{propertyId}")]
+        [Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> EditReview(EditReviewDto editReviewDto, string reviewId, string propertyId)
+        {
+            if (IsIdValidGuidAndNotNull(propertyId) == false
+                || await propertyService.PropertyExistsAsync(propertyId) == false)
+            {
+                return BadRequest(new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = "Property doesn't exist"
+                });
+            }
+
+            if (IsIdValidGuidAndNotNull(reviewId) == false || await reviewService.ReviewExistsInPropertyAsync(reviewId, propertyId) == false)
+            {
+                return BadRequest(new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = "Review doesn't exist"
+                });
+            }
+
+            try
+            {
+                var editedReview = await reviewService.EditReviewAsync(editReviewDto, reviewId, propertyId);
+
+                return Ok(new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = "Review edited successfully",
+                    Content = new
+                    {
+                        Review = editedReview
+                    }
+                });
+            }
+            catch (NullReferenceException e)
+            {
+                return NotFound(new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = e.Message
+                });
+            }
+
 
         }
     }
