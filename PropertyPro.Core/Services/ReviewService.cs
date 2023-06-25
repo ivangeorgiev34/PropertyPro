@@ -131,6 +131,14 @@ namespace PropertyPro.Core.Services
             return review;
         }
 
+        public async Task<bool> ReviewExistsAsync(string reviewId)
+        {
+            var reviewExists = await repo.All<Review>()
+                .AnyAsync(r => r.IsActive == true && r.Id == Guid.Parse(reviewId));
+
+            return reviewExists;
+        }
+
         public async Task<bool> ReviewExistsInPropertyAsync(string reviewId, string propertyId)
         {
             var reviewExists = await repo.All<Review>()
