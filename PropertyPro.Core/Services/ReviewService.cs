@@ -53,6 +53,14 @@ namespace PropertyPro.Core.Services
             return reviewDto;
         }
 
+        public async Task DeleteReviewByIdAsync(string reviewId)
+        {
+            var review = await GetReviewByIdAsync(reviewId) ?? throw new NullReferenceException("Review doesn't exist");
+
+            review.IsActive = false;
+            await repo.SaveChangesAsync();
+        }
+
         public async Task<ReviewDto> EditReviewAsync(EditReviewDto editReviewDto, string reviewId, string propertyId)
         {
             var review = await GetReviewInPropertyById(reviewId, propertyId);
@@ -119,6 +127,14 @@ namespace PropertyPro.Core.Services
 
             return reviews;
 
+        }
+
+        public async Task<Review?> GetReviewByIdAsync(string reviewId)
+        {
+            var review = await repo.All<Review>()
+                .FirstOrDefaultAsync(r => r.IsActive == true && r.Id == Guid.Parse(reviewId));
+
+            return review;
         }
 
         public async Task<Review?> GetReviewInPropertyById(string reviewId, string propertyId)
