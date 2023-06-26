@@ -48,6 +48,7 @@ namespace PropertyPro.Extensions
             services.AddScoped<ITenantService,TenantService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<IBookingService, BookingService>();
         }
     }
 }
