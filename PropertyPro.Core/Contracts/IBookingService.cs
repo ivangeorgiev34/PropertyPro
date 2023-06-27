@@ -10,5 +10,7 @@ namespace PropertyPro.Core.Contracts
     public interface IBookingService
     {
         Task<BookingDto> CreateBookingAsync(CreateBookingDto createBookingDto,string userId,string propertyId, DateTime startDate, DateTime endDate);
+
+        Task<bool> CanBookingBeBooked(DateTime startDate, DateTime endDate);
     }
 }
