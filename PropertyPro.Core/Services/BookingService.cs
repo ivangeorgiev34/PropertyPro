@@ -27,11 +27,33 @@ namespace PropertyPro.Core.Services
             this.tenantService = _tenantService;
         }
 
+        public async Task<bool> CanBookingBeBooked(DateTime startDate, DateTime endDate)
+        {
+
+            if (startDate.Year != endDate.Year)
+            {
+                if ((endDate.DayOfYear + ((endDate.Year - startDate.Year) * 365)) - (startDate.DayOfYear + ((endDate.Year - startDate.Year - 1) * 365)) >= 30)
+                {
+                    throw new InvalidOperationException("Cannot reserve for more than one month");
+                }
+            }
+
+            if (startDate.DayOfYear - endDate.DayOfYear >= 30 )
+            {
+                throw new InvalidOperationException("Cannot reserve for more than one month");
+            }
+
+            var canBookingBeBooked = await repo.All<Booking>()
+                .AnyAsync(b => b.IsActive == true
+                && ((b.StartDate.DayOfYear <= startDate.DayOfYear && b.EndDate.DayOfYear >= startDate.DayOfYear)
+                || (b.EndDate.DayOfYear >= endDate.DayOfYear && b.StartDate.DayOfYear <= endDate.DayOfYear)));
+
+            return canBookingBeBooked;
+        }
+
         public async Task<BookingDto> CreateBookingAsync(CreateBookingDto createBookingDto, string userId, string propertyId, DateTime startDate, DateTime endDate)
         {
             var tenantDto = await tenantService.GetTenantByUserId(Guid.Parse(userId));
-
-            var a = DateOnly.FromDateTime(endDate);
 
             var booking = new Booking()
             {
@@ -53,10 +75,10 @@ namespace PropertyPro.Core.Services
                 .ThenInclude(l => l.User)
                 .Include(b => b.Tenant)
                 .ThenInclude(t => t.User)
-                .Where(b => b.IsActive == true && b.PropertyId == Guid.Parse(propertyId) && b.Tenant.UserId == Guid.Parse(userId))
+                .Where(b => b.IsActive == true && b.Id == booking.Id)
                 .Select(b => new BookingDto()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = b.Id,
                     StartDate = b.StartDate,
                     EndDate = b.EndDate,
                     Guests = b.Guests,
