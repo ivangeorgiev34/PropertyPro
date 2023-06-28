@@ -29,6 +29,10 @@ namespace PropertyPro.Core.Services
 
         public async Task<bool> CanBookingBeBooked(DateTime startDate, DateTime endDate)
         {
+            if (DateTime.Compare(startDate,DateTime.Now) < 0)
+            {
+                throw new InvalidOperationException("Start date is invalid");
+            }
 
             if (startDate.Year != endDate.Year)
             {
