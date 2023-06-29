@@ -27,6 +27,14 @@ namespace PropertyPro.Core.Services
             this.tenantService = _tenantService;
         }
 
+        public async Task<bool> BookingExistsByIdAsync(string bookingId)
+        {
+           var bookingExists = await repo.AllReadonly<Booking>()
+                .AnyAsync(b=>b.IsActive == true && b.Id == Guid.Parse(bookingId));
+
+            return bookingExists;
+        }
+
         public async Task<bool> CanBookingBeBooked(DateTime startDate, DateTime endDate)
         {
             if (DateTime.Compare(startDate, DateTime.Now) < 0)
