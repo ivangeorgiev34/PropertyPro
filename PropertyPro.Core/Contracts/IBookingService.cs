@@ -17,5 +17,7 @@ namespace PropertyPro.Core.Contracts
         Task<BookingDto> EditBookingAsync(EditBookingDto editBookingDto,string bookingId,string userId, DateTime startDate, DateTime endDate);
 
         Task<bool> BookingExistsByIdAsync(string bookingId);
+
+        Task<Booking?> GetBookingByIdAsync(string bookingId);    
     }
 }
