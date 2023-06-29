@@ -50,6 +50,7 @@ namespace PropertyPro.Core.Services
                 Type = createPropertyDto.Type,
                 Town = createPropertyDto.Town,
                 MaxGuestsCount = createPropertyDto.MaxGuestsCount,
+                GuestPricePerNight = createPropertyDto.GuestPricePerNight,
                 IsActive = true
             };
 
@@ -89,6 +90,7 @@ namespace PropertyPro.Core.Services
             property.Country = editPropertyDto.Country;
             property.MaxGuestsCount = editPropertyDto.MaxGuestsCount;
             property.BedsCount = editPropertyDto.BedsCount;
+            property.GuestPricePerNight = editPropertyDto.GuestPricePerNight;
             property.FirstImage = firstImage;
             property.SecondImage = secondImage;
             property.ThirdImage = thirdImage;
@@ -113,6 +115,7 @@ namespace PropertyPro.Core.Services
                      Country = p.Country,
                      Description = p.Description,
                      MaxGuestsCount = p.MaxGuestsCount,
+                     GuestPricePerNight = p.GuestPricePerNight,
                      Town = p.Town,
                      FirstImage = Convert.ToBase64String(p.FirstImage),
                      SecondImage = p.SecondImage == null ? null : Convert.ToBase64String(p.SecondImage),
@@ -157,6 +160,7 @@ namespace PropertyPro.Core.Services
                     Country = p.Country,
                     Description = p.Description,
                     MaxGuestsCount = p.MaxGuestsCount,
+                    GuestPricePerNight = p.GuestPricePerNight,
                     Town = p.Town,
                     FirstImage = Convert.ToBase64String(p.FirstImage),
                     SecondImage = p.SecondImage == null ? null : Convert.ToBase64String(p.SecondImage),
@@ -209,6 +213,7 @@ namespace PropertyPro.Core.Services
                     Country = p.Country,
                     Description = p.Description,
                     MaxGuestsCount = p.MaxGuestsCount,
+                    GuestPricePerNight = p.GuestPricePerNight,
                     Town = p.Town,
                     FirstImage = Convert.ToBase64String(p.FirstImage),
                     SecondImage = p.SecondImage == null ? null : Convert.ToBase64String(p.SecondImage),
