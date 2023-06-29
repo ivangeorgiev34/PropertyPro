@@ -21,5 +21,7 @@ namespace PropertyPro.Core.Contracts
         Task<Booking?> GetBookingByIdAsync(string bookingId);
 
         Task DeleteBookingAsync(string bookingId, string userId);
+
+        Task<List<BookingDto>?> GetAllUsersBookings(string userId);
     }
 }
