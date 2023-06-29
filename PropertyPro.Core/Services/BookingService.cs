@@ -230,5 +230,13 @@ namespace PropertyPro.Core.Services
 
             return bookingDto;
         }
+
+        public async Task<Booking?> GetBookingByIdAsync(string bookingId)
+        {
+            var booking  = await repo.All<Booking>()
+                .FirstOrDefaultAsync(b=>b.IsActive == true && b.Id == Guid.Parse(bookingId));
+
+            return booking;
+        }
     }
 }
