@@ -306,11 +306,63 @@ namespace PropertyPro.Core.Services
             return bookingDtos;
         }
 
-        public async Task<Booking?> GetBookingByIdAsync(string bookingId)
+        public async Task<BookingDto?> GetBookingByIdAsync(string bookingId,string userId)
         {
             var booking  = await repo.All<Booking>()
-                .Include(b=>b.Tenant)
-                .FirstOrDefaultAsync(b=>b.IsActive == true && b.Id == Guid.Parse(bookingId));
+               .Include(b => b.Property)
+                .ThenInclude(p => p.Landlord)
+                .ThenInclude(l => l.User)
+                .Include(b => b.Tenant)
+                .ThenInclude(t => t.User)
+                .Where(b => b.IsActive == true && b.Id == Guid.Parse(bookingId) && b.Tenant.UserId == Guid.Parse(userId))
+                .Select(b => new BookingDto()
+                {
+                    Id = b.Id,
+                    StartDate = b.StartDate,
+                    EndDate = b.EndDate,
+                    Guests = b.Guests,
+                    Tenant = new TenantDto()
+                    {
+                        Id = b.Tenant.UserId,
+                        FirstName = b.Tenant.User.FirstName,
+                        MiddleName = b.Tenant.User.MiddleName,
+                        LastName = b.Tenant.User.LastName,
+                        Age = b.Tenant.User.Age,
+                        Gender = b.Tenant.User.Gender,
+                        ProfilePicture = b.Tenant.User.ProfilePicture != null
+                        ? Convert.ToBase64String(b.Tenant.User.ProfilePicture)
+                        : null
+                    },
+                    Property = new PropertyDto()
+                    {
+                        Id = b.PropertyId,
+                        Title = b.Property.Title,
+                        Type = b.Property.Type,
+                        BathroomsCount = b.Property.BathroomsCount,
+                        BedroomsCount = b.Property.BedroomsCount,
+                        BedsCount = b.Property.BedsCount,
+                        Country = b.Property.Country,
+                        Description = b.Property.Description,
+                        MaxGuestsCount = b.Property.MaxGuestsCount,
+                        Town = b.Property.Town,
+                        FirstImage = Convert.ToBase64String(b.Property.FirstImage),
+                        SecondImage = b.Property.SecondImage == null ? null : Convert.ToBase64String(b.Property.SecondImage),
+                        ThirdImage = b.Property.ThirdImage == null ? null : Convert.ToBase64String(b.Property.ThirdImage),
+                        Landlord = new LandlordDto()
+                        {
+                            Id = b.Property.Landlord.User.Id,
+                            Email = b.Property.Landlord.User.Email,
+                            Age = b.Property.Landlord.User.Age,
+                            FirstName = b.Property.Landlord.User.FirstName,
+                            MiddleName = b.Property.Landlord.User.MiddleName,
+                            LastName = b.Property.Landlord.User.LastName,
+                            Gender = b.Property.Landlord.User.Gender,
+                            PhoneNumber = b.Property.Landlord.User.PhoneNumber,
+                            Username = b.Property.Landlord.User.UserName
+                        }
+                    }
+                })
+                .FirstOrDefaultAsync();
 
             return booking;
         }
