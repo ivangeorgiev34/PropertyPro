@@ -16,6 +16,8 @@ namespace PropertyPro.Infrastructure.Dtos.Property
 
         public string Country { get; set; } = null!;
 
+        public double GuestPricePerNight { get; set; }
+
         public int MaxGuestsCount { get; set; }
 
         public int BedroomsCount { get; set; }
