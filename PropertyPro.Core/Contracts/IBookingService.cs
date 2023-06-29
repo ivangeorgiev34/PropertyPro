@@ -18,7 +18,7 @@ namespace PropertyPro.Core.Contracts
 
         Task<bool> BookingExistsByIdAsync(string bookingId);
 
-        Task<Booking?> GetBookingByIdAsync(string bookingId);
+        Task<BookingDto?> GetBookingByIdAsync(string bookingId, string userId);
 
         Task DeleteBookingAsync(string bookingId, string userId);
 
