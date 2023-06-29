@@ -140,6 +140,20 @@ namespace PropertyPro.Core.Services
             return bookingDto!;
         }
 
+        public async Task DeleteBookingAsync(string bookingId, string userId)
+        {
+            var booking = await repo.All<Booking>()
+                .FirstOrDefaultAsync(b => b.IsActive == true && b.Id == Guid.Parse(bookingId) && b.Tenant.UserId == Guid.Parse(userId));
+
+            if (booking == null)
+            {
+                throw new InvalidOperationException("Booking cannot be found");
+            }
+
+            booking.IsActive = false;
+            await repo.SaveChangesAsync();
+        }
+
         public async Task<BookingDto> EditBookingAsync(EditBookingDto editBookingDto, string bookingId, string userId, DateTime startDate, DateTime endDate)
         {
 
@@ -234,6 +248,7 @@ namespace PropertyPro.Core.Services
         public async Task<Booking?> GetBookingByIdAsync(string bookingId)
         {
             var booking  = await repo.All<Booking>()
+                .Include(b=>b.Tenant)
                 .FirstOrDefaultAsync(b=>b.IsActive == true && b.Id == Guid.Parse(bookingId));
 
             return booking;
