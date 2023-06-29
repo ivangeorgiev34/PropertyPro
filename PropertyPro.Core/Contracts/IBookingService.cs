@@ -1,4 +1,5 @@
-﻿using PropertyPro.Infrastructure.Dtos.Booking;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using PropertyPro.Infrastructure.Dtos.Booking;
 using PropertyPro.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
@@ -23,5 +24,7 @@ namespace PropertyPro.Core.Contracts
         Task DeleteBookingAsync(string bookingId, string userId);
 
         Task<List<BookingDto>?> GetAllUsersBookings(string userId);
+
+        Task<List<BookingDto>?> GetPropertyBookings(string userId, string propertyId);
     }
 }
