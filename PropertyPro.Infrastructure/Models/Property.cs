@@ -38,6 +38,10 @@ namespace PropertyPro.Infrastructure.Models
         [Required(ErrorMessage =InfrastructureConstants.Property.PROPERTY_MAX_GUESTS_COUNT_REQUIRED_ERROR_MESSAGE)]
         public int MaxGuestsCount { get; set; }
 
+        [Required(ErrorMessage = InfrastructureConstants.Property.PROPERTY_GUEST_PRICE_PER_NIGHT_REQUIRED_ERROR_MESSAGE)]
+        [Range(InfrastructureConstants.Property.PROPERTY_GUEST_PRICE_PER_NIGHT_MIN_VALUE,InfrastructureConstants.Property.PROPERTY_GUEST_PRICE_PER_NIGHT_MAX_VALUE,ErrorMessage =InfrastructureConstants.Property.PROPERTY_GUEST_PRICE_PER_NIGHT_RANGE_ERROR_MESSAGE)]
+        public  double GuestPricePerNight { get; set; }
+
         [Required(ErrorMessage = InfrastructureConstants.Property.PROPERTY_BEDROOMS_COUNT_REQUIRED_ERROR_MESSAGE)]
         public int BedroomsCount { get; set; }
 
