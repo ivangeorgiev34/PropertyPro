@@ -85,7 +85,7 @@ namespace PropertyPro.Controllers
             var userId = GetUserId(HttpContext);
 
             var bookingDto = await bookingService.CreateBookingAsync(createBookingDto, userId!, propertyId, startDate, endDate);
-            
+
             return Ok(new Response()
             {
                 Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
@@ -99,8 +99,8 @@ namespace PropertyPro.Controllers
 
         [HttpPut]
         [Route("edit/{bookingId}")]
-        [Authorize(Roles = "Tenant",AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> EditBooking(EditBookingDto editBookingDto,string bookingId)
+        [Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> EditBooking(EditBookingDto editBookingDto, string bookingId)
         {
             if (IsIdValidGuidAndNotNull(bookingId) == false)
             {
@@ -165,7 +165,7 @@ namespace PropertyPro.Controllers
                 });
             }
 
-            var bookingDto = await bookingService.EditBookingAsync(editBookingDto, bookingId, userId, startDate,endDate);
+            var bookingDto = await bookingService.EditBookingAsync(editBookingDto, bookingId, userId, startDate, endDate);
 
             return StatusCode(200, new Response()
             {
@@ -180,7 +180,7 @@ namespace PropertyPro.Controllers
 
         [HttpDelete]
         [Route("delete/{bookingId}")]
-        [Authorize(Roles ="Tenant",AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteBooking(string bookingId)
         {
             if (IsIdValidGuidAndNotNull(bookingId) == false
@@ -219,6 +219,35 @@ namespace PropertyPro.Controllers
                 });
             }
 
+        }
+
+        [HttpGet]
+        [Route("bookings")]
+        [Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetAllUsersBookings()
+        {
+            var userId = GetUserId(HttpContext);
+
+            if (userId == null)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = "User is not logged in"
+                });
+            }
+
+            var bookings = await bookingService.GetAllUsersBookings(userId);
+
+            return StatusCode(StatusCodes.Status200OK, new Response()
+            {
+                Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+                Message = "Bookings extracted successfully",
+                Content = new
+                {
+                    Bookings = bookings
+                }
+            });
         }
     }
 }
