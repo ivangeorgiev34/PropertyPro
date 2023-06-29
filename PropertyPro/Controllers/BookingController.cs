@@ -249,5 +249,44 @@ namespace PropertyPro.Controllers
                 }
             });
         }
+
+        [HttpGet]
+        [Route("bookings/{bookingId}")]
+        [Authorize(Roles ="Tenant",AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetBookingById(string bookingId)
+        {
+            if (IsIdValidGuidAndNotNull(bookingId) == false
+                || await bookingService.BookingExistsByIdAsync(bookingId) == false)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = "Booking doesn't exist"
+                });
+            }
+
+            var userId = GetUserId(HttpContext);
+
+            if (userId == null)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = "User is not logged in"
+                });
+            }
+
+            var booking = await bookingService.GetBookingByIdAsync(bookingId, userId);
+
+            return StatusCode(StatusCodes.Status200OK, new Response()
+            {
+                Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+                Message = "Booking extracted successfully",
+                Content = new
+                {
+                    Booking = booking
+                }
+            });
+        }
     }
 }
