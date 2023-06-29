@@ -104,7 +104,7 @@ namespace PropertyPro.Core.Services
                 .ThenInclude(p => p.Landlord)
                 .Include(r => r.Tenant)
                 .Where(r => r.PropertyId == Guid.Parse(propertyId)
-                && r.Property.Landlord.UserId == Guid.Parse(userId)
+                && (r.Property.Landlord.UserId == Guid.Parse(userId) || r.Tenant.UserId == Guid.Parse(userId))
                 && r.IsActive == true)
                 .Select(r => new ReviewDto()
                 {
