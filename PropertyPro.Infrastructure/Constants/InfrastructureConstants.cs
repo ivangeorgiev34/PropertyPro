@@ -34,6 +34,7 @@ namespace PropertyPro.Infrastructure.Constants
             public const string PROPERTY_BEDROOMS_COUNT_REQUIRED_ERROR_MESSAGE = "Bedrooms count is required";
             public const string PROPERTY_BEDS_COUNT_REQUIRED_ERROR_MESSAGE = "Beds count is required";
             public const string PROPERTY_BATHROOMS_COUNT_REQUIRED_ERROR_MESSAGE = "Bathrooms count is required";
+            public const string PROPERTY_GUEST_PRICE_PER_NIGHT_REQUIRED_ERROR_MESSAGE = "Guest price per night is required";
             public const string PROPERTY_TITLE_REQUIRED_ERROR_MESSAGE = "Title is required";
             public const int PROPERTY_TITLE_MAX_LENGTH_ERROR_MESSAGE =  80;
             public const string PROPERTY_LANDLORD_REQUIRED_ERROR_MESSAGE = "Every property must have a landlord";
