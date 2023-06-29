@@ -8,6 +8,7 @@ using PropertyPro.Core.Contracts;
 using PropertyPro.Infrastructure.Dtos.Booking;
 using PropertyPro.Utilities;
 using System.Globalization;
+using System.Net;
 
 namespace PropertyPro.Controllers
 {
@@ -175,6 +176,49 @@ namespace PropertyPro.Controllers
                     Booking = bookingDto
                 }
             });
+        }
+
+        [HttpDelete]
+        [Route("delete/{bookingId}")]
+        [Authorize(Roles ="Tenant",AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> DeleteBooking(string bookingId)
+        {
+            if (IsIdValidGuidAndNotNull(bookingId) == false
+                || await bookingService.BookingExistsByIdAsync(bookingId) == false)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = "Booking doesn't exist"
+                });
+            }
+
+            var userId = GetUserId(HttpContext);
+
+            if (userId == null)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = "User is not logged in"
+                });
+            }
+
+            try
+            {
+                await bookingService.DeleteBookingAsync(bookingId, userId);
+
+                return StatusCode(StatusCodes.Status204NoContent);
+            }
+            catch (InvalidOperationException ioe)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = ioe.Message
+                });
+            }
+
         }
     }
 }
