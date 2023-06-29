@@ -17,13 +17,16 @@ namespace PropertyPro.Controllers
     {
         private readonly IPropertyService propertyService;
         private readonly IReviewService reviewService;
+        private readonly IBookingService bookingService;
         private readonly UserManager<User> userManager;
         public PropertyController(IPropertyService _propertyService,
             IReviewService _reviewService,
+            IBookingService _bookingService,
             UserManager<User> _userManager)
         {
             this.propertyService = _propertyService;
             this.reviewService = _reviewService;
+            this.bookingService = _bookingService;
             this.userManager = _userManager;
         }
 
@@ -119,7 +122,7 @@ namespace PropertyPro.Controllers
         [Authorize(Roles = "Landlord,Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetLandlordsPropertyReviews(string userId, string propertyId)
         {
-            if (await userManager.FindByIdAsync(userId) == null||userId == null || Guid.TryParse(userId, out Guid userIdResult) == false)
+            if (await userManager.FindByIdAsync(userId) == null || userId == null || Guid.TryParse(userId, out Guid userIdResult) == false)
             {
                 return BadRequest(new Response()
                 {
@@ -146,6 +149,42 @@ namespace PropertyPro.Controllers
                 Content = new
                 {
                     Reviews = reviews
+                }
+            });
+        }
+
+        [HttpGet]
+        [Route("properties/{userId}/{propertyId}/bookings")]
+        [Authorize(Roles = "Landlord,Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetLandlordsPropertyBookings(string userId, string propertyId)
+        {
+            if (await userManager.FindByIdAsync(userId) == null || IsIdValidGuidAndNotNull(userId) == false)
+            {
+                return BadRequest(new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = "User with such id doesn't exist"
+                });
+            }
+
+            if (IsIdValidGuidAndNotNull(propertyId) == false)
+            {
+                return BadRequest(new Response()
+                {
+                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                    Message = "Property with such id doesn't exist"
+                });
+            }
+
+            var bookings = await bookingService.GetPropertyBookings(userId, propertyId);
+
+            return StatusCode(StatusCodes.Status200OK, new Response()
+            {
+                Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+                Message = "Bookings retrieved successfully",
+                Content = new
+                {
+                    Bookings = bookings
                 }
             });
         }
