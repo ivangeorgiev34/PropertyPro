@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import IAuthState from "../interfaces/IAuthState";
 
-export const initialState: IAuthState ={
+export const initialState: IAuthState = {
     id: null,
     firstName: null,
     middleName: null,
@@ -15,10 +15,11 @@ export const initialState: IAuthState ={
 };
 
 const authSlice = createSlice({
-    name:"auth",
-    initialState:initialState,
-    reducers:{
-        login(state,action: PayloadAction<IAuthState>){
+    name: "auth",
+    initialState: initialState,
+    reducers: {
+        login: (state, action: PayloadAction<IAuthState>) => {
+            console.log(action.payload);
             state.id = action.payload.id;
             state.firstName = action.payload.firstName;
             state.middleName = action.payload.middleName;
@@ -30,7 +31,7 @@ const authSlice = createSlice({
             state.age = action.payload.age;
             state.token = action.payload.token;
         },
-        logout(state){
+        logout: (state) => {
             state.id = null;
             state.firstName = null;
             state.middleName = null;
@@ -41,10 +42,10 @@ const authSlice = createSlice({
             state.phoneNumber = null;
             state.age = null;
             state.token = null;
-        },
+        }
     }
 });
 
-export const authActions = authSlice.actions;
+export const { logout, login } = authSlice.actions;
 
 export default authSlice.reducer;
