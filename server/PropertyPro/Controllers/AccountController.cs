@@ -47,6 +47,8 @@ namespace PropertyPro.Controllers
         {
             var user = await userManager.FindByEmailAsync(loginDto.Email);
 
+            var role = await userManager.GetRolesAsync(user);
+
             if (user != null && await userManager.CheckPasswordAsync(user, loginDto.Password))
             {
                 var token = await CreateToken(user);
@@ -65,7 +67,8 @@ namespace PropertyPro.Controllers
                         ? Convert.ToBase64String(user.ProfilePicture)
                         : null,
                         PhoneNumber = user.PhoneNumber,
-                        Age = user.Age
+                        Age = user.Age,
+                        Role = role[0]
                     },
                     token = new JwtSecurityTokenHandler().WriteToken(token),
                     expires = token.ValidTo
