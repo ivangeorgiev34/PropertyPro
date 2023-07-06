@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/reduxHooks";
 
 export const Navigation: React.FC = () => {
 
-    const { token, email, profilePicture, id, role, firstName, lastName } = useAppSelector((state) => state.auth)
+    const { token, profilePicture, id, role, firstName, lastName } = useAppSelector((state) => state.auth)
     const dispatch = useAppDispatch()
 
     const [hasProfilePicture, setHasProfilePicture] = useState(false);
