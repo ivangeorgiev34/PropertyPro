@@ -1,3 +1,45 @@
-#navBar{
-color: green;
+#navBar {
+  padding: 10px 40px;
+  background-color: #8aaae5;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  ul {
+    font-size: 18px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 30px;
+    .navBarItem {
+      list-style: none;
+    }
+  }
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
+}
+.navLogoPicture {
+  width: 100px;
+  height: 80px;
+}
+
+.logoutBtn {
+  all: unset;
+  color: white;
+}
+
+.profilePicture {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
