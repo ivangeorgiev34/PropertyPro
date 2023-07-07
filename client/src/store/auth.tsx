@@ -11,6 +11,7 @@ export const initialState: IAuthState = {
     profilePicture: null,
     phoneNumber: null,
     age: null,
+    role: null,
     token: null
 };
 
@@ -19,7 +20,6 @@ const authSlice = createSlice({
     initialState: initialState,
     reducers: {
         login: (state, action: PayloadAction<IAuthState>) => {
-            console.log(action.payload);
             state.id = action.payload.id;
             state.firstName = action.payload.firstName;
             state.middleName = action.payload.middleName;
@@ -29,7 +29,9 @@ const authSlice = createSlice({
             state.profilePicture = action.payload.profilePicture;
             state.phoneNumber = action.payload.phoneNumber;
             state.age = action.payload.age;
+            state.role = action.payload.role;
             state.token = action.payload.token;
+
         },
         logout: (state) => {
             state.id = null;
