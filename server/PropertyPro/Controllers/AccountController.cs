@@ -47,11 +47,11 @@ namespace PropertyPro.Controllers
         {
             var user = await userManager.FindByEmailAsync(loginDto.Email);
 
-            var role = await userManager.GetRolesAsync(user);
-
             if (user != null && await userManager.CheckPasswordAsync(user, loginDto.Password))
             {
                 var token = await CreateToken(user);
+
+                var role = await userManager.GetRolesAsync(user);
 
                 return Ok(new
                 {
