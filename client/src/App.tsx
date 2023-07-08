@@ -9,12 +9,18 @@ import { Register } from './pages/Register/Register';
 import { MyProperties } from './pages/MyProperties/MyProperties';
 import { MyBookings } from './pages/MyBookings/MyBookings';
 import { Unauthorized } from './pages/Unauthorized/Unauthorized';
+import { Loader } from './components/loader/Loader';
+import { useAppSelector } from './hooks/reduxHooks';
 
 function App() {
+  const { isLoading } = useAppSelector((state) => state.loader)
+
   return (
     <React.Fragment>
+      {isLoading === true ? <Loader /> : null}
       <Navigation></Navigation>
       <Routes>
+        <Route path='/' element={<Home />} />
         <Route path='/home' element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
