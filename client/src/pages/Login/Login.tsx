@@ -6,7 +6,8 @@ import { useForm } from "../../hooks/useForm";
 import { login } from "../../store/auth";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { useNavigate } from "react-router-dom";
-import { toggleLoaderOff, toggleLoaderOn } from "../../store/loader";
+import { toggleLoaderOff, toggleLoaderOn } from "../../store/loader"
+import ILoginForm from "../../interfaces/ILoginForm";
 
 
 export const Login: React.FC = () => {
@@ -16,7 +17,7 @@ export const Login: React.FC = () => {
     const { token } = useAppSelector((state) => state.auth)
     const dispatch = useAppDispatch()
 
-    const { formValues, onFormChange } = useForm({
+    const { formValues, onFormChange } = useForm<ILoginForm>({
         email: "",
         password: ""
     });
