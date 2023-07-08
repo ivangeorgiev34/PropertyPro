@@ -6,6 +6,7 @@ import { useForm } from "../../hooks/useForm";
 import { login } from "../../store/auth";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { useNavigate } from "react-router-dom";
+import { toggleLoaderOff, toggleLoaderOn } from "../../store/loader";
 
 
 export const Login: React.FC = () => {
@@ -23,13 +24,16 @@ export const Login: React.FC = () => {
     const [errors, setErrors] = useState<string[]>([]);
 
     const onLogInFormSubmit: FormEventHandler<HTMLFormElement> = (e: React.FormEvent<HTMLFormElement>) => {
+
+        dispatch(toggleLoaderOn());
+
         e.preventDefault();
 
         setErrors([]);
 
         userLogin(formValues.email, formValues.password)
             .then(res => {
-                console.log(res);
+
                 if (res.status === "Error") {
 
                     setErrors(state => [...state, res.message]);
@@ -62,6 +66,8 @@ export const Login: React.FC = () => {
                     navigate("/home");
 
                 }
+
+                dispatch(toggleLoaderOff());
             });
     }
 
