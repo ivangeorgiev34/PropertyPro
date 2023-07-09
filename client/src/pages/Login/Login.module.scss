@@ -1,3 +1,5 @@
+@use "../../assets/globalVariables.scss" as colors;
+
 .formWrapper {
   display: flex;
   align-items: center;
@@ -11,7 +13,7 @@
     row-gap: 20px;
     padding: 40px 30px;
     border: 1px solid rgb(163, 163, 163);
-    background-color: rgb(249, 249, 249);
+    background-color: colors.$formBackgroundColor;
     border-radius: 10px;
     .loginHeading {
       margin-bottom: 0px;
