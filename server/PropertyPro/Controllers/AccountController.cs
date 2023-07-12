@@ -112,7 +112,7 @@ namespace PropertyPro.Controllers
 
             var result = await userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded)
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "User creation failed! Please check user details and try again.", Errors = result.Errors });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = "User creation failed! Please check user details and try again.", Errors = result.Errors });
 
             if (!await roleManager.RoleExistsAsync("Landlord"))
             {
@@ -159,7 +159,7 @@ namespace PropertyPro.Controllers
 
             var result = await userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded)
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
             if (!await roleManager.RoleExistsAsync("Tenant"))
             {
