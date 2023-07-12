@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 
-type formValue = {
-    email: string,
-    password: string
-};
-
-export function useForm(initialFormValues: formValue) {
+export function useForm<T>(initialFormValues: T) {
 
     let [formValues, setFormValues] = useState(initialFormValues);
 
