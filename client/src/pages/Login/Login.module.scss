@@ -46,7 +46,7 @@
       }
     }
 
-    .registerLinks {
+    .registerLink {
       color: rgb(141, 141, 141);
 
       a {
@@ -73,5 +73,6 @@
 
 .error {
   color: red;
-  display: block;
+  margin: 0px;
+  margin-top: 5px;
 }
