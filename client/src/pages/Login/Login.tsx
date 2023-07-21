@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { toggleLoaderOff, toggleLoaderOn } from "../../store/loader"
 import ILoginForm from "../../interfaces/ILoginForm";
 import { useError } from "../../hooks/useError";
+import { emailValidation } from "../../validators/emailValidation";
+import { passwordValidation } from "../../validators/passwordValidation";
 
 
 export const Login: React.FC = () => {
@@ -67,7 +69,8 @@ export const Login: React.FC = () => {
                         phoneNumber: res.user.phoneNumber,
                         age: res.user.age,
                         role: res.user.role,
-                        token: res.token
+                        token: res.token,
+                        expires: res.expires
                     }));
 
                     navigate("/home");
@@ -77,37 +80,6 @@ export const Login: React.FC = () => {
                 dispatch(toggleLoaderOff());
             });
     }
-
-    const emailValidation = (e: React.FormEvent<HTMLInputElement>): void => {
-
-        if (formValues.email.length === 0) {
-            onFormErrorChange(e, "Email is required");
-        } else if (new RegExp('^[A-Za-z0-9_\.]+@[A-Za-z]+\.[A-Za-z]{2,3}$').test(formValues.email) === false) {
-            onFormErrorChange(e, "Invalid email");
-        } else {
-
-            onFormErrorChange(e, "");
-
-        }
-    };
-
-    const passwordValidation = (e: React.FormEvent<HTMLInputElement>): void => {
-
-        if (formValues.password.length === 0) {
-
-            onFormErrorChange(e, "Password is required");
-
-        } else if (formValues.password.length < 6) {
-
-            onFormErrorChange(e, "Password must be at least 6 symbols");
-
-        } else {
-
-            onFormErrorChange(e, "");
-
-        }
-    };
-
 
     const areFormValuesIncorrect = (): boolean => {
         for (let key in formErrors) {
@@ -132,13 +104,13 @@ export const Login: React.FC = () => {
                 <div className={styles.emailContainer}>
                     <label htmlFor="email">Email:</label>
                     <input type="email" name="email" placeholder="Email..." value={formValues.email} onChange={onFormChange}
-                        onBlur={emailValidation} />
+                        onBlur={(e) => onFormErrorChange(e, emailValidation(formValues.email))} />
                     {<p className={styles.error}>{formErrors.email}</p>}
                 </div>
                 <div className={styles.passwordContainer}>
                     <label htmlFor="password">Password:</label>
                     <input type="password" name="password" placeholder="Password..." value={formValues.password} onChange={onFormChange}
-                        onBlur={passwordValidation} />
+                        onBlur={(e) => onFormErrorChange(e, passwordValidation(formValues.password))} />
                     {<p className={styles.error}>{formErrors.password}</p>}
                 </div>
                 <div className={styles.errorsContainer}>
