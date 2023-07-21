@@ -1,0 +1,75 @@
+@use "../../assets/globalVariables.scss" as globalVariables;
+
+.formWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column nowrap;
+  margin: 50px 0;
+
+  .editProfileForm {
+    width: 30%;
+    border: 1px solid globalVariables.$formBorderColor;
+    border-radius: globalVariables.$borderRadius;
+    background-color: globalVariables.$formBackgroundColor;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    row-gap: 20px;
+    padding: 30px 10px;
+
+    .genderContainer {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-evenly;
+      width: 50%;
+    }
+
+    .inputContainer {
+      display: flex;
+      flex-flow: column nowrap;
+      width: 70%;
+
+      label {
+        margin-bottom: 5px;
+      }
+
+      input {
+        height: 20px;
+      }
+    }
+
+    .submitBtn {
+      all: unset;
+      color: white;
+      font-weight: 500;
+      padding: 10px 40px;
+      background-color: rgb(33, 174, 33);
+      border-radius: 5px;
+      border: 1px solid black;
+      margin-top: 10px;
+      &:disabled {
+        opacity: 0.5;
+      }
+      &:enabled {
+        &:hover {
+          border-radius: 20px;
+          background-color: rgb(26, 218, 26);
+          transition: border-radius 0.6s, background-color 0.8s ease-out;
+        }
+      }
+    }
+  }
+}
+
+.error {
+  color: red;
+  margin: 0px;
+  margin-top: 5px;
+}
+
+.errorsList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
