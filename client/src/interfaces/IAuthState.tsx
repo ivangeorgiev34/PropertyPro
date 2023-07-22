@@ -8,6 +8,7 @@ export default interface IAuthState {
     profilePicture?: string | null,
     phoneNumber?: string | null,
     age?: number | null,
-    role: string | null,
-    token?: string | null
+    role?: string | null,
+    token?: string | null,
+    expires?: string | null
 }
