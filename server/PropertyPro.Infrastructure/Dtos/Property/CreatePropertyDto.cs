@@ -26,7 +26,7 @@ namespace PropertyPro.Infrastructure.Dtos.Property
 
         [Required(ErrorMessage = InfrastructureConstants.Property.PROPERTY_GUEST_PRICE_PER_NIGHT_REQUIRED_ERROR_MESSAGE)]
         [Range(InfrastructureConstants.Property.PROPERTY_GUEST_PRICE_PER_NIGHT_MIN_VALUE, InfrastructureConstants.Property.PROPERTY_GUEST_PRICE_PER_NIGHT_MAX_VALUE, ErrorMessage = InfrastructureConstants.Property.PROPERTY_GUEST_PRICE_PER_NIGHT_RANGE_ERROR_MESSAGE)]
-        public double GuestPricePerNight { get; set; }
+        public decimal GuestPricePerNight { get; set; }
 
         [Required(ErrorMessage = InfrastructureConstants.Property.PROPERTY_BEDROOMS_COUNT_REQUIRED_ERROR_MESSAGE)]
         public int BedroomsCount { get; set; }
