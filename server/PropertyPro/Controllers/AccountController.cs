@@ -89,11 +89,13 @@ namespace PropertyPro.Controllers
             var userExists = await userManager.FindByEmailAsync(registerDto.Email);
 
             if (userExists != null)
-                return Unauthorized(new
+            {
+                return StatusCode(StatusCodes.Status400BadRequest,new Response()
                 {
                     Status = "Error",
                     Message = "User already exists"
-                });
+				});
+            }
 
             var user = new User()
             {
@@ -136,11 +138,13 @@ namespace PropertyPro.Controllers
             var userExists = await userManager.FindByEmailAsync(registerDto.Email);
 
             if (userExists != null)
-                return Unauthorized(new
-                {
-                    Status = "Error",
-                    Message = "User already exists"
-                });
+            {
+				return StatusCode(StatusCodes.Status400BadRequest, new Response()
+				{
+					Status = "Error",
+					Message = "User already exists"
+				});
+			}
 
             var user = new User()
             {
