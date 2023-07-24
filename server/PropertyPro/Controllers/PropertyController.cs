@@ -194,6 +194,7 @@ namespace PropertyPro.Controllers
         [Authorize(Roles = "Landlord", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetLandlordsProperties(string? userId)
         {
+            
             if (userId == null || Guid.TryParse(userId, out Guid userIdResult) == false)
             {
                 return NotFound(new
@@ -203,12 +204,25 @@ namespace PropertyPro.Controllers
                 });
             }
 
-            var landlordProperties = await propertyService.GetLandlordsPropertiesAsync(userId);
-
-            return Ok(new
+            try
             {
-                Properties = landlordProperties
-            });
+				var landlordProperties = await propertyService.GetLandlordsPropertiesAsync(userId);
+
+				return Ok(new
+				{
+					Properties = landlordProperties
+				});
+
+			}
+            catch (InvalidOperationException ioe)
+            {
+
+				return NotFound(new
+				{
+					Status = "Error",
+					Message = ioe.Message
+				});
+			}
 
         }
 
