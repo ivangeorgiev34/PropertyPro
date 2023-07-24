@@ -55,17 +55,15 @@ namespace PropertyPro
 
             app.UseHttpsRedirection();
 
-            app.UseAuthentication();
+			app.UseCors("LocalServer");
+
+			app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseCors("LocalServer");
 
             app.MapControllers();
 
             app.Run();
-
-            //,defaultValue:true
-            //add-migration AddIsActiveColumnToBookingPropertyAndReviewTables -Project PropertyPro.Infrastructure -StartupProject PropertyPro
         }
     }
 }
