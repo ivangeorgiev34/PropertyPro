@@ -1,0 +1,49 @@
+@use "../../assets/globalVariables.scss" as globalVariables;
+
+.cardWrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  margin: 50px 0;
+
+  .card {
+    width: 30%;
+    border: 1px solid globalVariables.$formBorderColor;
+    border-radius: globalVariables.$borderRadius;
+    background-color: globalVariables.$formBackgroundColor;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    row-gap: 20px;
+    padding: 30px 10px;
+
+    .profilePicture {
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+    }
+
+    .informationContainer {
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      row-gap: 5px;
+    }
+
+    .editBtn {
+      all: unset;
+      background-color: rgb(187, 171, 0);
+      color: white;
+      border: 1px solid black;
+      border-radius: globalVariables.$borderRadius;
+      padding: 10px 40px;
+      cursor: pointer;
+      &:hover {
+        border-radius: 20px;
+        background-color: rgb(214, 196, 0);
+        transition: border-radius 0.6s, background-color 0.8s ease-out;
+      }
+    }
+  }
+}

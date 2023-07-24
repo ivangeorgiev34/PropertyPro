@@ -1,7 +1,9 @@
-import React from "react";
+import React, { Children } from "react";
 import styles from "./Loader.module.scss";
-
-export const Loader: React.FC = () => {
+interface ILoader {
+    children: React.ReactNode;
+}
+export const Loader: React.FC<ILoader> = ({ children }) => {
 
     return (
         <div>
@@ -19,6 +21,7 @@ export const Loader: React.FC = () => {
                     </div>
                 </div>
             </div>
+            {children}
         </div>
     );
 };
