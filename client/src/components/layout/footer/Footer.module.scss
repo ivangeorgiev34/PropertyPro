@@ -1,0 +1,28 @@
+@use "../../../assets/globalVariables.scss" as globalVariables;
+@import url(https://use.fontawesome.com/releases/v6.4.0/css/all.css);
+
+#footer {
+  display: flex;
+  flex-flow: row nowrap;
+  padding: 40px 100px;
+  background-color: globalVariables.$blueThemeBackgroundColor;
+  color: white;
+  justify-content: space-between;
+
+  .socialsList {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    column-gap: 15px;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    li {
+      display: inline-block;
+      &:hover {
+        transform: translateY(-5px);
+        transition: transform 0.3s ease-out;
+      }
+    }
+  }
+}
