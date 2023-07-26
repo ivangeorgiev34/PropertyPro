@@ -18,9 +18,9 @@ export async function getLandlordsProperties(userId: string, token: string) {
     }
 }
 
-export async function getLandlordPropertyById(userId: string, propertyId: string, token: string) {
+export async function getLandlordPropertyById(propertyId: string, token: string) {
     try {
-        const response = await fetch(`${BASE_URL}/property/properties/${userId}/${propertyId}`, {
+        const response = await fetch(`${BASE_URL}/property/${propertyId}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
