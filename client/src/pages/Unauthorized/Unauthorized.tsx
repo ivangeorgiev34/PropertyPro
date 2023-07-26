@@ -6,11 +6,12 @@ export const Unauthorized: React.FC = () => {
 
     const navigate = useNavigate();
     return (
-        <React.Fragment>
+        <div className={styles.errorContainerWrapper}>
             <div className={styles.errorContainer}>
                 <h2 className={styles.errorMessage}>401 Unauthorized</h2>
                 <span className={styles.errorMessage}>You are not allowed to access this page</span>
             </div>
-        </React.Fragment>
+        </div>
+
     );
 }
