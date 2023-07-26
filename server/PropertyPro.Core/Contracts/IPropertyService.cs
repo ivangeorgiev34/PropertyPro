@@ -26,6 +26,6 @@ namespace PropertyPro.Core.Contracts
 
         Task<Property?> GetPropertyByIdAsync(string? propertyId);
 
-        Task<PropertyDto?> GetPropertyByIdAsync(string propertyId,string userId);
+        Task<PropertyDto?> GetPropertyDtoByIdAsync(string propertyId);
     }
 }
