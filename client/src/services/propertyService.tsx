@@ -35,3 +35,21 @@ export async function getLandlordPropertyById(propertyId: string, token: string)
         return error;
     }
 }
+
+export async function deletePropertyById(propertyId: string, token: string) {
+    try {
+        const response = await fetch(`${BASE_URL}/property/delete/${propertyId}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        const propertiesJson = await response.json();
+
+        return propertiesJson;
+
+    } catch (error) {
+        return error;
+    }
+}
