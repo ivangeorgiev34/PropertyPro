@@ -87,18 +87,10 @@ namespace PropertyPro.Controllers
         }
 
         [HttpGet]
-        [Route("properties/{userId}/{propertyId}")]
+        [Route("{propertyId}")]
         [Authorize(Roles = "Landlord,Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetLandlordsProperty(string userId, string propertyId)
+        public async Task<IActionResult> GetLandlordsProperty( string propertyId)
         {
-            if (userId == null || Guid.TryParse(userId, out Guid userIdResult) == false)
-            {
-                return NotFound(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "User with such id doesn't exist"
-                });
-            }
 
             if (propertyId == null || Guid.TryParse(propertyId, out Guid propertyIdResult) == false)
             {
@@ -109,9 +101,18 @@ namespace PropertyPro.Controllers
                 });
             }
 
-            var property = await propertyService.GetPropertyByIdAsync(propertyId, userId);
+			var property = await propertyService.GetPropertyDtoByIdAsync(propertyId);
 
-            return Ok(new
+            if (property == null)
+            {
+				return NotFound(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "Property with such id doesn't exist"
+				});
+			}
+
+			return Ok(new
             {
                 Property = property
             });
@@ -295,9 +296,9 @@ namespace PropertyPro.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{propertyId?}")]
+        [Route("delete/{propertyId}")]
         [Authorize(Roles = "Landlord", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> DeleteProperty(string? propertyId)
+        public async Task<IActionResult> DeleteProperty(string propertyId)
         {
             if (await propertyService.PropertyExistsAsync(propertyId) == false || propertyId == null || Guid.TryParse(propertyId, out Guid propertyIdResult) == false)
             {
@@ -323,7 +324,7 @@ namespace PropertyPro.Controllers
             {
                 await propertyService.DeletePropertyAsync(propertyId);
 
-                return NoContent();
+                return StatusCode(StatusCodes.Status204NoContent);
             }
             catch (NullReferenceException e)
             {

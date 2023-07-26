@@ -198,10 +198,10 @@ namespace PropertyPro.Core.Services
             return property;
         }
 
-        public async Task<PropertyDto?> GetPropertyByIdAsync(string propertyId, string userId)
+        public async Task<PropertyDto?> GetPropertyDtoByIdAsync(string propertyId)
         {
             var propertyDto = await repo.All<Property>()
-                .Where(p => p.Id == Guid.Parse(propertyId) && p.Landlord.UserId == Guid.Parse(userId) && p.IsActive == true)
+                .Where(p => p.Id == Guid.Parse(propertyId)  && p.IsActive == true)
                 .Select(p => new PropertyDto()
                 {
                     Id = p.Id,
