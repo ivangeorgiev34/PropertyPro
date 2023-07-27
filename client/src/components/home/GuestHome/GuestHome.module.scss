@@ -1,0 +1,196 @@
+@use "../../../assets/globalVariables.scss" as globalVariables;
+@import url(https://use.fontawesome.com/releases/v6.4.0/css/all.css);
+
+.introductionSection {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
+
+  .introductionImage {
+    width: 50%;
+  }
+
+  .introductionContent {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    color: rgb(75, 75, 75);
+    padding: 50px 50px;
+    width: 50%;
+
+    h1 {
+      font-size: 30px;
+      margin: 20px 0;
+    }
+
+    .motto {
+      font-size: 22px;
+    }
+
+    .introductionContentDescription {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .introductionBtnsContainer {
+      display: flex;
+      flex-flow: row nowrap;
+      column-gap: 50px;
+      margin-top: 40px;
+      margin-bottom: 20px;
+
+      .introductionGetStartedBtn {
+        all: unset;
+        cursor: pointer;
+        color: white;
+        font-weight: bold;
+        background-color: globalVariables.$blueThemeBackgroundColor;
+        padding: 20px 40px;
+        border-radius: globalVariables.$borderRadius;
+        &:hover {
+          background-color: #769de6;
+          transition: background-color 0.3s ease-out;
+        }
+      }
+
+      .introductionSignInBtn {
+        all: unset;
+        cursor: pointer;
+        font-weight: bold;
+        color: globalVariables.$blueThemeBackgroundColor;
+        background-color: rgb(222, 221, 221);
+        padding: 20px 40px;
+        border-radius: globalVariables.$borderRadius;
+        &:hover {
+          background-color: rgb(211, 211, 211);
+          transition: background-color 0.3s ease-out;
+        }
+      }
+    }
+  }
+}
+
+.benefitsSection {
+  background-color: globalVariables.$blueThemeBackgroundColor;
+  padding: 60px 0;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  color: white;
+  h2 {
+    font-size: 30px;
+    margin: 0;
+  }
+
+  .benefitsDescription {
+    font-size: 18px;
+  }
+
+  .benefitCards {
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    justify-content: space-around;
+    margin-top: 30px;
+
+    .benefitCard:nth-child(1) {
+      margin-left: 125px;
+    }
+    .benefitCard:nth-child(3) {
+      margin-right: 125px;
+    }
+
+    .benefitCard {
+      display: flex;
+      flex-flow: column nowrap;
+      width: 20%;
+      background-color: white;
+      color: rgb(75, 75, 75);
+      padding: 30px;
+      height: 250px;
+      border-radius: 10px;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+      h3 {
+        font-size: 26px;
+        margin: 25px 0;
+      }
+
+      i {
+        color: globalVariables.$blueThemeBackgroundColor;
+      }
+
+      .benefitCardDescription {
+        margin: 0;
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+.testimonialsSection {
+  padding: 40px;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  color: rgb(75, 75, 75);
+
+  h2 {
+    font-size: 30px;
+    margin: 0;
+  }
+
+  .testimonialsDescription {
+    font-size: 18px;
+  }
+
+  .testimonialCards {
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    justify-content: space-around;
+    margin-top: 30px;
+    .testimonialCard {
+      position: relative;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      width: 20%;
+      background-color: rgb(251, 251, 251);
+      color: rgb(75, 75, 75);
+      padding: 30px;
+      height: 350px;
+      border-radius: 10px;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+      .testimonialCardPersonImage {
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+      }
+
+      .testimonialPersonName {
+        font-size: 14px;
+        margin-top: 10px;
+      }
+
+      .testimonialContent {
+        font-size: 18px;
+      }
+
+      .starsList {
+        list-style-type: none;
+        padding: 0;
+        position: absolute;
+        bottom: 30px;
+
+        li {
+          display: inline-block;
+          .yellowStar {
+            color: rgb(237, 190, 0);
+          }
+        }
+      }
+    }
+  }
+}

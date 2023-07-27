@@ -1,10 +1,6 @@
 import React from "react";
 import styles from "./NotFound.module.scss";
 
-// interface INotFound {
-//     errorMessage: string
-// }
-
 export const NotFound: React.FC = () => {
     return (
         <div className={styles.errorContainerWrapper}>

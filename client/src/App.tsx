@@ -18,6 +18,7 @@ import { ProfileEdit } from './pages/ProfileEdit/ProfileEdit';
 import { Footer } from './components/layout/footer/Footer';
 import { PropertyDetails } from './pages/PropertyDetails/PropertyDetails';
 import { NotFound } from './pages/NotFound/NotFound';
+import { PropertyEdit } from './pages/PropertyEdit/PropertyEdit';
 
 function App() {
   const { isLoading } = useAppSelector((state) => state.loader)
@@ -44,6 +45,7 @@ function App() {
                 <Route path='/my-properties' element={<MyProperties />} />
                 <Route path='/my-bookings' element={<MyBookings />} />
                 <Route path='/property/details/:propertyId' element={<PropertyDetails />} />
+                <Route path='/property/edit/:propertyId' element={<PropertyEdit />} />
               </Route>
             </Routes>
           </div>
@@ -66,6 +68,7 @@ function App() {
                 <Route path='/my-properties' element={<MyProperties />} />
                 <Route path='/my-bookings' element={<MyBookings />} />
                 <Route path='/property/details/:propertyId' element={<PropertyDetails />} />
+                <Route path='/property/edit/:propertyId' element={<PropertyEdit />} />
               </Route>
             </Routes>
           </div>

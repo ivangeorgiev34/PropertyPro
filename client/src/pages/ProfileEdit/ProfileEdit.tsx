@@ -111,6 +111,8 @@ export const ProfileEdit: React.FC = () => {
                         gender: res.content.user.gender
                     }));
 
+                    dispatch(toggleLoaderOff());
+
                     navigate(`/profile/${id}`);
 
                 } else if (res.status === "Error") {
