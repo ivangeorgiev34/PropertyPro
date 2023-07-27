@@ -228,7 +228,7 @@ namespace PropertyPro.Controllers
         }
 
         [HttpPut]
-        [Route("edit/{propertyId?}")]
+        [Route("edit/{propertyId}")]
         [Authorize(Roles = "Landlord", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> EditProperty([FromForm] EditPropertyDto editPropertyDto, string? propertyId)
         {
