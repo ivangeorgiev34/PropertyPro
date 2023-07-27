@@ -3,13 +3,21 @@
 .myPropertyCard {
   display: flex;
   flex-flow: column nowrap;
+  justify-content: space-between;
   row-gap: 20px;
   border-radius: 10px;
   width: 25%;
   background-color: rgb(240, 240, 240);
   padding: 15px;
+
+  .myPropertyCardContent {
+    display: flex;
+    flex-flow: column nowrap;
+    row-gap: 20px;
+  }
   .myPropertyCardImage {
     border-radius: 10px;
+    width: 100%;
   }
 
   .propertyDetails {
