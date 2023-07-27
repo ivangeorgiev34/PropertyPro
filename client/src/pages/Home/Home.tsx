@@ -1,13 +1,18 @@
 import React from "react";
 import styles from "./Home.module.scss"
 import { useAppSelector } from "../../hooks/reduxHooks";
+import { GuestHome } from "../../components/home/GuestHome/GuestHome";
 
 export const Home: React.FC = () => {
 
-    const { token } = useAppSelector((state) => state.auth);
+    const { token, role } = useAppSelector((state) => state.auth);
 
     return (
-        <p>{token === null ? "token is null" : "token is not null"}</p>
+        <React.Fragment>
+            {role === null
+                ? <GuestHome />
+                : null}
+        </React.Fragment>
     );
 
 };
