@@ -11,8 +11,14 @@ export function useForm<T>(initialFormValues: T) {
         setFormValues(state => ({ ...state, [eventTarget.name]: eventTarget.value }));
     };
 
+    const setDefaultValues = (values: T) => {
+
+        setFormValues(values);
+    };
+
     return {
         formValues,
-        onFormChange
+        onFormChange,
+        setDefaultValues
     };
 }
