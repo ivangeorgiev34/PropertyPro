@@ -7,7 +7,9 @@
   row-gap: 20px;
   border-radius: 10px;
   width: 25%;
-  background-color: rgb(240, 240, 240);
+  background-color: globalVariables.$formBackgroundColor;
+  border: 1px solid globalVariables.$formBorderColor;
+  box-shadow: globalVariables.$boxShadow;
   padding: 15px;
 
   .myPropertyCardContent {
