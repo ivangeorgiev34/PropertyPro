@@ -9,5 +9,7 @@ export default interface IPropertyEditForm {
     bedroomsCount: number,
     bedsCount: number,
     bathroomsCount: number,
-    firstImage: File | null
+    firstImage: File | null,
+    secondImage: File | null,
+    thirdImage: File | null
 }

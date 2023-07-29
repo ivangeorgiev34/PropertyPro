@@ -12,6 +12,7 @@
     border: 1px solid globalVariables.$formBorderColor;
     border-radius: globalVariables.$borderRadius;
     background-color: globalVariables.$formBackgroundColor;
+    box-shadow: globalVariables.$boxShadow;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
