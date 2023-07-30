@@ -53,3 +53,22 @@ export async function deletePropertyById(propertyId: string, token: string) {
         return error;
     }
 }
+
+export async function editPropertyById(propertyId: string, formData: FormData, token: string) {
+    try {
+        const response = await fetch(`${BASE_URL}/property/edit/${propertyId}`, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+            body: formData
+        });
+
+        const propertiesJson = await response.json();
+
+        return propertiesJson;
+
+    } catch (error) {
+        return error;
+    }
+}
