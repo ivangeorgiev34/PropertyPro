@@ -1,0 +1,75 @@
+@use "../../assets/globalVariables.scss" as globalVariables;
+
+.formWrapper {
+  display: flex;
+  justify-content: center;
+
+  .cardForm {
+    width: 40%;
+    margin: 20px 0;
+    padding: 30px;
+    background-color: globalVariables.$formBackgroundColor;
+    box-shadow: globalVariables.$boxShadow;
+    border-radius: globalVariables.$borderRadius;
+    border: 1px solid globalVariables.$formBorderColor;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    row-gap: 20px;
+
+    hr {
+      background-color: globalVariables.$formBorderColor;
+      height: 1px;
+      width: 100%;
+      border-radius: globalVariables.$borderRadius;
+      border: none;
+    }
+
+    h2 {
+      margin: 0;
+    }
+
+    .inputContainer {
+      display: flex;
+      flex-flow: column nowrap;
+      row-gap: 10px;
+      align-items: center;
+    }
+
+    .errorsContainer {
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      row-gap: 10px;
+      text-align: center;
+      list-style-type: none;
+    }
+
+    .bookBtn {
+      all: unset;
+      color: white;
+      font-weight: 500;
+      padding: 10px 40px;
+      background-color: rgb(33, 174, 33);
+      border-radius: 5px;
+      border: 1px solid black;
+      &:disabled {
+        opacity: 0.5;
+      }
+      &:enabled {
+        &:hover {
+          border-radius: 20px;
+          background-color: rgb(26, 218, 26);
+          transition: border-radius 0.6s, background-color 0.8s ease-out;
+        }
+      }
+    }
+  }
+
+  .error {
+    color: red;
+    text-align: center;
+  }
+}
