@@ -14,7 +14,6 @@ export const MyProperties: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [myProperties, setMyProperties] = useState<IProperty[] | null>(null);
-    const [errors, setErrors] = useState<string[]>([]);
 
     useEffect(() => {
 
@@ -29,13 +28,7 @@ export const MyProperties: React.FC = () => {
                 if (res.hasOwnProperty("properties")) {
 
                     setMyProperties(res.properties);
-
-                } else if (res.status === "Error") {
-                    setErrors(state => [...state, res.message]);
                 }
-            })
-            .catch(err => {
-                setErrors(state => [...state, err]);
             })
 
         dispatch(toggleLoaderOff());
