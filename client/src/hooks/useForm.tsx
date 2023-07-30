@@ -11,6 +11,13 @@ export function useForm<T>(initialFormValues: T) {
         setFormValues(state => ({ ...state, [eventTarget.name]: eventTarget.value }));
     };
 
+    const onFormChangeImage = (e: React.FormEvent<HTMLInputElement>) => {
+
+        const eventTarget = e.currentTarget as HTMLInputElement;
+
+        setFormValues(state => ({ ...state, [eventTarget.name]: eventTarget.files?.item(0) }));
+    };
+
     const setDefaultValues = (values: T) => {
 
         setFormValues(values);
@@ -19,6 +26,7 @@ export function useForm<T>(initialFormValues: T) {
     return {
         formValues,
         onFormChange,
-        setDefaultValues
+        setDefaultValues,
+        onFormChangeImage
     };
 }
