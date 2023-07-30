@@ -233,16 +233,25 @@ namespace PropertyPro.Controllers
         public async Task<IActionResult> EditProperty([FromForm] EditPropertyDto editPropertyDto, string? propertyId)
         {
 
-            if (await propertyService.PropertyExistsAsync(propertyId) == false || propertyId == null || Guid.TryParse(propertyId, out Guid propertyIdResult) == false)
+            if (propertyId == null || Guid.TryParse(propertyId, out Guid propertyIdResult) == false)
             {
-                return NotFound(new
-                {
-                    Status = "Error",
-                    Message = "Property doesn't exist!"
-                });
-            }
+				return StatusCode(StatusCodes.Status400BadRequest, new
+				{
+					Status = "Error",
+					Message = "Property doesn't exist!"
+				});
+			}
 
-            var userId = GetUserId(HttpContext);
+			if (await propertyService.PropertyExistsAsync(propertyId) == false)
+			{
+				return NotFound(new
+				{
+					Status = "Error",
+					Message = "Property doesn't exist!"
+				});
+			}
+
+			var userId = GetUserId(HttpContext);
 
             if (await propertyService.LandlordOwnsPropertyById(propertyId, userId) == false)
             {
