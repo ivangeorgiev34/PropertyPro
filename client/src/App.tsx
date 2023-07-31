@@ -20,6 +20,7 @@ import { PropertyDetails } from './pages/PropertyDetails/PropertyDetails';
 import { NotFound } from './pages/NotFound/NotFound';
 import { PropertyEdit } from './pages/PropertyEdit/PropertyEdit';
 import { BookProperty } from './pages/BookProperty/BookProperty';
+import { PropertyCreate } from './pages/PropertyCreate/PropertyCreate';
 
 function App() {
   const { isLoading } = useAppSelector((state) => state.loader)
@@ -27,56 +28,30 @@ function App() {
 
   return (
     <React.Fragment>
-      {isLoading === false
-        ? <React.Fragment>
-          <Navigation />
-          <div className='content'>
-            <Routes>
-              <Route path='/notfound' element={<NotFound />} />
-              <Route path='/unauthorized' element={<Unauthorized />} />
-              <Route path='/' element={<Home />} />
-              <Route path='/home' element={<Home />} />
-              <Route element={<PublicRouteGuard />}>
-                <Route path='/login' element={<Login />} />
-                <Route path='/register' element={<Register />} />
-              </Route>
-              <Route element={<PrivateRouteGuard />}>
-                <Route path="/profile/edit/:userId" element={<ProfileEdit />} />
-                <Route path="/profile/:userId" element={<ProfileInformation />} />
-                <Route path='/my-properties' element={<MyProperties />} />
-                <Route path='/my-bookings' element={<MyBookings />} />
-                <Route path='/property/details/:propertyId' element={<PropertyDetails />} />
-                <Route path='/property/edit/:propertyId' element={<PropertyEdit />} />
-                <Route path='/property/book/:propertyId' element={<BookProperty />} />
-              </Route>
-            </Routes>
-          </div>
-          <Footer />
-        </React.Fragment>
-        : <Loader>
-          <Navigation />
-          <div className='content'>
-            <Routes>
-              <Route path='/notfound' element={<NotFound />} />
-              <Route path='/unauthorized' element={<Unauthorized />} />
-              <Route index path='/' element={<Home />} />
-              <Route element={<PublicRouteGuard />}>
-                <Route path='/login' element={<Login />} />
-                <Route path='/register' element={<Register />} />
-              </Route>
-              <Route element={<PrivateRouteGuard />}>
-                <Route path="/profile/edit/:userId" element={<ProfileEdit />} />
-                <Route path="/profile/:userId" element={<ProfileInformation />} />
-                <Route path='/my-properties' element={<MyProperties />} />
-                <Route path='/my-bookings' element={<MyBookings />} />
-                <Route path='/property/details/:propertyId' element={<PropertyDetails />} />
-                <Route path='/property/edit/:propertyId' element={<PropertyEdit />} />
-                <Route path='/property/book/:propertyId' element={<BookProperty />} />
-              </Route>
-            </Routes>
-          </div>
-          <Footer />
-        </Loader>}
+      {isLoading === true ? <Loader /> : null}
+      <Navigation />
+      <div className='content'>
+        <Routes>
+          <Route path='/notfound' element={<NotFound />} />
+          <Route path='/unauthorized' element={<Unauthorized />} />
+          <Route index path='/' element={<Home />} />
+          <Route element={<PublicRouteGuard />}>
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+          </Route>
+          <Route element={<PrivateRouteGuard />}>
+            <Route path="/profile/edit/:userId" element={<ProfileEdit />} />
+            <Route path="/profile/:userId" element={<ProfileInformation />} />
+            <Route path='/my-properties' element={<MyProperties />} />
+            <Route path='/my-bookings' element={<MyBookings />} />
+            <Route path='/property/details/:propertyId' element={<PropertyDetails />} />
+            <Route path='/property/edit/:propertyId' element={<PropertyEdit />} />
+            <Route path='/property/book/:propertyId' element={<BookProperty />} />
+            <Route path='/property/create' element={<PropertyCreate />} />
+          </Route>
+        </Routes>
+      </div>
+      <Footer />
     </React.Fragment>
   );
 }
