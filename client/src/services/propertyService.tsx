@@ -1,4 +1,5 @@
 import { BASE_URL } from "../constants/constants";
+import IPropertyCreateForm from "../interfaces/IPropertyCreateForm";
 
 export async function getLandlordsProperties(userId: string, token: string) {
     try {
@@ -58,6 +59,25 @@ export async function editPropertyById(propertyId: string, formData: FormData, t
     try {
         const response = await fetch(`${BASE_URL}/property/edit/${propertyId}`, {
             method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+            body: formData
+        });
+
+        const propertiesJson = await response.json();
+
+        return propertiesJson;
+
+    } catch (error) {
+        return error;
+    }
+}
+
+export async function createProperty(token: string, formData: FormData) {
+    try {
+        const response = await fetch(`${BASE_URL}/property/create`, {
+            method: "POST",
             headers: {
                 "Authorization": `Bearer ${token}`
             },
