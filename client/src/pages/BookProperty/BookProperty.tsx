@@ -61,12 +61,15 @@ export const BookProperty: React.FC = () => {
                 } else if (res.status === "Error") {
                     setErrors(state => [...state, res.message]);
                 }
+
+                dispatch(toggleLoaderOff());
             })
             .catch(err => {
                 setErrors(state => [...state, err]);
+
+                dispatch(toggleLoaderOff());
             })
 
-        dispatch(toggleLoaderOff());
     };
 
     return (

@@ -111,21 +111,20 @@ export const ProfileEdit: React.FC = () => {
                         gender: res.content.user.gender
                     }));
 
-                    dispatch(toggleLoaderOff());
-
                     navigate(`/profile/${id}`);
 
                 } else if (res.status === "Error") {
                     setErrors(state => [...state, res.message]);
                 }
 
+                dispatch(toggleLoaderOff());
+
             })
             .catch(error => {
                 setErrors(state => [...state, error]);
+
+                dispatch(toggleLoaderOff());
             });
-
-        dispatch(toggleLoaderOff());
-
     };
 
     const areFormValuesIncorrect = (): boolean => {
