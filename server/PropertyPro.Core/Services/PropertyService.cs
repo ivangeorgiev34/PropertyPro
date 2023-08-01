@@ -219,8 +219,8 @@ namespace PropertyPro.Core.Services
 					? 0.00d
 					: p.Reviews.Count == 0
 					? 0.00d
-					: p.Reviews.Sum(r => r.Stars) / p.Reviews.Count,
-					ReviewsCount = p.Reviews != null ? p.Reviews.Count : 0,
+					: p.Reviews.Where(r => r.IsActive == true).Sum(r => r.Stars) / p.Reviews.Where(r => r.IsActive == true).ToArray().Length,
+					ReviewsCount = p.Reviews != null ? p.Reviews.Where(r => r.IsActive == true).ToArray().Length : 0,
 					FirstImage = Convert.ToBase64String(p.FirstImage),
 					SecondImage = p.SecondImage == null ? null : Convert.ToBase64String(p.SecondImage),
 					ThirdImage = p.ThirdImage == null ? null : Convert.ToBase64String(p.ThirdImage),
