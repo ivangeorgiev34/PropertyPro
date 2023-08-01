@@ -17,3 +17,21 @@ export async function getPropertyReviews(propertyId: string, token: string) {
         return error;
     }
 }
+
+export async function deleteReviewById(reviewId: string, token: string) {
+    try {
+        const response = await fetch(`${BASE_URL}/review/delete/${reviewId}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        const propertiesJson = await response.json();
+
+        return propertiesJson;
+
+    } catch (error) {
+        return error;
+    }
+}
