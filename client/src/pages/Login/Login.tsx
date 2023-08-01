@@ -11,10 +11,12 @@ import ILoginForm from "../../interfaces/ILoginForm";
 import { useError } from "../../hooks/useError";
 import { emailValidation } from "../../validators/emailValidation";
 import { passwordValidation } from "../../validators/passwordValidation";
+import { spawn } from "child_process";
 
 
 export const Login: React.FC = () => {
 
+    const [errors, setErrors] = useState<string[]>([]);
     const navigate = useNavigate();
 
     const { token } = useAppSelector((state) => state.auth)
@@ -30,55 +32,46 @@ export const Login: React.FC = () => {
         password: ""
     });
 
-    const [errors, setErrors] = useState<string[]>([]);
-
-    const onLogInFormSubmit: FormEventHandler<HTMLFormElement> = (e: React.FormEvent<HTMLFormElement>) => {
-
+    const onLogInFormSubmit: FormEventHandler<HTMLFormElement> = async (e: React.FormEvent<HTMLFormElement>) => {
         dispatch(toggleLoaderOn());
 
         e.preventDefault();
 
         setErrors([]);
 
-        userLogin(formValues.email, formValues.password)
-            .then(res => {
+        try {
+            const res = await userLogin(formValues.email, formValues.password);
 
-                if (res.status === "Error") {
+            if (res.status === "Error") {
+                setErrors(state => [...state, res.message]);
 
-                    setErrors(state => [...state, res.message]);
+            } else {
+                dispatch(login({
+                    id: res.user.id,
+                    firstName: res.user.firstName,
+                    middleName: res.user.middleName,
+                    lastName: res.user.lastName,
+                    email: res.user.email,
+                    gender: res.user.gender,
+                    profilePicture: res.user.profilePicture,
+                    phoneNumber: res.user.phoneNumber,
+                    age: res.user.age,
+                    role: res.user.role,
+                    token: res.token,
+                    expires: res.expires
+                }));
 
-                } else if (res.status === 400) {
+                navigate("/home");
 
-                    if (res.errors.hasOwnProperty("Email") === true) {
-                        setErrors(state => [...state, ...res.errors.Email])
-                    }
-                    if (res.errors.hasOwnProperty("Password") === true) {
-                        setErrors(state => [...state, ...res.errors.Password])
-                    }
+            }
 
-                } else {
+        } catch (error: any) {
+            setErrors(state => [...state, error]);
 
-                    dispatch(login({
-                        id: res.user.id,
-                        firstName: res.user.firstName,
-                        middleName: res.user.middleName,
-                        lastName: res.user.lastName,
-                        email: res.user.email,
-                        gender: res.user.gender,
-                        profilePicture: res.user.profilePicture,
-                        phoneNumber: res.user.phoneNumber,
-                        age: res.user.age,
-                        role: res.user.role,
-                        token: res.token,
-                        expires: res.expires
-                    }));
+        } finally {
+            dispatch(toggleLoaderOff());
 
-                    navigate("/home");
-
-                }
-
-                dispatch(toggleLoaderOff());
-            });
+        }
     }
 
     const areFormValuesIncorrect = (): boolean => {
@@ -113,11 +106,13 @@ export const Login: React.FC = () => {
                         onBlur={(e) => onFormErrorChange(e, passwordValidation(formValues.password))} />
                     {<p className={styles.error}>{formErrors.password}</p>}
                 </div>
-                <div className={styles.errorsContainer}>
-                    {errors.map(e => {
-                        return <p key={e} className={styles.error}>{e}</p>
-                    })}
-                </div>
+                <ul className={styles.errorsContainer}>
+                    {errors.map(e =>
+                        <li>
+                            <p key={e} className={styles.error}>{e}</p>
+                        </li>
+                    )}
+                </ul>
                 <span className={styles.registerLink}>
                     Don't have an account?
                     <Link to={"/register"}> Click here to register!</Link>

@@ -65,6 +65,7 @@ export const Register: React.FC = () => {
 
         userRegister(formValues, role)
             .then(res => {
+                console.log(res);
                 if (res.status === "Error") {
 
                     setErrors(state => [...state, res.message]);

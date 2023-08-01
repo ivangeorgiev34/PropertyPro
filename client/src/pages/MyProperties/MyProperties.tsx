@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { getLandlordsProperties } from "../../services/propertyService";
@@ -14,7 +14,6 @@ export const MyProperties: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [myProperties, setMyProperties] = useState<IProperty[] | null>(null);
-    const [errors, setErrors] = useState<string[]>([]);
 
     useEffect(() => {
 
@@ -29,17 +28,10 @@ export const MyProperties: React.FC = () => {
                 if (res.hasOwnProperty("properties")) {
 
                     setMyProperties(res.properties);
-
-                } else if (res.status === "Error") {
-                    setErrors(state => [...state, res.message]);
                 }
-            })
-            .catch(err => {
-                setErrors(state => [...state, err]);
-            })
 
-        dispatch(toggleLoaderOff());
-
+                dispatch(toggleLoaderOff());
+            });
     }, []);
 
     return (

@@ -1,0 +1,102 @@
+@use "../../assets/globalVariables.scss" as globalVariables;
+
+.cardWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  .card {
+    margin: 20px 0;
+    padding: 30px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    row-gap: 20px;
+    background-color: globalVariables.$formBackgroundColor;
+    border-radius: globalVariables.$borderRadius;
+    border: 1px solid globalVariables.$formBorderColor;
+    box-shadow: globalVariables.$boxShadow;
+    width: 60%;
+
+    h2 {
+      margin: 0;
+    }
+
+    hr {
+      background-color: globalVariables.$formBorderColor;
+      height: 1px;
+      width: 100%;
+      border-radius: globalVariables.$borderRadius;
+      border: none;
+    }
+
+    .imageContainer {
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      input {
+        margin: 10px 0;
+      }
+    }
+
+    .inputContainer {
+      display: flex;
+      flex-flow: column nowrap;
+      row-gap: 5px;
+      width: 25%;
+      input {
+        height: 25px;
+      }
+
+      input[type="radio"] {
+        height: initial;
+      }
+
+      .typeContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+
+      .typeContainer:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .errorsContainer {
+      display: flex;
+      flex-flow: column nowrap;
+      row-gap: 5px;
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      text-align: center;
+    }
+
+    .submitBtn {
+      all: unset;
+      color: white;
+      font-weight: 500;
+      padding: 10px 40px;
+      background-color: rgb(33, 174, 33);
+      border-radius: 5px;
+      border: 1px solid black;
+      &:disabled {
+        opacity: 0.5;
+      }
+      &:enabled {
+        &:hover {
+          border-radius: 20px;
+          background-color: rgb(26, 218, 26);
+          transition: border-radius 0.6s, background-color 0.8s ease-out;
+        }
+      }
+    }
+  }
+}
+
+.error {
+  color: red;
+  margin: 0px;
+  text-align: center;
+}

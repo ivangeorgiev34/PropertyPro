@@ -1,10 +1,8 @@
 import React, { Children } from "react";
 import styles from "./Loader.module.scss";
-interface ILoader {
-    children: React.ReactNode;
-}
-export const Loader: React.FC<ILoader> = ({ children }) => {
-
+import { useAppSelector } from "../../hooks/reduxHooks";
+export const Loader: React.FC = () => {
+    const { isLoading } = useAppSelector(state => state.loader);
     return (
         <div>
             <div className={styles.overlay}>
@@ -21,7 +19,6 @@ export const Loader: React.FC<ILoader> = ({ children }) => {
                     </div>
                 </div>
             </div>
-            {children}
         </div>
     );
 };

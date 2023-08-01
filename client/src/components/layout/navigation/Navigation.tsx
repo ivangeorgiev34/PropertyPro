@@ -32,7 +32,16 @@ export const Navigation: React.FC = () => {
                             ? role === "Tenant"
                                 ? <li className={styles.navBarItem}><Link className={styles.myBookings} to={"/my-bookings"}>My bookings</Link></li>
                                 : role === "Landlord"
-                                    ? <li className={styles.navBarItem}><Link className={styles.myProperties} to={"/my-properties"}>My properties</Link></li>
+                                    ? <React.Fragment>
+                                        <li className={styles.navBarItem}>
+                                            <Link className={styles.myProperties} to={"/my-properties"}>My properties
+                                            </Link>
+                                        </li>
+                                        <li className={styles.navBarItem}>
+                                            <Link className={styles.myProperties} to={"/property/create"}>Create a property
+                                            </Link>
+                                        </li>
+                                    </React.Fragment>
                                     : null
                             : null}
                     </ul>
@@ -55,7 +64,7 @@ export const Navigation: React.FC = () => {
                                 </Link>
                             </li>
                             <li className={styles.navBarItem}>
-                                <Link className={styles.logoutBtn} onClick={() => dispatch(logout())} to={"/home"}>
+                                <Link className={styles.logoutBtn} onClick={() => dispatch(logout())} to={"/"}>
                                     Logout
                                 </Link>
                             </li>
