@@ -64,7 +64,7 @@ export const Navigation: React.FC = () => {
                                 </Link>
                             </li>
                             <li className={styles.navBarItem}>
-                                <Link className={styles.logoutBtn} onClick={() => dispatch(logout())} to={"/home"}>
+                                <Link className={styles.logoutBtn} onClick={() => dispatch(logout())} to={"/"}>
                                     Logout
                                 </Link>
                             </li>
