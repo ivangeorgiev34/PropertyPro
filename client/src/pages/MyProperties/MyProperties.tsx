@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { getLandlordsProperties } from "../../services/propertyService";
@@ -29,10 +29,9 @@ export const MyProperties: React.FC = () => {
 
                     setMyProperties(res.properties);
                 }
-            })
 
-        dispatch(toggleLoaderOff());
-
+                dispatch(toggleLoaderOff());
+            });
     }, []);
 
     return (
