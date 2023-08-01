@@ -55,21 +55,11 @@ namespace PropertyPro.Controllers
         }
 
         [HttpPut]
-        [Route("edit/{reviewId}/{propertyId}")]
+        [Route("edit/{reviewId}")]
         [Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> EditReview(EditReviewDto editReviewDto, string reviewId, string propertyId)
+        public async Task<IActionResult> EditReview(EditReviewDto editReviewDto, string reviewId) 
         {
-            if (IsIdValidGuidAndNotNull(propertyId) == false
-                || await propertyService.PropertyExistsAsync(propertyId) == false)
-            {
-                return BadRequest(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "Property doesn't exist"
-                });
-            }
-
-            if (IsIdValidGuidAndNotNull(reviewId) == false || await reviewService.ReviewExistsInPropertyAsync(reviewId, propertyId) == false)
+            if (IsIdValidGuidAndNotNull(reviewId) == false || await reviewService.ReviewExistsAsync(reviewId) == false)
             {
                 return BadRequest(new Response()
                 {
@@ -80,7 +70,7 @@ namespace PropertyPro.Controllers
 
             try
             {
-                var editedReview = await reviewService.EditReviewAsync(editReviewDto, reviewId, propertyId);
+                var editedReview = await reviewService.EditReviewAsync(editReviewDto, reviewId);
 
                 return Ok(new Response()
                 {
