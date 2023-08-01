@@ -21,6 +21,7 @@ import { NotFound } from './pages/NotFound/NotFound';
 import { PropertyEdit } from './pages/PropertyEdit/PropertyEdit';
 import { BookProperty } from './pages/BookProperty/BookProperty';
 import { PropertyCreate } from './pages/PropertyCreate/PropertyCreate';
+import { ReviewEdit } from './pages/ReviewEdit/ReviewEdit';
 
 function App() {
   const { isLoading } = useAppSelector((state) => state.loader)
@@ -48,6 +49,7 @@ function App() {
             <Route path='/property/edit/:propertyId' element={<PropertyEdit />} />
             <Route path='/property/book/:propertyId' element={<BookProperty />} />
             <Route path='/property/create' element={<PropertyCreate />} />
+            <Route path='/review/edit/:reviewId' element={<ReviewEdit />} />
           </Route>
         </Routes>
       </div>
