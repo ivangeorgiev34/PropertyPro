@@ -1,0 +1,98 @@
+@use "../../assets/globalVariables.scss" as globalVariables;
+@import url(https://use.fontawesome.com/releases/v6.4.0/css/all.css);
+
+.card {
+  background-color: white;
+  border: 1px solid globalVariables.$formBorderColor;
+  border-radius: globalVariables.$borderRadius;
+  box-shadow: globalVariables.$boxShadow;
+  padding: 20px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  row-gap: 20px;
+  width: 40%;
+
+  .tenantInfoContainerWrapper {
+    display: flex;
+    flex-flow: column nowrap;
+    row-gap: 10px;
+    .description {
+      text-align: left;
+    }
+  }
+
+  .tenantInfoContainer {
+    display: flex;
+    flex-flow: row nowrap;
+    column-gap: 15px;
+
+    .reviewStarsContainer {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: space-around;
+      .yellowStar {
+        color: rgb(237, 190, 0);
+      }
+    }
+
+    .tenantProfilePicture {
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+    }
+
+    .tenantNames {
+      align-self: flex-start;
+    }
+  }
+
+  .reviewBtnsContainerWrapper {
+    display: flex;
+    flex-flow: column nowrap;
+    row-gap: 10px;
+
+    .reviewBtnsContainer {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-evenly;
+
+      .reviewEditBtn {
+        all: unset;
+        color: white;
+        font-weight: 500;
+        padding: 10px 20px;
+        background-color: rgb(179, 158, 0);
+        border-radius: 5px;
+        border: 1px solid black;
+        cursor: pointer;
+        &:hover {
+          border-radius: 20px;
+          background-color: rgb(222, 196, 0);
+          transition: border-radius 0.6s, background-color 0.8s ease-out;
+        }
+      }
+
+      .reviewDeleteBtn {
+        all: unset;
+        color: white;
+        font-weight: 500;
+        padding: 10px 20px;
+        background-color: rgb(182, 0, 0);
+        border-radius: 5px;
+        border: 1px solid black;
+        cursor: pointer;
+        &:hover {
+          border-radius: 20px;
+          background-color: rgb(243, 0, 0);
+          transition: border-radius 0.6s, background-color 0.8s ease-out;
+        }
+      }
+    }
+  }
+
+  .error {
+    color: red;
+    text-align: center;
+  }
+}
