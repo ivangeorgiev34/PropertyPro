@@ -44,7 +44,7 @@ namespace PropertyPro.Controllers
 
             return Ok(new Response()
             {
-                Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+                Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
                 Message = "Review created successfully",
                 Content = new
                 {
