@@ -72,6 +72,14 @@
     row-gap: 20px;
     width: 45%;
 
+    .reviewsContainer {
+      display: flex;
+      flex-flow: row wrap;
+      row-gap: 20px;
+      justify-content: space-evenly;
+      width: 100%;
+    }
+
     .propertyDetailsHeading {
       display: flex;
       flex-flow: column nowrap;
