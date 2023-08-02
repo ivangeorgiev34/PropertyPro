@@ -1,0 +1,107 @@
+@use "../../assets/globalVariables.scss" as globalVariables;
+
+.editReviewCardWrapper {
+  display: flex;
+  justify-content: center;
+  .editReviewCard {
+    margin: 20px 0;
+    border: 1px solid globalVariables.$formBorderColor;
+    background-color: globalVariables.$formBackgroundColor;
+    box-shadow: globalVariables.$boxShadow;
+    border-radius: globalVariables.$borderRadius;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    row-gap: 20px;
+    padding: 30px;
+    width: 30%;
+
+    h2 {
+      margin: 0;
+    }
+
+    hr {
+      background-color: globalVariables.$formBorderColor;
+      height: 1px;
+      width: 100%;
+      border-radius: globalVariables.$borderRadius;
+      border: none;
+    }
+
+    .stars {
+      display: flex;
+      justify-content: center;
+      column-gap: 5px;
+
+      .star {
+        i {
+          font-size: 26px;
+        }
+
+        input {
+          display: none;
+        }
+
+        .yellowStar {
+          color: rgb(237, 190, 0);
+        }
+
+        .greyStar {
+          color: rgb(220, 220, 220);
+        }
+      }
+    }
+
+    .clearRatingBtn {
+      all: unset;
+      color: white;
+      font-weight: 500;
+      padding: 10px;
+      background-color: rgb(33, 103, 255);
+      border-radius: 5px;
+      border: 1px solid black;
+      cursor: pointer;
+      &:hover {
+        border-radius: 20px;
+        background-color: rgb(73, 131, 255);
+        transition: border-radius 0.6s, background-color 0.8s ease-out;
+      }
+    }
+
+    .submitBtn {
+      all: unset;
+      color: white;
+      font-weight: 500;
+      padding: 10px 40px;
+      background-color: rgb(33, 174, 33);
+      border-radius: 5px;
+      border: 1px solid black;
+      &:disabled {
+        opacity: 0.5;
+      }
+      &:enabled {
+        &:hover {
+          border-radius: 20px;
+          background-color: rgb(26, 218, 26);
+          transition: border-radius 0.6s, background-color 0.8s ease-out;
+        }
+      }
+    }
+
+    .inputContainer {
+      display: flex;
+      flex-flow: column nowrap;
+      row-gap: 5px;
+    }
+  }
+
+  .errorsContainer {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    .error {
+      color: red;
+      text-align: center;
+    }
+  }
+}

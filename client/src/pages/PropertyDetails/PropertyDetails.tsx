@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import loader, { toggleLoaderOff, toggleLoaderOn } from "../../store/loader";
 import { deletePropertyById, getLandlordPropertyById } from "../../services/propertyService";
@@ -7,6 +7,10 @@ import IProperty from "../../interfaces/IProperty";
 import styles from "./PropertyDetails.module.scss";
 import { JsxAttribute } from "typescript";
 import IPropertyDetails from "../../interfaces/IPropertyDetails";
+import { getPropertyReviews } from "../../services/reviewService";
+import IReview from "../../interfaces/review/IReview";
+import { spawn } from "child_process";
+import { Review } from "../../components/review/Review";
 
 export const PropertyDetails: React.FC = () => {
     const { id, token, role } = useAppSelector((store) => store.auth)
@@ -14,7 +18,10 @@ export const PropertyDetails: React.FC = () => {
     const [propertyDeatils, setPropertyDetails] = useState<IPropertyDetails | null>(null);
     const [currentImageCarousel, setCurrentImageCarousel] = useState<number>(1);
     const [deleteError, setDeleteError] = useState<string | null>(null);
+    const [reviewsError, setReviewsError] = useState<string>("");
+    const [reviews, setReviews] = useState<IReview[]>([]);
     const navigate = useNavigate();
+    const location = useLocation();
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -37,9 +44,21 @@ export const PropertyDetails: React.FC = () => {
                 navigate("/notfound");
             })
 
-        dispatch(toggleLoaderOff());
+        getPropertyReviews(propertyId!, token!)
+            .then(res => {
+                if (res.status === "Success") {
+                    setReviews(res.content.reviews);
+                } else if (res.status === "Error") {
+                    setReviewsError("Cannot load reviews of this property");
+                }
 
+                dispatch(toggleLoaderOff());
+            })
+            .catch(err => {
+                setReviewsError(err);
 
+                dispatch(toggleLoaderOff());
+            })
     }, []);
 
     const rightArrowBtnClick = () => {
@@ -78,15 +97,18 @@ export const PropertyDetails: React.FC = () => {
                 .then(res => {
                     if (res.status === "Error") {
                         setDeleteError(res.message);
-                    } else {
-                        navigate("/my-properties");
                     }
+
+                    navigate("/");
+
+                    dispatch(toggleLoaderOff());
                 })
                 .catch(err => {
-                    console.log(err);
+                    setDeleteError(err);
+
+                    dispatch(toggleLoaderOff());
                 })
 
-            dispatch(toggleLoaderOff());
         }
     };
 
@@ -141,7 +163,7 @@ export const PropertyDetails: React.FC = () => {
                                 className={styles.propertyImage}
                                 src={propertyDeatils?.firstImage === null
                                     || propertyDeatils?.firstImage === undefined
-                                    ? "https://mbaebooks.de/components/com_easyblog/themes/wireframe/images/placeholder-image.png"
+                                    ? "https://gamefarmforsale.co.za/wp-content/uploads/2021/07/blank.jpg"
                                     : `data:image/png;base64,${propertyDeatils?.firstImage}`}
                                 alt="" />
                             : currentImageCarousel === 2
@@ -149,7 +171,7 @@ export const PropertyDetails: React.FC = () => {
                                     className={styles.propertyImage}
                                     src={propertyDeatils?.secondImage === null
                                         || propertyDeatils?.secondImage === undefined
-                                        ? "https://mbaebooks.de/components/com_easyblog/themes/wireframe/images/placeholder-image.png"
+                                        ? "https://gamefarmforsale.co.za/wp-content/uploads/2021/07/blank.jpg"
                                         : `data:image/png;base64,${propertyDeatils?.secondImage}`}
                                     alt="" />
                                 : currentImageCarousel === 3
@@ -157,7 +179,7 @@ export const PropertyDetails: React.FC = () => {
                                         className={styles.propertyImage}
                                         src={propertyDeatils?.thirdImage === null
                                             || propertyDeatils?.thirdImage === undefined
-                                            ? "https://mbaebooks.de/components/com_easyblog/themes/wireframe/images/placeholder-image.png"
+                                            ? "https://gamefarmforsale.co.za/wp-content/uploads/2021/07/blank.jpg"
                                             : `data:image/png;base64,${propertyDeatils?.thirdImage}`}
                                         alt="" />
                                     : null}
@@ -186,6 +208,16 @@ export const PropertyDetails: React.FC = () => {
                                 Book
                             </Link>
                             : null}
+                    <span className={styles.error}>{reviewsError}</span>
+                    <h3>Reviews:</h3>
+                    <hr />
+                    <div className={styles.reviewsContainer}>
+                        {reviews.map((r: IReview) => {
+                            return (
+                                <Review key={r.id} {...r} />
+                            );
+                        })}
+                    </div>
                 </div>
             </div >}
     </React.Fragment>

@@ -53,3 +53,26 @@ export async function getReviewById(reviewId: string, token: string) {
         return error;
     }
 }
+
+export async function editReviewById(reviewId: string, token: string, rating: number, description: string) {
+    try {
+        const response = await fetch(`${BASE_URL}/review/edit/${reviewId}`, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                stars: rating,
+                description: description
+            })
+        });
+
+        const propertiesJson = await response.json();
+
+        return propertiesJson;
+
+    } catch (error) {
+        return error;
+    }
+}
