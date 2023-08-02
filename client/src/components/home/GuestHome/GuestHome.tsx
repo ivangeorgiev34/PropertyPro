@@ -1,12 +1,16 @@
 import React from "react";
 import styles from "./GuestHome.module.scss";
 import { Link } from "react-router-dom";
+import { useInView } from "react-intersection-observer";
 
 export const GuestHome: React.FC = () => {
+    const { ref, inView } = useInView({
+        threshold: 0.1
+    });
     return (
         <main>
             <section className={styles.introductionSection}>
-                <div className={styles.introductionContent}>
+                <div ref={ref} className={`${inView === true ? styles.introductionContentHidden : styles.introductionContent}`}>
                     <span className={styles.motto}>PROPERTY RENTAL PORTAL</span>
                     <h1>With PropertyPro you can now start renting your own house at any time, as much as you want.</h1>
                     <p className={styles.introductionContentDescription}>Run your business in flexible times, with near to zero efforts, on a platform designed to help you get tenants who will rent your property.</p>
@@ -24,17 +28,17 @@ export const GuestHome: React.FC = () => {
                 <h2>Benefits of PropertyPro</h2>
                 <p className={styles.benefitsDescription}>PropertyPro helps tenants and landlords connect and establish a connection, so that can both parties are satisfied.</p>
                 <div className={styles.benefitCards}>
-                    <div className={styles.benefitCard}>
+                    <div ref={ref} className={inView === true ? styles.benefitCardHidden : styles.benefitCard}>
                         <i className="fa-solid fa-chart-simple fa-2xl"></i>
                         <h3>Easy to use</h3>
                         <p className={styles.benefitCardDescription}>The PropertyPro platform is extemely simple to navigate through and work with. You do not need any experience in these types of platforms in order to work in this application.</p>
                     </div>
-                    <div className={styles.benefitCard}>
+                    <div ref={ref} className={inView === true ? styles.benefitCardHidden : styles.benefitCard}>
                         <i className="fa-solid fa-dollar-sign fa-2xl"></i>
                         <h3>Completely free</h3>
                         <p className={styles.benefitCardDescription}>PropertyPro is completely free of any fees or taxes, because we believe in delivering great products, without wanting anything in return.</p>
                     </div>
-                    <div className={styles.benefitCard}>
+                    <div ref={ref} className={inView === true ? styles.benefitCardHidden : styles.benefitCard}>
                         <i className="fa-solid fa-arrow-up-from-bracket fa-2xl"></i>
                         <h3>Up to date</h3>
                         <p className={styles.benefitCardDescription}>The app is reguarly checked for any bugs from our developers team, that can cause problems to our clients. We are always open to talk to if you find any bugs in our application.</p>
@@ -45,7 +49,7 @@ export const GuestHome: React.FC = () => {
                 <h2>Testimonials</h2>
                 <p className={styles.testimonialsDescription}>If you are still not convinced, take it from some of our clients</p>
                 <div className={styles.testimonialCards}>
-                    <div className={styles.testimonialCard}>
+                    <div ref={ref} className={inView === true ? styles.testimonialCard : styles.testimonialCardHidden}>
                         <img
                             className={styles.testimonialCardPersonImage}
                             src="https://thumbs.dreamstime.com/b/lovely-glamorous-young-woman-portrait-female-charm-emanating-beauty-stunning-girl-fabulous-alluring-night-party-make-up-92375002.jpg"
@@ -60,7 +64,7 @@ export const GuestHome: React.FC = () => {
                             <li><i className="fa-solid fa-star"></i></li>
                         </ul>
                     </div>
-                    <div className={styles.testimonialCard}>
+                    <div ref={ref} className={inView === true ? styles.testimonialCard : styles.testimonialCardHidden}>
                         <img
                             className={styles.testimonialCardPersonImage}
                             src="https://th.bing.com/th/id/OIP.FWc6rm8Cq7Xyddu1B0a90gHaGL?pid=ImgDet&w=575&h=480&rs=1"
@@ -75,7 +79,7 @@ export const GuestHome: React.FC = () => {
                             <li><i className={`fa-solid fa-star ${styles.yellowStar}`}></i></li>
                         </ul>
                     </div>
-                    <div className={styles.testimonialCard}>
+                    <div ref={ref} className={inView === true ? styles.testimonialCard : styles.testimonialCardHidden}>
                         <img
                             className={styles.testimonialCardPersonImage}
                             src="https://th.bing.com/th/id/OIP.7RmDMjUBWeG0zOk9f8I1UAHaLF?pid=ImgDet&w=183&h=274&c=7"
