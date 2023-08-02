@@ -61,9 +61,9 @@ namespace PropertyPro.Core.Services
 			await repo.SaveChangesAsync();
 		}
 
-		public async Task<ReviewDto> EditReviewAsync(EditReviewDto editReviewDto, string reviewId, string propertyId)
+		public async Task<ReviewDto> EditReviewAsync(EditReviewDto editReviewDto, string reviewId)
 		{
-			var review = await GetReviewInPropertyById(reviewId, propertyId);
+			var review = await GetReviewByIdAsync(reviewId);
 
 			if (review == null)
 			{
@@ -133,6 +133,8 @@ namespace PropertyPro.Core.Services
 		public async Task<Review?> GetReviewByIdAsync(string reviewId)
 		{
 			var review = await repo.All<Review>()
+				.Include(r => r.Tenant)
+				.ThenInclude(t => t.User)
 				.FirstOrDefaultAsync(r => r.IsActive == true && r.Id == Guid.Parse(reviewId));
 
 			return review;
