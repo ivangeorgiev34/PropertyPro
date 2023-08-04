@@ -20,3 +20,21 @@ export async function createBooking(propertyId: string, token: string, formValue
         return error;
     }
 }
+
+export async function getUsersBookings(token: string) {
+    try {
+        const response = await fetch(`${BASE_URL}/booking/bookings`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+        });
+
+        const responseJson = await response.json();
+
+        return responseJson;
+
+    } catch (error) {
+        return error;
+    }
+}
