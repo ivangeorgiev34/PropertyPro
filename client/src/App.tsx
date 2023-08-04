@@ -22,6 +22,7 @@ import { PropertyEdit } from './pages/PropertyEdit/PropertyEdit';
 import { BookProperty } from './pages/BookProperty/BookProperty';
 import { PropertyCreate } from './pages/PropertyCreate/PropertyCreate';
 import { ReviewEdit } from './pages/ReviewEdit/ReviewEdit';
+import { BookingEdit } from './pages/BookingEdit/BookingEdit';
 
 function App() {
   const { isLoading } = useAppSelector((state) => state.loader)
@@ -50,6 +51,7 @@ function App() {
             <Route path='/property/book/:propertyId' element={<BookProperty />} />
             <Route path='/property/create' element={<PropertyCreate />} />
             <Route path='/review/edit/:reviewId' element={<ReviewEdit />} />
+            <Route path='/booking/edit/:bookingId' element={<BookingEdit />} />
           </Route>
         </Routes>
       </div>
