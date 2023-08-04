@@ -61,8 +61,7 @@ export const Login: React.FC = () => {
                     expires: res.expires
                 }));
 
-                navigate("/home");
-
+                navigate("/my-properties");
             }
 
         } catch (error: any) {
