@@ -38,3 +38,21 @@ export async function getUsersBookings(token: string) {
         return error;
     }
 }
+
+export async function deleteBookingById(id: string, token: string) {
+    try {
+        const response = await fetch(`${BASE_URL}/booking/delete/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        const responseJson = await response.json();
+
+        return responseJson;
+
+    } catch (error) {
+        return error;
+    }
+}
