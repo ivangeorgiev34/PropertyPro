@@ -1,7 +1,7 @@
-.errorMessage{
-    color: rgb(186, 12, 12);
-    position: absolute;
-    top: 40%; 
-    left: 50%;
-  transform: translate(-50%,-50%);
+.bookingCardsWrapper {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  padding: 20px;
+  row-gap: 20px;
 }
