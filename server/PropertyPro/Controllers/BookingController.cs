@@ -107,7 +107,7 @@ namespace PropertyPro.Controllers
                 return BadRequest(new Response()
                 {
                     Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "Property doesn't exist"
+                    Message = "Booking doesn't exist"
                 });
             }
 
@@ -165,17 +165,28 @@ namespace PropertyPro.Controllers
                 });
             }
 
-            var bookingDto = await bookingService.EditBookingAsync(editBookingDto, bookingId, userId, startDate, endDate);
-
-            return StatusCode(200, new Response()
+            try
             {
-                Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
-                Message = "Booking edited successfully",
-                Content = new
-                {
-                    Booking = bookingDto
-                }
-            });
+				var bookingDto = await bookingService.EditBookingAsync(editBookingDto, bookingId, userId, startDate, endDate);
+
+				return StatusCode(200, new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+					Message = "Booking edited successfully",
+					Content = new
+					{
+						Booking = bookingDto
+					}
+				});
+			}
+            catch (InvalidOperationException ioe)
+            {
+				return StatusCode(StatusCodes.Status400BadRequest, new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = ioe.Message
+				});
+			}
         }
 
         [HttpDelete]
