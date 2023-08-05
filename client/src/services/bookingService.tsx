@@ -1,5 +1,7 @@
+import { json } from "react-router-dom";
 import { BASE_URL } from "../constants/constants";
 import IBookPropertyForm from "../interfaces/booking/IBookPropertyForm";
+import IBookingEditForm from "../interfaces/booking/IBookingEditForm";
 
 export async function createBooking(propertyId: string, token: string, formValues: IBookPropertyForm) {
     try {
@@ -64,6 +66,26 @@ export async function getBookingById(id: string, token: string) {
             headers: {
                 "Authorization": `Bearer ${token}`
             },
+        });
+
+        const responseJson = await response.json();
+
+        return responseJson;
+
+    } catch (error) {
+        return error;
+    }
+}
+
+export async function editBookingById(id: string, formValues: IBookingEditForm, token: string) {
+    try {
+        const response = await fetch(`${BASE_URL}/booking/edit/${id}`, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "content-type": "application/json"
+            },
+            body: JSON.stringify(formValues)
         });
 
         const responseJson = await response.json();
