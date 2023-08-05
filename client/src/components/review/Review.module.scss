@@ -31,6 +31,13 @@
       display: flex;
       flex-flow: column nowrap;
       justify-content: space-around;
+
+      .author {
+        font-size: 14px;
+        font-style: italic;
+        color: grey;
+      }
+
       .yellowStar {
         color: rgb(237, 190, 0);
       }

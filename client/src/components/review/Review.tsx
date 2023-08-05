@@ -56,6 +56,7 @@ export const Review: React.FC<IReview> = ({ id, stars, description, tenant }) =>
                         alt={`${tenant.firstName} ${tenant.firstName}'s profile picture`} />
                     <div className={styles.reviewStarsContainer}>
                         <h3 className={styles.tenantNames}>{tenant.firstName} {tenant.lastName}</h3>
+                        <span className={styles.author}>{tenant.id === userId ? "By Me" : null}</span>
                         <div>
                             {generateStarReviews()}
                         </div>
