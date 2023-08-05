@@ -45,7 +45,6 @@ export const PropertyEdit: React.FC = () => {
 
     useMemo(() => {
         if (property !== null) {
-            console.log("not null");
             setDefaultValues({
                 title: property?.title!,
                 description: property?.description!,
