@@ -56,3 +56,21 @@ export async function deleteBookingById(id: string, token: string) {
         return error;
     }
 }
+
+export async function getBookingById(id: string, token: string) {
+    try {
+        const response = await fetch(`${BASE_URL}/booking/bookings/${id}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+        });
+
+        const responseJson = await response.json();
+
+        return responseJson;
+
+    } catch (error) {
+        return error;
+    }
+}
