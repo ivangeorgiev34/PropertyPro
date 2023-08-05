@@ -1,0 +1,65 @@
+@use "../../assets/globalVariables.scss" as globalVariables;
+
+.bookingEditCardWrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  padding: 20px;
+
+  .bookingEditCard {
+    background-color: white;
+    border: 1px solid globalVariables.$formBorderColor;
+    border-radius: globalVariables.$borderRadius;
+    box-shadow: globalVariables.$boxShadow;
+    padding: 30px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    align-items: center;
+    row-gap: 20px;
+    width: 40%;
+
+    h2 {
+      margin: 0;
+    }
+
+    hr {
+      all: unset;
+      background-color: rgb(140, 140, 140);
+      width: 100%;
+      height: 1px;
+    }
+
+    .inputContainer {
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      row-gap: 5px;
+    }
+
+    .error {
+      color: red;
+      text-align: center;
+    }
+
+    .submitBtn {
+      all: unset;
+      color: white;
+      font-weight: 500;
+      padding: 10px 40px;
+      background-color: rgb(33, 174, 33);
+      border-radius: 5px;
+      border: 1px solid black;
+      &:disabled {
+        opacity: 0.5;
+      }
+      &:enabled {
+        &:hover {
+          border-radius: 20px;
+          background-color: rgb(26, 218, 26);
+          transition: border-radius 0.6s, background-color 0.8s ease-out;
+        }
+      }
+    }
+  }
+}
