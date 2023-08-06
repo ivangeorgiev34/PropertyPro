@@ -37,9 +37,11 @@ namespace PropertyPro.Controllers
 		{
 			var properties = await propertyService.GetAllPropertiesAsync();
 
-			return Ok(new
+			return StatusCode(StatusCodes.Status200OK, new Response()
 			{
-				Properties = properties
+				Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+				Message = "Properties retrieved successfully",
+				Content = properties
 			});
 		}
 
