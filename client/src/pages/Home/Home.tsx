@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./Home.module.scss"
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { GuestHome } from "../../components/home/GuestHome/GuestHome";
+import { TenantHome } from "../../components/home/GuestHome/TenantHome/TenantHome";
 
 export const Home: React.FC = () => {
 
@@ -11,7 +12,9 @@ export const Home: React.FC = () => {
         <React.Fragment>
             {role === null
                 ? <GuestHome />
-                : null}
+                : role === "Tenant"
+                    ? <TenantHome />
+                    : null}
         </React.Fragment>
     );
 
