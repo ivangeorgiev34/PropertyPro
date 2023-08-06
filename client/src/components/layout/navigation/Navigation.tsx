@@ -23,7 +23,7 @@ export const Navigation: React.FC = () => {
         <header>
             <nav id={styles.navBar}>
                 <div className={styles.menu}>
-                    <Link to={"/home"} className={styles.logo}>
+                    <Link to={"/"} className={styles.logo}>
                         <img className={styles.navLogoPicture} src="clipart-house-logo-6.png" alt="propertypro-logo" />
                         PropertyPro
                     </Link>
