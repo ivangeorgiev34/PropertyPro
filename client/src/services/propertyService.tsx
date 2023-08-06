@@ -92,3 +92,21 @@ export async function createProperty(token: string, formData: FormData) {
         return error;
     }
 }
+
+export async function getAllProperties(token: string) {
+    try {
+        const response = await fetch(`${BASE_URL}/property/properties`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        const propertiesJson = await response.json();
+
+        return propertiesJson;
+
+    } catch (error) {
+        return error;
+    }
+}
