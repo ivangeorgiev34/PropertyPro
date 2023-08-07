@@ -123,7 +123,7 @@ export const PropertyDetails: React.FC = () => {
                             ? <span>No reviews</span>
                             : <div className={styles.reviewsCount}>
                                 <span><i className="fa-solid fa-star"></i>
-                                    {propertyDeatils?.averageRating}</span>
+                                    {propertyDeatils?.averageRating.toFixed(2)}</span>
                                 <span>{propertyDeatils?.reviewsCount} {propertyDeatils?.reviewsCount! > 1 ? "Reviews" : "Review"}</span>
                             </div>}
                     </div>
