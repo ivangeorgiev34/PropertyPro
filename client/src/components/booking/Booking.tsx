@@ -53,6 +53,9 @@ export const Booking: React.FC<IMyBookings> = (props) => {
             <p className={styles.bookingGuests}>Guests: {props.guests}</p>
             <span className={styles.error}>{deleteError}</span>
             <div className={styles.btnsContainer}>
+                <Link className={styles.detailsBtn} to={`/property/details/${props.property.id}`}>
+                    Details
+                </Link>
                 <Link className={styles.editBtn} to={`/booking/edit/${props.id}`}>Edit</Link>
                 <button className={styles.deleteBtn} onClick={onDeleteBookingClick}>Delete</button>
             </div>
