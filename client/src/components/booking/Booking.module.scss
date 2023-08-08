@@ -67,5 +67,21 @@
         transition: border-radius 0.6s, background-color 0.8s ease-out;
       }
     }
+
+    .detailsBtn {
+      all: unset;
+      cursor: pointer;
+      border: 1px solid black;
+      align-self: center;
+      padding: 10px 20px;
+      background-color: rgb(127, 127, 127);
+      color: white;
+      border-radius: globalVariables.$borderRadius;
+      &:hover {
+        border-radius: 20px;
+        background-color: rgb(148, 148, 148);
+        transition: background-color, border-radius 0.6s ease-out;
+      }
+    }
   }
 }
