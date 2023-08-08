@@ -110,3 +110,21 @@ export async function getAllProperties(token: string) {
         return error;
     }
 }
+
+export async function getPropertiesBySearch(token: string, searchTerm: string, searchValue: string) {
+    try {
+        const response = await fetch(`${BASE_URL}/property/properties/search?${searchTerm}=${searchValue}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        const propertiesJson = await response.json();
+
+        return propertiesJson;
+
+    } catch (error) {
+        return error;
+    }
+}
