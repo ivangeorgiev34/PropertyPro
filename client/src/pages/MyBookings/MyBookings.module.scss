@@ -1,7 +1,83 @@
+@use "../../assets/globalVariables.scss" as globalVariables;
+@import url(https://use.fontawesome.com/releases/v6.4.0/css/all.css);
+
 .bookingCardsWrapper {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-evenly;
   padding: 20px;
   row-gap: 20px;
+
+  .viewAllBtnErrorsContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    row-gap: 20px;
+  }
+
+  .errorsContainer {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+  }
+
+  .bookingCardContainer {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    row-gap: 20px;
+    width: 100%;
+  }
+
+  .error {
+    color: red;
+    text-align: center;
+  }
+
+  .searchBarContainer {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    width: 100%;
+
+    #searchOptions {
+      border-left: none;
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .searchInput {
+      border: 1px solid grey;
+      border-right: none;
+      border-top-left-radius: globalVariables.$borderRadius;
+      border-bottom-left-radius: globalVariables.$borderRadius;
+      width: 20%;
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .searchBtn {
+      background-color: rgb(0, 142, 230);
+      border: 1px solid grey;
+      padding: 10px;
+      border-top-right-radius: globalVariables.$borderRadius;
+      border-bottom-right-radius: globalVariables.$borderRadius;
+      &:hover {
+        background-color: rgb(10, 161, 255);
+        transition: background-color 0.5s ease-out;
+      }
+
+      i {
+        font-size: 20px;
+        color: white;
+      }
+    }
+  }
+
+  .viewAllBtn {
+    all: unset;
+    text-decoration: underline;
+  }
 }
