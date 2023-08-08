@@ -96,3 +96,21 @@ export async function editBookingById(id: string, formValues: IBookingEditForm, 
         return error;
     }
 }
+
+export async function getUsersBookingsBySearch(token: string, searchTerm: string, searchValue: string) {
+    try {
+        const response = await fetch(`${BASE_URL}/booking/bookings/search?${searchTerm}=${searchValue}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        const responseJson = await response.json();
+
+        return responseJson;
+
+    } catch (error) {
+        return error;
+    }
+}
