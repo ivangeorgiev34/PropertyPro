@@ -109,7 +109,7 @@ export const ReviewEdit: React.FC = () => {
                 <div className={styles.stars}>
                     {generateStars()}
                 </div>
-                <button className={styles.clearRatingBtn} onClick={() => setRating(0)}>Clear</button>
+                <button type="button" className={styles.clearRatingBtn} onClick={() => setRating(0)}>Clear</button>
                 <div className={styles.inputContainer}>
                     <label htmlFor="description">Description:</label>
                     <textarea name="description" id="description" rows={8} cols={30}
