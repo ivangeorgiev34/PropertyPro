@@ -78,6 +78,27 @@
       row-gap: 20px;
       justify-content: space-evenly;
       width: 100%;
+
+      .addReviewBtn {
+        all: unset;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        justify-content: center;
+        row-gap: 5px;
+        border-radius: globalVariables.$borderRadius;
+        border: 1px solid globalVariables.$formBorderColor;
+        background-color: white;
+        width: 40%;
+        padding: 30px;
+
+        span {
+          font-size: 18px;
+          font-weight: bold;
+          color: rgb(0, 144, 67);
+          cursor: pointer;
+        }
+      }
     }
 
     .propertyDetailsHeading {
