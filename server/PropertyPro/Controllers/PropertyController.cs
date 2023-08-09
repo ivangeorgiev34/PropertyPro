@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using PropertyPro.Constants;
 using PropertyPro.Core.Contracts;
 using PropertyPro.Infrastructure.Dtos.Property;
+using PropertyPro.Infrastructure.Dtos.Query;
 using PropertyPro.Infrastructure.Models;
 using PropertyPro.Utilities;
 using System.Security.Claims;
@@ -28,6 +29,32 @@ namespace PropertyPro.Controllers
 			this.reviewService = _reviewService;
 			this.bookingService = _bookingService;
 			this.userManager = _userManager;
+		}
+
+		[HttpGet]
+		[Route("properties/search")]
+		[Authorize(Roles = "Landlord", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<IActionResult> SearchAllLandlordsProperties([FromQuery] GetLandlordsPropertiesSearchParameters searchParameters)
+		{
+			var userId = GetUserId(HttpContext);
+
+			var properties = await propertyService.GetAllPropertiesBySearchTermAsync(searchParameters, userId!);
+
+			if (properties.Count == 0)
+			{
+				return StatusCode(StatusCodes.Status404NotFound, new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "No properties were found"
+				});
+			}
+
+			return StatusCode(StatusCodes.Status200OK, new Response()
+			{
+				Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+				Message = "Properties retrieved successfully",
+				Content = properties
+			});
 		}
 
 		[HttpGet]
