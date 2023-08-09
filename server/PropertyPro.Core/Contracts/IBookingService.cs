@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using PropertyPro.Infrastructure.Dtos.Booking;
+using PropertyPro.Infrastructure.Dtos.Query;
 using PropertyPro.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ namespace PropertyPro.Core.Contracts
 
         Task<List<BookingDto>?> GetAllUsersBookings(string userId);
 
-        Task<List<BookingDto>?> GetPropertyBookings(string userId, string propertyId);
+		Task<List<BookingDto>?> GetAllUsersBookingsBySearchAsync(GetAllUsersBookingsSearchParameters searchParameters,string userId);
+
+		Task<List<BookingDto>?> GetPropertyBookings(string userId, string propertyId);
     }
 }
