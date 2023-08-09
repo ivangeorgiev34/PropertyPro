@@ -217,6 +217,10 @@ export const PropertyDetails: React.FC = () => {
                                 <Review key={r.id} {...r} />
                             );
                         })}
+                        <Link to={`/review/create/${propertyId!}`} className={styles.addReviewBtn}>
+                            <span>+</span>
+                            <span>Add a review</span>
+                        </Link>
                     </div>
                 </div>
             </div >}
