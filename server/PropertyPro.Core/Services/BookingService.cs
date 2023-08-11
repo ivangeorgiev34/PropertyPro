@@ -36,7 +36,7 @@ namespace PropertyPro.Core.Services
 			return bookingExists;
 		}
 
-		public async Task<bool> CanBookingBeBooked(DateTime startDate, DateTime endDate)
+		public async Task<bool> CanBookingBeBooked(DateTime startDate, DateTime endDate, string propertyId)
 		{
 			if (DateTime.Compare(startDate, DateTime.Now) < 0)
 			{
@@ -57,7 +57,7 @@ namespace PropertyPro.Core.Services
 			}
 
 			var canBookingBeBooked = await repo.All<Booking>()
-				.AnyAsync(b => b.IsActive == true
+				.AnyAsync(b => b.IsActive == true && b.PropertyId == Guid.Parse(propertyId)
 				&& ((b.StartDate.DayOfYear <= startDate.DayOfYear && b.EndDate.DayOfYear >= startDate.DayOfYear)
 				|| (b.EndDate.DayOfYear >= endDate.DayOfYear && b.StartDate.DayOfYear <= endDate.DayOfYear)));
 
