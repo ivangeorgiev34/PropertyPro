@@ -44,7 +44,7 @@ namespace PropertyPro.Controllers
 
 			var bookings = await bookingService.GetAllUsersBookingsBySearchAsync(searchParameters, userId);
 
-			if (bookings?.Count == 0)
+			if (bookings?.Skip((searchParameters.Page - 1) * 6).Take(6).ToList().Count == 0)
 			{
 				return StatusCode(StatusCodes.Status404NotFound, new Response()
 				{
@@ -59,7 +59,8 @@ namespace PropertyPro.Controllers
 				Message = "Bookings extracted successfully",
 				Content = new
 				{
-					Bookings = bookings
+					Bookings = bookings?.Skip((searchParameters.Page - 1) * 6).Take(6).ToList(),
+					TotalBookingsCount = bookings?.Count
 				}
 			});
 		}
@@ -103,7 +104,7 @@ namespace PropertyPro.Controllers
 			try
 			{
 				//if CanBookingBeBooked is true, then booking cannot be booked, otherwise booking can be booked
-				if (await bookingService.CanBookingBeBooked(startDate, endDate) == true)
+				if (await bookingService.CanBookingBeBooked(startDate, endDate, propertyId) == true)
 				{
 					return BadRequest(new Response()
 					{
@@ -141,6 +142,8 @@ namespace PropertyPro.Controllers
 		[Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 		public async Task<IActionResult> EditBooking(EditBookingDto editBookingDto, string bookingId)
 		{
+			var userId = GetUserId(HttpContext);
+
 			if (IsIdValidGuidAndNotNull(bookingId) == false)
 			{
 				return BadRequest(new Response()
@@ -172,10 +175,21 @@ namespace PropertyPro.Controllers
 				});
 			}
 
+			var booking = await bookingService.GetBookingByIdAsync(bookingId, userId!);
+
+			if (booking == null)
+			{
+				return NotFound(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "Booking does not exists"
+				});
+			}
+
 			try
 			{
 				//if CanBookingBeBooked is true, then booking cannot be booked, otherwise booking can be booked
-				if (await bookingService.CanBookingBeBooked(startDate, endDate) == true)
+				if (await bookingService.CanBookingBeBooked(startDate, endDate, booking.Property.Id.ToString()) == true)
 				{
 					return BadRequest(new Response()
 					{
@@ -192,8 +206,6 @@ namespace PropertyPro.Controllers
 					Message = e.Message
 				});
 			}
-
-			var userId = GetUserId(HttpContext);
 
 			if (userId == null)
 			{
@@ -274,7 +286,7 @@ namespace PropertyPro.Controllers
 		[HttpGet]
 		[Route("bookings")]
 		[Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-		public async Task<IActionResult> GetAllUsersBookings()
+		public async Task<IActionResult> GetAllUsersBookings(int page = 1)
 		{
 			var userId = GetUserId(HttpContext);
 
@@ -289,13 +301,29 @@ namespace PropertyPro.Controllers
 
 			var bookings = await bookingService.GetAllUsersBookings(userId);
 
+			var paginatedBookings = bookings?.Skip((page - 1) * 6).Take(6).ToList();
+
+			if (paginatedBookings?.Count == 0)
+			{
+				return StatusCode(StatusCodes.Status404NotFound, new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+					Message = "No bookings were found",
+					Content = new
+					{
+						Bookings = bookings
+					}
+				});
+			}
+
 			return StatusCode(StatusCodes.Status200OK, new Response()
 			{
 				Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
 				Message = "Bookings extracted successfully",
 				Content = new
 				{
-					Bookings = bookings
+					Bookings = paginatedBookings,
+					TotalBookingsCount = bookings?.Count
 				}
 			});
 		}
