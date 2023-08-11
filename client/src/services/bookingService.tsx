@@ -23,9 +23,9 @@ export async function createBooking(propertyId: string, token: string, formValue
     }
 }
 
-export async function getUsersBookings(token: string) {
+export async function getUsersBookings(token: string, page: number) {
     try {
-        const response = await fetch(`${BASE_URL}/booking/bookings`, {
+        const response = await fetch(`${BASE_URL}/booking/bookings?page=${page}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -97,9 +97,9 @@ export async function editBookingById(id: string, formValues: IBookingEditForm, 
     }
 }
 
-export async function getUsersBookingsBySearch(token: string, searchTerm: string, searchValue: string) {
+export async function getUsersBookingsBySearch(token: string, searchTerm: string, searchValue: string, page: number) {
     try {
-        const response = await fetch(`${BASE_URL}/booking/bookings/search?${searchTerm}=${searchValue}`, {
+        const response = await fetch(`${BASE_URL}/booking/bookings/search?${searchTerm}=${searchValue}&page=${page}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
