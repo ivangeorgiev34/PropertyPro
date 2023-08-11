@@ -29,6 +29,8 @@ namespace PropertyPro.Core.Contracts
 
         Task<GetPropertyByIdDto?> GetPropertyDtoByIdAsync(string propertyId);
 
-		Task<List<GetAllPropertiesDto>> GetAllPropertiesBySearchTermAsync(GetLandlordsPropertiesSearchParameters searchTerms,string userId);
+		Task<List<GetAllPropertiesDto>> GetLandlordsPropertiesBySearchTermAsync(GetLandlordsPropertiesSearchParameters searchTerms,string userId);
+
+		Task<List<GetAllPropertiesDto>> GetAllPropertiesBySearchTermAsync(GetAllPropertiesSearchParams searchTerms);
 	}
 }
