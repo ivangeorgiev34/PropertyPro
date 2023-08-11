@@ -93,9 +93,9 @@ export async function createProperty(token: string, formData: FormData) {
     }
 }
 
-export async function getAllProperties(token: string) {
+export async function getAllProperties(token: string, page: number) {
     try {
-        const response = await fetch(`${BASE_URL}/property/properties`, {
+        const response = await fetch(`${BASE_URL}/property/properties?page=${page}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -114,6 +114,24 @@ export async function getAllProperties(token: string) {
 export async function getPropertiesBySearch(token: string, searchTerm: string, searchValue: string) {
     try {
         const response = await fetch(`${BASE_URL}/property/properties/search?${searchTerm}=${searchValue}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        const propertiesJson = await response.json();
+
+        return propertiesJson;
+
+    } catch (error) {
+        return error;
+    }
+}
+
+export async function getAllPropertiesBySearch(token: string, searchTerm: string, searchValue: string, page: number) {
+    try {
+        const response = await fetch(`${BASE_URL}/property/properties/all/search?${searchTerm}=${searchValue}&page=${page}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
