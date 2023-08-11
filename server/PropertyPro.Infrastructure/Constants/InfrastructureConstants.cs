@@ -25,7 +25,8 @@ namespace PropertyPro.Infrastructure.Constants
             public const string BOOKING_GUESTS_REQUIRED_ERROR_MESSAGE = "Guests are required";
             public const string BOOKING_TENANT_REQUIRED_ERROR_MESSAGE = "Every booking must have a tenant";
             public const string BOOKING_PROPERTY_REQUIRED_ERROR_MESSAGE = "Every booking must have a property";
-        }
+			public const string BOOKING_PROPERTYID_REQUIRED_ERROR_MESSAGE = "Property id is required";
+		}
 
         public static class Property
         {
