@@ -32,13 +32,42 @@ namespace PropertyPro.Controllers
 		}
 
 		[HttpGet]
+		[Route("properties/all/search")]
+		[Authorize(Roles = "Landlord,Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<IActionResult> GetAllPropertiesBySearch([FromQuery] GetAllPropertiesSearchParams searchParameters)
+		{
+
+			var properties = await propertyService.GetAllPropertiesBySearchTermAsync(searchParameters);
+
+			if (properties.Skip((searchParameters.Page - 1) * 6).Take(6).ToList().Count == 0)
+			{
+				return StatusCode(StatusCodes.Status404NotFound, new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "No properties were found"
+				});
+			}
+
+			return StatusCode(StatusCodes.Status200OK, new Response()
+			{
+				Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+				Message = "Properties retrieved successfully",
+				Content = new
+				{
+					Properties = properties.Skip((searchParameters.Page - 1) * 6).Take(6).ToList(),
+					TotalPropertiesCount = properties.Count
+				}
+			});
+		}
+
+		[HttpGet]
 		[Route("properties/search")]
 		[Authorize(Roles = "Landlord", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 		public async Task<IActionResult> SearchAllLandlordsProperties([FromQuery] GetLandlordsPropertiesSearchParameters searchParameters)
 		{
 			var userId = GetUserId(HttpContext);
 
-			var properties = await propertyService.GetAllPropertiesBySearchTermAsync(searchParameters, userId!);
+			var properties = await propertyService.GetLandlordsPropertiesBySearchTermAsync(searchParameters, userId!);
 
 			if (properties.Count == 0)
 			{
@@ -60,15 +89,28 @@ namespace PropertyPro.Controllers
 		[HttpGet]
 		[Route("properties")]
 		[Authorize(Roles = "Landlord,Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-		public async Task<IActionResult> GetAll()
+		public async Task<IActionResult> GetAll([FromQuery] int page = 1)
 		{
 			var properties = await propertyService.GetAllPropertiesAsync();
+
+			if (properties.Skip((page - 1) * 6).Take(6).ToList().Count == 0)
+			{
+				return StatusCode(StatusCodes.Status404NotFound, new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "No properties were found"
+				});
+			}
 
 			return StatusCode(StatusCodes.Status200OK, new Response()
 			{
 				Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
 				Message = "Properties retrieved successfully",
-				Content = properties
+				Content = new
+				{
+					Properties = properties.Skip((page - 1) * 6).Take(6).ToList(),
+					TotalPropertiesCount = properties.Count
+				}
 			});
 		}
 
