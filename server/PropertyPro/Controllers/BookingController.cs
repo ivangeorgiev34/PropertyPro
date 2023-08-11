@@ -6,167 +6,206 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using PropertyPro.Constants;
 using PropertyPro.Core.Contracts;
 using PropertyPro.Infrastructure.Dtos.Booking;
+using PropertyPro.Infrastructure.Dtos.Query;
 using PropertyPro.Utilities;
 using System.Globalization;
 using System.Net;
 
 namespace PropertyPro.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class BookingController : BaseController
-    {
-        private readonly IPropertyService propertyService;
-        private readonly IBookingService bookingService;
-        public BookingController(IPropertyService _propertyService,
-            IBookingService _bookingService)
-        {
-            this.propertyService = _propertyService;
-            this.bookingService = _bookingService;
-        }
+	[Route("api/[controller]")]
+	[ApiController]
+	public class BookingController : BaseController
+	{
+		private readonly IPropertyService propertyService;
+		private readonly IBookingService bookingService;
+		public BookingController(IPropertyService _propertyService,
+			IBookingService _bookingService)
+		{
+			this.propertyService = _propertyService;
+			this.bookingService = _bookingService;
+		}
 
-        [HttpPost]
-        [Route("create/{propertyId}")]
-        [Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> CreateBooking(CreateBookingDto createBookingDto, string propertyId)
-        {
-            if (IsIdValidGuidAndNotNull(propertyId) == false || await propertyService.PropertyExistsAsync(propertyId) == false)
-            {
-                return BadRequest(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "Property doesn't exist"
-                });
-            }
+		[HttpGet]
+		[Route("bookings/search")]
+		[Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<IActionResult> GetAllUsersBookingsSearch([FromQuery] GetAllUsersBookingsSearchParameters searchParameters)
+		{
+			var userId = GetUserId(HttpContext);
 
-            var convertFirstDateResult = DateTime.TryParseExact(DateTime.Parse(createBookingDto.StartDate).ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime startDate);
-            var convertSecondDateResult = DateTime.TryParseExact(DateTime.Parse(createBookingDto.EndDate).ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endDate);
+			if (userId == null)
+			{
+				return StatusCode(StatusCodes.Status401Unauthorized, new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "User is not logged in"
+				});
+			}
 
-            if (convertFirstDateResult == false
-                && convertSecondDateResult == false)
-            {
-                return BadRequest(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "Invalid dates"
-                });
-            }
+			var bookings = await bookingService.GetAllUsersBookingsBySearchAsync(searchParameters, userId);
 
-            if (DateTime.Compare(startDate, endDate) >= 0)
-            {
-                return BadRequest(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "Start date cannot be later than end date"
-                });
-            }
+			if (bookings?.Count == 0)
+			{
+				return StatusCode(StatusCodes.Status404NotFound, new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "No bookings were found"
+				});
+			}
 
-            try
-            {
-                //if CanBookingBeBooked is true, then booking cannot be booked, otherwise booking can be booked
-                if (await bookingService.CanBookingBeBooked(startDate, endDate) == true)
-                {
-                    return BadRequest(new Response()
-                    {
-                        Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                        Message = "The dates you chose are busy"
-                    });
-                }
-            }
-            catch (InvalidOperationException e)
-            {
-                return BadRequest(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = e.Message
-                });
-            }
+			return StatusCode(StatusCodes.Status200OK, new Response()
+			{
+				Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+				Message = "Bookings extracted successfully",
+				Content = new
+				{
+					Bookings = bookings
+				}
+			});
+		}
 
-            var userId = GetUserId(HttpContext);
+		[HttpPost]
+		[Route("create/{propertyId}")]
+		[Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<IActionResult> CreateBooking(CreateBookingDto createBookingDto, string propertyId)
+		{
+			if (IsIdValidGuidAndNotNull(propertyId) == false || await propertyService.PropertyExistsAsync(propertyId) == false)
+			{
+				return BadRequest(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "Property doesn't exist"
+				});
+			}
 
-            var bookingDto = await bookingService.CreateBookingAsync(createBookingDto, userId!, propertyId, startDate, endDate);
+			var convertFirstDateResult = DateTime.TryParseExact(DateTime.Parse(createBookingDto.StartDate).ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime startDate);
+			var convertSecondDateResult = DateTime.TryParseExact(DateTime.Parse(createBookingDto.EndDate).ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endDate);
 
-            return Ok(new Response()
-            {
-                Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
-                Message = "Booking created successfully",
-                Content = new
-                {
-                    Booking = bookingDto
-                }
-            });
-        }
+			if (convertFirstDateResult == false
+				&& convertSecondDateResult == false)
+			{
+				return BadRequest(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "Invalid dates"
+				});
+			}
 
-        [HttpPut]
-        [Route("edit/{bookingId}")]
-        [Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> EditBooking(EditBookingDto editBookingDto, string bookingId)
-        {
-            if (IsIdValidGuidAndNotNull(bookingId) == false)
-            {
-                return BadRequest(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "Booking doesn't exist"
-                });
-            }
+			if (DateTime.Compare(startDate, endDate) >= 0)
+			{
+				return BadRequest(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "Start date cannot be later than end date"
+				});
+			}
 
-            var convertFirstDateResult = DateTime.TryParseExact(DateTime.Parse(editBookingDto.StartDate).ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime startDate);
-            var convertSecondDateResult = DateTime.TryParseExact(DateTime.Parse(editBookingDto.EndDate).ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endDate);
+			try
+			{
+				//if CanBookingBeBooked is true, then booking cannot be booked, otherwise booking can be booked
+				if (await bookingService.CanBookingBeBooked(startDate, endDate) == true)
+				{
+					return BadRequest(new Response()
+					{
+						Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+						Message = "The dates you chose are busy"
+					});
+				}
+			}
+			catch (InvalidOperationException e)
+			{
+				return BadRequest(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = e.Message
+				});
+			}
 
-            if (convertFirstDateResult == false
-                && convertSecondDateResult == false)
-            {
-                return BadRequest(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "Invalid dates"
-                });
-            }
+			var userId = GetUserId(HttpContext);
 
-            if (DateTime.Compare(startDate, endDate) >= 0)
-            {
-                return BadRequest(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "Start date cannot be later than end date"
-                });
-            }
+			var bookingDto = await bookingService.CreateBookingAsync(createBookingDto, userId!, propertyId, startDate, endDate);
 
-            try
-            {
-                //if CanBookingBeBooked is true, then booking cannot be booked, otherwise booking can be booked
-                if (await bookingService.CanBookingBeBooked(startDate, endDate) == true)
-                {
-                    return BadRequest(new Response()
-                    {
-                        Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                        Message = "The dates you chose are busy"
-                    });
-                }
-            }
-            catch (InvalidOperationException e)
-            {
-                return BadRequest(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = e.Message
-                });
-            }
+			return Ok(new Response()
+			{
+				Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+				Message = "Booking created successfully",
+				Content = new
+				{
+					Booking = bookingDto
+				}
+			});
+		}
 
-            var userId = GetUserId(HttpContext);
+		[HttpPut]
+		[Route("edit/{bookingId}")]
+		[Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<IActionResult> EditBooking(EditBookingDto editBookingDto, string bookingId)
+		{
+			if (IsIdValidGuidAndNotNull(bookingId) == false)
+			{
+				return BadRequest(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "Booking doesn't exist"
+				});
+			}
 
-            if (userId == null)
-            {
-                return StatusCode(500, new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "User is not logged in"
-                });
-            }
+			var convertFirstDateResult = DateTime.TryParseExact(DateTime.Parse(editBookingDto.StartDate).ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime startDate);
+			var convertSecondDateResult = DateTime.TryParseExact(DateTime.Parse(editBookingDto.EndDate).ToString("dd/MM/yyyy"), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endDate);
 
-            try
-            {
+			if (convertFirstDateResult == false
+				&& convertSecondDateResult == false)
+			{
+				return BadRequest(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "Invalid dates"
+				});
+			}
+
+			if (DateTime.Compare(startDate, endDate) >= 0)
+			{
+				return BadRequest(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "Start date cannot be later than end date"
+				});
+			}
+
+			try
+			{
+				//if CanBookingBeBooked is true, then booking cannot be booked, otherwise booking can be booked
+				if (await bookingService.CanBookingBeBooked(startDate, endDate) == true)
+				{
+					return BadRequest(new Response()
+					{
+						Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+						Message = "The dates you chose are busy"
+					});
+				}
+			}
+			catch (InvalidOperationException e)
+			{
+				return BadRequest(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = e.Message
+				});
+			}
+
+			var userId = GetUserId(HttpContext);
+
+			if (userId == null)
+			{
+				return StatusCode(500, new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "User is not logged in"
+				});
+			}
+
+			try
+			{
 				var bookingDto = await bookingService.EditBookingAsync(editBookingDto, bookingId, userId, startDate, endDate);
 
 				return StatusCode(200, new Response()
@@ -179,125 +218,125 @@ namespace PropertyPro.Controllers
 					}
 				});
 			}
-            catch (InvalidOperationException ioe)
-            {
+			catch (InvalidOperationException ioe)
+			{
 				return StatusCode(StatusCodes.Status400BadRequest, new Response()
 				{
 					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
 					Message = ioe.Message
 				});
 			}
-        }
+		}
 
-        [HttpDelete]
-        [Route("delete/{bookingId}")]
-        [Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> DeleteBooking(string bookingId)
-        {
-            if (IsIdValidGuidAndNotNull(bookingId) == false
-                || await bookingService.BookingExistsByIdAsync(bookingId) == false)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "Booking doesn't exist"
-                });
-            }
+		[HttpDelete]
+		[Route("delete/{bookingId}")]
+		[Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<IActionResult> DeleteBooking(string bookingId)
+		{
+			if (IsIdValidGuidAndNotNull(bookingId) == false
+				|| await bookingService.BookingExistsByIdAsync(bookingId) == false)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "Booking doesn't exist"
+				});
+			}
 
-            var userId = GetUserId(HttpContext);
+			var userId = GetUserId(HttpContext);
 
-            if (userId == null)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "User is not logged in"
-                });
-            }
+			if (userId == null)
+			{
+				return StatusCode(StatusCodes.Status401Unauthorized, new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "User is not logged in"
+				});
+			}
 
-            try
-            {
-                await bookingService.DeleteBookingAsync(bookingId, userId);
+			try
+			{
+				await bookingService.DeleteBookingAsync(bookingId, userId);
 
-                return StatusCode(StatusCodes.Status204NoContent);
-            }
-            catch (InvalidOperationException ioe)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = ioe.Message
-                });
-            }
+				return StatusCode(StatusCodes.Status204NoContent);
+			}
+			catch (InvalidOperationException ioe)
+			{
+				return StatusCode(StatusCodes.Status404NotFound, new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = ioe.Message
+				});
+			}
 
-        }
+		}
 
-        [HttpGet]
-        [Route("bookings")]
-        [Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetAllUsersBookings()
-        {
-            var userId = GetUserId(HttpContext);
+		[HttpGet]
+		[Route("bookings")]
+		[Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<IActionResult> GetAllUsersBookings()
+		{
+			var userId = GetUserId(HttpContext);
 
-            if (userId == null)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "User is not logged in"
-                });
-            }
+			if (userId == null)
+			{
+				return StatusCode(StatusCodes.Status401Unauthorized, new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "User is not logged in"
+				});
+			}
 
-            var bookings = await bookingService.GetAllUsersBookings(userId);
+			var bookings = await bookingService.GetAllUsersBookings(userId);
 
-            return StatusCode(StatusCodes.Status200OK, new Response()
-            {
-                Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
-                Message = "Bookings extracted successfully",
-                Content = new
-                {
-                    Bookings = bookings
-                }
-            });
-        }
+			return StatusCode(StatusCodes.Status200OK, new Response()
+			{
+				Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+				Message = "Bookings extracted successfully",
+				Content = new
+				{
+					Bookings = bookings
+				}
+			});
+		}
 
-        [HttpGet]
-        [Route("bookings/{bookingId}")]
-        [Authorize(Roles ="Tenant",AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetBookingById(string bookingId)
-        {
-            if (IsIdValidGuidAndNotNull(bookingId) == false
-                || await bookingService.BookingExistsByIdAsync(bookingId) == false)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "Booking doesn't exist"
-                });
-            }
+		[HttpGet]
+		[Route("bookings/{bookingId}")]
+		[Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<IActionResult> GetBookingById(string bookingId)
+		{
+			if (IsIdValidGuidAndNotNull(bookingId) == false
+				|| await bookingService.BookingExistsByIdAsync(bookingId) == false)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "Booking doesn't exist"
+				});
+			}
 
-            var userId = GetUserId(HttpContext);
+			var userId = GetUserId(HttpContext);
 
-            if (userId == null)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "User is not logged in"
-                });
-            }
+			if (userId == null)
+			{
+				return StatusCode(StatusCodes.Status401Unauthorized, new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "User is not logged in"
+				});
+			}
 
-            var booking = await bookingService.GetBookingByIdAsync(bookingId, userId);
+			var booking = await bookingService.GetBookingByIdAsync(bookingId, userId);
 
-            return StatusCode(StatusCodes.Status200OK, new Response()
-            {
-                Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
-                Message = "Booking extracted successfully",
-                Content = new
-                {
-                    Booking = booking
-                }
-            });
-        }
-    }
+			return StatusCode(StatusCodes.Status200OK, new Response()
+			{
+				Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+				Message = "Booking extracted successfully",
+				Content = new
+				{
+					Booking = booking
+				}
+			});
+		}
+	}
 }

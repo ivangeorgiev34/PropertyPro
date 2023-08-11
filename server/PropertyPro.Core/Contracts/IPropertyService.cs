@@ -1,4 +1,5 @@
 ﻿using PropertyPro.Infrastructure.Dtos.Property;
+using PropertyPro.Infrastructure.Dtos.Query;
 using PropertyPro.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
@@ -27,5 +28,7 @@ namespace PropertyPro.Core.Contracts
         Task<Property?> GetPropertyByIdAsync(string? propertyId);
 
         Task<GetPropertyByIdDto?> GetPropertyDtoByIdAsync(string propertyId);
-    }
+
+		Task<List<GetAllPropertiesDto>> GetAllPropertiesBySearchTermAsync(GetLandlordsPropertiesSearchParameters searchTerms,string userId);
+	}
 }
