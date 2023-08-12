@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PropertyPro.Constants;
 using PropertyPro.Core.Contracts;
+using PropertyPro.Infrastructure.Constants;
 using PropertyPro.Infrastructure.Dtos.Property;
 using PropertyPro.Infrastructure.Dtos.Query;
 using PropertyPro.Infrastructure.Models;
@@ -69,7 +70,9 @@ namespace PropertyPro.Controllers
 
 			var properties = await propertyService.GetLandlordsPropertiesBySearchTermAsync(searchParameters, userId!);
 
-			if (properties.Count == 0)
+			var paginatedProperties = properties.Skip((searchParameters.Page - 1) * 6).Take(6).ToList();
+
+			if (paginatedProperties.Count == 0)
 			{
 				return StatusCode(StatusCodes.Status404NotFound, new Response()
 				{
@@ -82,7 +85,11 @@ namespace PropertyPro.Controllers
 			{
 				Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
 				Message = "Properties retrieved successfully",
-				Content = properties
+				Content = new
+				{
+					Properties = paginatedProperties,
+					TotalPropertiesCount = properties.Count
+				}
 			});
 		}
 
@@ -255,7 +262,7 @@ namespace PropertyPro.Controllers
 		[HttpGet]
 		[Route("properties/{userId?}")]
 		[Authorize(Roles = "Landlord", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-		public async Task<IActionResult> GetLandlordsProperties(string? userId)
+		public async Task<IActionResult> GetLandlordsProperties(string? userId, int page = 1)
 		{
 
 			if (userId == null || Guid.TryParse(userId, out Guid userIdResult) == false)
@@ -271,9 +278,26 @@ namespace PropertyPro.Controllers
 			{
 				var landlordProperties = await propertyService.GetLandlordsPropertiesAsync(userId);
 
-				return Ok(new
+				var paginatedLandlordProperties = landlordProperties?.Skip((page - 1) * 6).Take(6).ToList();
+
+				if (paginatedLandlordProperties?.Count == 0)
 				{
-					Properties = landlordProperties
+					return StatusCode(StatusCodes.Status404NotFound,new Response()
+					{
+						Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+						Message = "No properties were found"
+					});
+				}
+
+				return StatusCode(StatusCodes.Status200OK, new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+					Message = "Properties retrieved",
+					Content = new
+					{
+						Properties = paginatedLandlordProperties,
+						TotalPropertiesCount = landlordProperties?.Count
+					}
 				});
 
 			}
