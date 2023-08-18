@@ -51,7 +51,7 @@ namespace PropertyPro.Core.Services
 				}
 			}
 
-			if (startDate.DayOfYear - endDate.DayOfYear >= 30)
+			if (endDate.DayOfYear - startDate.DayOfYear >= 30)
 			{
 				throw new InvalidOperationException("Cannot reserve for more than one month");
 			}
@@ -172,7 +172,7 @@ namespace PropertyPro.Core.Services
 				}
 			}
 
-			if (startDate.DayOfYear - endDate.DayOfYear >= 30)
+			if (endDate.DayOfYear - startDate.DayOfYear >= 30)
 			{
 				throw new InvalidOperationException("Cannot reserve for more than one month");
 			}
