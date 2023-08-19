@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using NUnit.Framework;
 using PropertyPro.Core.Contracts;
 using PropertyPro.Core.Services;
@@ -14,26 +15,13 @@ namespace PropertyPro.UnitTests
 	[TestFixture]
 	public class Tests
 	{
-		private IRepository? repo;
-		private PropertyProDbContext dbContext;
-		private IAccountService? accountService;
+		private Mock<IRepository> repoMock;
+		private IAccountService accountService;
 
 		[SetUp]
 		public void Setup()
 		{
-			var contextOptions = new DbContextOptionsBuilder<PropertyProDbContext>()
-				.UseInMemoryDatabase("PropertyProDb")
-				.Options;
-
-			dbContext = new PropertyProDbContext(contextOptions);
-
-			dbContext.Database.EnsureDeleted();
-			dbContext.Database.EnsureCreated();
-
-			repo = new Repository(dbContext);
-
-			accountService = new AccountService(repo);
-
+			repoMock = new Mock<IRepository>();
 		}
 
 		[Test]
@@ -52,8 +40,6 @@ namespace PropertyPro.UnitTests
 				UserName = "test123"
 			};
 
-			dbContext.Add(user);
-
 			var editProfileDto = new EditProfileDto()
 			{
 				FirstName = "test",
@@ -63,6 +49,11 @@ namespace PropertyPro.UnitTests
 				Age = 22,
 				ProfilePicture = null
 			};
+
+			repoMock.Setup(r => r.SaveChangesAsync())
+				.Returns(Task.FromResult(1));
+
+			var accountService = new AccountService(repoMock.Object);
 
 			await accountService!.EditProfileAsync(user, editProfileDto);
 
@@ -86,7 +77,6 @@ namespace PropertyPro.UnitTests
 				UserName = "test123"
 			};
 
-			dbContext.Add(user);
 
 			var stream = new MemoryStream();
 
@@ -100,15 +90,14 @@ namespace PropertyPro.UnitTests
 				ProfilePicture = new FormFile(stream, 0, stream.Length, "test", "test")
 			};
 
+			 repoMock.Setup(r => r.SaveChangesAsync())
+				.Returns(Task.FromResult(1));
+
+			accountService = new AccountService(repoMock.Object);
+
 			await accountService!.EditProfileAsync(user, editProfileDto);
 
 			Assert.That(user.ProfilePicture != null);
-		}
-
-		[TearDown]
-		public void TearDown()
-		{
-			dbContext.Dispose();
 		}
 	}
 }
