@@ -7,9 +7,11 @@ import { toggleLoaderOff, toggleLoaderOn } from "../../../../store/loader";
 import { getAllProperties, getAllPropertiesBySearch } from "../../../../services/propertyService";
 import { Property } from "../../../property/Property";
 import { versions } from "process";
+import { logout } from "../../../../store/auth";
+import { tokenExpiresValidation } from "../../../../validators/tokenExpiresValidation";
 
 export const TenantHome: React.FC = () => {
-    const { token, role } = useAppSelector(state => state.auth);
+    const { token, role, expires } = useAppSelector(state => state.auth);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -27,6 +29,11 @@ export const TenantHome: React.FC = () => {
 
         if (role !== "Tenant") {
             navigate("unauthorized");
+        } else if (tokenExpiresValidation(expires!) === true) {
+
+            dispatch(logout());
+
+            navigate("/login");
         }
 
         setSearchErrors([]);
@@ -76,7 +83,6 @@ export const TenantHome: React.FC = () => {
                 setAllProperties([]);
                 setSearchErrors(state => [...state, response.message])
             } else if (response.status === "Success") {
-                console.log(response);
                 setAllProperties(response.content.properties);
                 setTotalProperties(response.content.totalPropertiesCount);
             }
@@ -99,6 +105,8 @@ export const TenantHome: React.FC = () => {
         setSearchErrors([]);
 
         setPage(1);
+
+        setSearchValue("");
 
         getAllProperties(token!, 1)
             .then(res => {
