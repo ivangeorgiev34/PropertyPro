@@ -65,6 +65,7 @@
   .viewAllBtn {
     all: unset;
     text-decoration: underline;
+    cursor: pointer;
   }
 
   .errorsContainer {
@@ -80,4 +81,22 @@
   justify-content: space-evenly;
   row-gap: 20px;
   width: 100%;
+}
+
+.paginationBtns {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  width: 40%;
+  margin: 20px 0;
+
+  .paginationBtn {
+    all: unset;
+    text-decoration: underline;
+    font-size: 20px;
+
+    &:disabled {
+      opacity: 0.2;
+    }
+  }
 }
