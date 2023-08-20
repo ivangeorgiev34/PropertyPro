@@ -1,9 +1,9 @@
 import { BASE_URL } from "../constants/constants";
 import IPropertyCreateForm from "../interfaces/IPropertyCreateForm";
 
-export async function getLandlordsProperties(userId: string, token: string) {
+export async function getLandlordsProperties(userId: string, token: string, page: number) {
     try {
-        const response = await fetch(`${BASE_URL}/property/properties/${userId}`, {
+        const response = await fetch(`${BASE_URL}/property/properties/${userId}?page=${page}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -111,9 +111,9 @@ export async function getAllProperties(token: string, page: number) {
     }
 }
 
-export async function getPropertiesBySearch(token: string, searchTerm: string, searchValue: string) {
+export async function getPropertiesBySearch(token: string, searchTerm: string, searchValue: string, page: number) {
     try {
-        const response = await fetch(`${BASE_URL}/property/properties/search?${searchTerm}=${searchValue}`, {
+        const response = await fetch(`${BASE_URL}/property/properties/search?${searchTerm}=${searchValue}&page=${page}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
