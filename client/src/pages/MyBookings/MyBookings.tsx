@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import styles from "./MyBookings.module.scss";
 import { getUsersBookings, getUsersBookingsBySearch } from "../../services/bookingService";
@@ -17,6 +17,9 @@ export const MyBookings: React.FC = () => {
     const [searchOption, setSearchOption] = useState<string>("Title");
     const [searchValue, setSearchValue] = useState<string>("");
     const [searchErrors, setSearchErrors] = useState<string[]>([]);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [page, setPage] = useState<number>(1);
+    const [totalBookings, setTotalBookings] = useState<number>(0);
 
     useEffect(() => {
 
@@ -26,19 +29,31 @@ export const MyBookings: React.FC = () => {
             navigate("/unauthorized");
         }
 
-        getUsersBookings(token!)
+        setSearchErrors([]);
+        setErrors([]);
+
+        getUsersBookings(token!, 1)
             .then(res => {
                 if (res.status === "Error") {
+
+                    setMyBookings([]);
                     setErrors(state => [...state, res.message]);
+                    setTotalBookings(0);
+
                 } else if (res.status === "Success") {
+
                     setMyBookings(res.content.bookings);
+                    setTotalBookings(res.content.totalBookingsCount);
+
                 }
                 dispatch(toggleLoaderOff());
             })
             .catch(err => {
                 setErrors(state => [...state, err]);
                 dispatch(toggleLoaderOff());
-            })
+            });
+
+        setSearchParams("");
 
     }, [])
 
@@ -47,21 +62,31 @@ export const MyBookings: React.FC = () => {
 
         setSearchErrors([]);
 
-        getUsersBookings(token!)
+        if (role !== "Tenant") {
+            navigate("unauthorized");
+        }
+
+        setPage(1);
+
+        setSearchValue("");
+
+        getUsersBookings(token!, 1)
             .then(res => {
                 if (res.status === "Error") {
                     setErrors(state => [...state, res.message]);
+
                 } else if (res.status === "Success") {
                     setMyBookings(res.content.bookings);
+                    setTotalBookings(res.content.totalBookingsCount);
                 }
+                dispatch(toggleLoaderOff());
             })
             .catch(err => {
                 setErrors(state => [...state, err]);
                 dispatch(toggleLoaderOff());
-            })
-            .finally(() => {
-                dispatch(toggleLoaderOff());
             });
+
+        setSearchParams("");
     }
 
     const onSeacrhSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -72,13 +97,18 @@ export const MyBookings: React.FC = () => {
         e.preventDefault();
 
         try {
-            const response = await getUsersBookingsBySearch(token!, searchOption, searchValue);
+            const response = await getUsersBookingsBySearch(token!, searchOption, searchValue, 1);
 
             if (response.status === "Error") {
+
                 setMyBookings([]);
                 setSearchErrors(state => [...state, response.message]);
+
             } else if (response.status === "Success") {
+
+                setTotalBookings(response.content.totalBookingsCount);
                 setMyBookings(response.content.bookings);
+
             }
 
         } catch (error: any) {
@@ -86,8 +116,122 @@ export const MyBookings: React.FC = () => {
         } finally {
             dispatch(toggleLoaderOff());
         }
+
+        setSearchParams(`${searchOption.toLowerCase()}=${searchValue}`);
     }
 
+    const onNextPageClick = async () => {
+
+        dispatch(toggleLoaderOn());
+
+        setSearchErrors([]);
+
+        if (searchValue === "") {
+
+            try {
+
+                const response = await getUsersBookings(token!, page + 1);
+
+                if (response.status === "Success") {
+                    setPage(page => page + 1);
+                    setMyBookings(response.content.bookings)
+                } else if (response.status === "Error") {
+                    setSearchErrors(state => [...state, response.message]);
+                    setMyBookings([]);
+                }
+
+            } catch (error: any) {
+                setSearchErrors(state => [...state, error]);
+            } finally {
+                dispatch(toggleLoaderOff());
+            }
+
+            setSearchParams(`page=${page + 1}`);
+
+        } else {
+
+            try {
+
+                const response = await getUsersBookingsBySearch(token!, searchOption, searchValue, page + 1);
+
+                if (response.status === "Success") {
+                    setPage(page => page + 1);
+                    setMyBookings(response.content.bookings)
+                } else if (response.status === "Error") {
+                    setSearchErrors(state => [...state, response.message]);
+                    setMyBookings([]);
+                }
+
+            } catch (error: any) {
+                setSearchErrors(state => [...state, error]);
+            } finally {
+                dispatch(toggleLoaderOff());
+            }
+
+            setSearchParams(`${searchOption.toLowerCase()}=${searchValue}&page=${page + 1}`);
+
+        }
+    }
+
+    const onPreviousPageClick = async () => {
+        dispatch(toggleLoaderOn());
+
+        setSearchErrors([]);
+
+        if (searchValue === "") {
+
+            try {
+
+                const response = await getUsersBookings(token!, page - 1);
+
+                if (response.status === "Success") {
+                    setPage(page => page - 1);
+                    setMyBookings(response.content.bookings)
+                } else if (response.status === "Error") {
+                    setSearchErrors(state => [...state, response.message]);
+                    setMyBookings([]);
+                }
+
+            } catch (error: any) {
+                setSearchErrors(state => [...state, error]);
+            } finally {
+                dispatch(toggleLoaderOff());
+            }
+
+            if (page - 1 === 1) {
+                setSearchParams("");
+            } else {
+                setSearchParams(`page=${page - 1}`);
+            }
+
+        } else {
+
+            try {
+
+                const response = await getUsersBookingsBySearch(token!, searchOption, searchValue, page - 1);
+
+                if (response.status === "Success") {
+                    setPage(page => page - 1);
+                    setMyBookings(response.content.bookings)
+                } else if (response.status === "Error") {
+                    setSearchErrors(state => [...state, response.message]);
+                    setMyBookings([]);
+                }
+
+            } catch (error: any) {
+                setSearchErrors(state => [...state, error]);
+            } finally {
+                dispatch(toggleLoaderOff());
+            }
+
+            if (page - 1 === 1) {
+                setSearchParams(`${searchOption.toLowerCase()}=${searchValue}`);
+            } else {
+                setSearchParams(`${searchOption.toLowerCase()}=${searchValue}&page=${page - 1}`);
+            }
+
+        }
+    }
 
     return (
         <div className={styles.bookingCardsWrapper}>
@@ -108,7 +252,7 @@ export const MyBookings: React.FC = () => {
                 <ul className={styles.errorsContainer}>
                     {searchErrors.map(err => {
                         return (
-                            <li>
+                            <li key={err}>
                                 <span className={styles.error}>{err}</span>
                             </li>
                         );
@@ -121,6 +265,18 @@ export const MyBookings: React.FC = () => {
                         <Booking key={b.id} {...b} />
                     );
                 })}
+            </div>
+            <div className={styles.paginationBtns}>
+                <button className={styles.paginationBtn}
+                    disabled={page === 1}
+                    onClick={onPreviousPageClick}>Previous
+                </button>
+                <span>{page}</span>
+                <button className={styles.paginationBtn}
+                    disabled={totalBookings - (page * 6) <= 0}
+                    onClick={onNextPageClick}
+                >Next
+                </button>
             </div>
         </div>
     );
