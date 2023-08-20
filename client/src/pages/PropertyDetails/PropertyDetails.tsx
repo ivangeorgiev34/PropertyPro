@@ -5,7 +5,7 @@ import loader, { toggleLoaderOff, toggleLoaderOn } from "../../store/loader";
 import { deletePropertyById, getLandlordPropertyById } from "../../services/propertyService";
 import IProperty from "../../interfaces/IProperty";
 import styles from "./PropertyDetails.module.scss";
-import { JsxAttribute } from "typescript";
+import { JsxAttribute, NumberLiteralType } from "typescript";
 import IPropertyDetails from "../../interfaces/IPropertyDetails";
 import { getPropertyReviews } from "../../services/reviewService";
 import IReview from "../../interfaces/review/IReview";
@@ -212,15 +212,21 @@ export const PropertyDetails: React.FC = () => {
                     <h3>Reviews:</h3>
                     <hr />
                     <div className={styles.reviewsContainer}>
-                        {reviews.map((r: IReview) => {
-                            return (
-                                <Review key={r.id} {...r} />
-                            );
-                        })}
-                        <Link to={`/review/create/${propertyId!}`} className={styles.addReviewBtn}>
-                            <span>+</span>
-                            <span>Add a review</span>
-                        </Link>
+                        {reviews.length > 0
+                            ? reviews.map((r: IReview) => {
+                                return (
+                                    <Review key={r.id} {...r} />
+                                );
+                            })
+                            : role === "Landlord"
+                                ? <h2>No reviews!</h2>
+                                : null}
+                        {role === "Tenant"
+                            ? <Link to={`/review/create/${propertyId!}`} className={styles.addReviewBtn}>
+                                <span>+</span>
+                                <span>Add a review</span>
+                            </Link>
+                            : null}
                     </div>
                 </div>
             </div >}
