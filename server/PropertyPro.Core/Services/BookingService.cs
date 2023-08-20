@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Routing.Internal;
+using Microsoft.EntityFrameworkCore;
 using PropertyPro.Core.Contracts;
 using PropertyPro.Infrastructure.Common;
 using PropertyPro.Infrastructure.Dtos.Booking;
@@ -305,6 +306,7 @@ namespace PropertyPro.Core.Services
 						}
 					}
 				})
+				.OrderBy(b => b.StartDate)
 				.ToListAsync();
 
 			return bookingDtos;
@@ -367,6 +369,7 @@ namespace PropertyPro.Core.Services
 						}
 					}
 				})
+				.OrderBy(b => b.StartDate)
 				.ToListAsync();
 
 			List<BookingDto> searchedBookings = new List<BookingDto>();
