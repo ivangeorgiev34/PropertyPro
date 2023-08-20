@@ -5,7 +5,7 @@ import { userLogin, userRegister } from "../../services/authenticationService";
 import { useForm } from "../../hooks/useForm";
 import { login } from "../../store/auth";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavigateOptions } from "react-router-dom";
 import { toggleLoaderOff, toggleLoaderOn } from "../../store/loader"
 import ILoginForm from "../../interfaces/ILoginForm";
 import { useError } from "../../hooks/useError";
@@ -61,7 +61,7 @@ export const Login: React.FC = () => {
                     expires: res.expires
                 }));
 
-                navigate("/my-properties");
+                navigate("/");
             }
 
         } catch (error: any) {
@@ -116,7 +116,12 @@ export const Login: React.FC = () => {
                     Don't have an account?
                     <Link to={"/register"}> Click here to register!</Link>
                 </span>
-                <button type="submit" disabled={areFormValuesIncorrect()} className={styles.loginBtn}>Log In</button>
+                <button
+                    type="submit"
+                    disabled={areFormValuesIncorrect()}
+                    className={styles.loginBtn}>
+                    Log In
+                </button>
             </form>
         </div >
     );
