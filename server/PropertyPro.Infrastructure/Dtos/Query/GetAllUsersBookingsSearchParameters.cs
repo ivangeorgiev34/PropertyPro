@@ -9,5 +9,7 @@ namespace PropertyPro.Infrastructure.Dtos.Query
 	public class GetAllUsersBookingsSearchParameters
 	{
         public string? Title { get; set; }
+
+        public int Page { get; set; } = 1;
     }
 }

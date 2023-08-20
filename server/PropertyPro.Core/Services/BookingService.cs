@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Routing.Internal;
+using Microsoft.EntityFrameworkCore;
 using PropertyPro.Core.Contracts;
 using PropertyPro.Infrastructure.Common;
 using PropertyPro.Infrastructure.Dtos.Booking;
@@ -36,7 +37,7 @@ namespace PropertyPro.Core.Services
 			return bookingExists;
 		}
 
-		public async Task<bool> CanBookingBeBooked(DateTime startDate, DateTime endDate)
+		public async Task<bool> CanBookingBeBooked(DateTime startDate, DateTime endDate, string propertyId)
 		{
 			if (DateTime.Compare(startDate, DateTime.Now) < 0)
 			{
@@ -51,13 +52,13 @@ namespace PropertyPro.Core.Services
 				}
 			}
 
-			if (startDate.DayOfYear - endDate.DayOfYear >= 30)
+			if (endDate.DayOfYear - startDate.DayOfYear >= 30)
 			{
 				throw new InvalidOperationException("Cannot reserve for more than one month");
 			}
 
 			var canBookingBeBooked = await repo.All<Booking>()
-				.AnyAsync(b => b.IsActive == true
+				.AnyAsync(b => b.IsActive == true && b.PropertyId == Guid.Parse(propertyId)
 				&& ((b.StartDate.DayOfYear <= startDate.DayOfYear && b.EndDate.DayOfYear >= startDate.DayOfYear)
 				|| (b.EndDate.DayOfYear >= endDate.DayOfYear && b.StartDate.DayOfYear <= endDate.DayOfYear)));
 
@@ -172,7 +173,7 @@ namespace PropertyPro.Core.Services
 				}
 			}
 
-			if (startDate.DayOfYear - endDate.DayOfYear >= 30)
+			if (endDate.DayOfYear - startDate.DayOfYear >= 30)
 			{
 				throw new InvalidOperationException("Cannot reserve for more than one month");
 			}
@@ -305,6 +306,7 @@ namespace PropertyPro.Core.Services
 						}
 					}
 				})
+				.OrderBy(b => b.StartDate)
 				.ToListAsync();
 
 			return bookingDtos;
@@ -367,6 +369,7 @@ namespace PropertyPro.Core.Services
 						}
 					}
 				})
+				.OrderBy(b => b.StartDate)
 				.ToListAsync();
 
 			List<BookingDto> searchedBookings = new List<BookingDto>();
