@@ -1,11 +1,30 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import styles from "./Landlord.module.scss";
+import { useEffect, useState } from "react";
+import { logout } from "../../../../store/auth";
+import { tokenExpiresValidation } from "../../../../validators/tokenExpiresValidation";
 
 export const LandlordHome: React.FC = () => {
 
     const dispatch = useAppDispatch();
-    const { firstName, lastName } = useAppSelector(state => state.auth);
+    const { firstName, lastName, expires, role } = useAppSelector(state => state.auth);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+
+        if (role !== "Landlord") {
+
+            navigate("unauthorized");
+
+        } else if (tokenExpiresValidation(expires!) === true) {
+
+            dispatch(logout());
+
+            navigate("/login");
+        }
+
+    }, [])
 
     return (
         <div className={styles.landlordHomeContainer}>
