@@ -8,11 +8,11 @@ export const PublicRouteGuard: React.FC = () => {
 
     if (expires !== null) {
 
-        return <Navigate to={"/home"} />;
+        return <Navigate to={"/"} />;
 
     } else if (new Date(expires!).getTime() >= Date.now()) {
 
-        return <Navigate to={"/home"} />;
+        return <Navigate to={"/"} />;
 
     }
 
