@@ -51,7 +51,7 @@ export const Booking: React.FC<IMyBookings> = (props) => {
                 alt="" />
             <p className={styles.bookingDates}>From {new Date(props.startDate).getDate()}/{Number(new Date(props.endDate).getMonth()) + 1}/{new Date(props.startDate).getFullYear()} to {new Date(props.endDate).getDate()}/{Number(new Date(props.endDate).getMonth()) + 1}/{new Date(props.endDate).getFullYear()}</p>
             <p className={styles.bookingGuests}>Guests: {props.guests}</p>
-            <span className={styles.error}>{deleteError}</span>
+            <span data-testid="deleteErrorSpan" className={styles.error}>{deleteError}</span>
             <div className={styles.btnsContainer}>
                 <Link className={styles.detailsBtn} to={`/property/details/${props.property.id}`}>
                     Details
