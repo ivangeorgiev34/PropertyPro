@@ -30,7 +30,10 @@ export const Navigation: React.FC = () => {
                     <ul>
                         {role !== null
                             ? role === "Tenant"
-                                ? <li className={styles.navBarItem}><Link className={styles.myBookings} to={"/my-bookings"}>My bookings</Link></li>
+                                ? <React.Fragment>
+                                    <li className={styles.navBarItem}><Link className={styles.exploreProperties} to={"/"}>Explore properties</Link></li>
+                                    <li className={styles.navBarItem}><Link className={styles.myBookings} to={"/my-bookings"}>My bookings</Link></li>
+                                </React.Fragment>
                                 : role === "Landlord"
                                     ? <React.Fragment>
                                         <li className={styles.navBarItem}>
