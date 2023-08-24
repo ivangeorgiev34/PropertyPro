@@ -28,7 +28,7 @@ export const TenantHome: React.FC = () => {
         dispatch(toggleLoaderOn());
 
         if (role !== "Tenant") {
-            navigate("unauthorized");
+            navigate("/unauthorized");
         } else if (tokenExpiresValidation(expires!) === true) {
 
             dispatch(logout());
@@ -53,7 +53,7 @@ export const TenantHome: React.FC = () => {
 
             })
             .catch(err => {
-                navigate("unauthorized");
+                navigate("/unauthorized");
             })
             .finally(() => {
                 dispatch(toggleLoaderOff());
@@ -67,7 +67,7 @@ export const TenantHome: React.FC = () => {
         dispatch(toggleLoaderOn());
 
         if (role !== "Tenant") {
-            navigate("unauthorized");
+            navigate("/unauthorized");
         }
 
         setSearchErrors([]);
@@ -99,7 +99,7 @@ export const TenantHome: React.FC = () => {
         dispatch(toggleLoaderOn());
 
         if (role !== "Tenant") {
-            navigate("unauthorized");
+            navigate("/unauthorized");
         }
 
         setSearchErrors([]);
@@ -121,7 +121,7 @@ export const TenantHome: React.FC = () => {
 
             })
             .catch(err => {
-                navigate("unauthorized");
+                navigate("/unauthorized");
             })
             .finally(() => {
                 dispatch(toggleLoaderOff());
@@ -134,7 +134,7 @@ export const TenantHome: React.FC = () => {
         dispatch(toggleLoaderOn());
 
         if (role !== "Tenant") {
-            navigate("unauthorized");
+            navigate("/unauthorized");
         }
 
         if (searchValue === "") {
@@ -182,7 +182,7 @@ export const TenantHome: React.FC = () => {
         dispatch(toggleLoaderOn());
 
         if (role !== "Tenant") {
-            navigate("unauthorized");
+            navigate("/unauthorized");
         }
 
         if (searchValue === "") {
