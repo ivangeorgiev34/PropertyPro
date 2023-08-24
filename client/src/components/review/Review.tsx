@@ -15,11 +15,11 @@ export const Review: React.FC<IReview> = ({ id, stars, description, tenant }) =>
 
     const generateStarReviews = (): React.ReactNode => {
         const yellowStarsArray = Array.from<HTMLElement>({ length: stars }).map((el, index) => {
-            return <i key={`yellow-${index}`} className={`fa-solid fa-star ${styles.yellowStar}`}></i>
+            return <i key={`yellow-${index}`} className={`fa-solid fa-star ${styles.yellowStar}`} data-testid="yellow-star"></i>
         });
 
         const blackStarsArray = Array.from<HTMLElement>({ length: 5 - yellowStarsArray.length }).map((el, index) => {
-            return <i key={`black-${index}`} className="fa-solid fa-star"></i>
+            return <i key={`black-${index}`} className="fa-solid fa-star" data-testid="black-star"></i>
         });
 
         return [...yellowStarsArray, ...blackStarsArray];
@@ -76,7 +76,7 @@ export const Review: React.FC<IReview> = ({ id, stars, description, tenant }) =>
                             Delete
                         </button>
                     </div>
-                    <span className={styles.error}>{deleteError}</span>
+                    <span data-testid="delete-error" className={styles.error}>{deleteError}</span>
                 </div>
                 : null
             }
