@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { useNavigate, useParams } from "react-router-dom";
 import IProfileEdit from "../../interfaces/IProfileEdit";
 import { useForm } from "../../hooks/useForm";
-import { useError } from "../../hooks/useError";
+import { useError } from "../../hooks/useError/useError";
 import styles from "./ProfileEdit.module.scss";
 import IProfileEditErrors from "../../interfaces/IProfileEditErrors";
 import { toggleLoaderOff, toggleLoaderOn } from "../../store/loader";

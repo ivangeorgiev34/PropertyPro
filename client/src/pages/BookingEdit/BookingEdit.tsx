@@ -7,7 +7,7 @@ import { toggleLoaderOff, toggleLoaderOn } from "../../store/loader";
 import IBookingEdit from "../../interfaces/booking/IBookingEdit";
 import { useForm } from "../../hooks/useForm";
 import IBookingEditForm from "../../interfaces/booking/IBookingEditForm";
-import { useError } from "../../hooks/useError";
+import { useError } from "../../hooks/useError/useError";
 import IBookingEditFormErrors from "../../interfaces/booking/IBookingEditFormErrors";
 import { guestsValidation } from "../../validators/booking/guestsValidation";
 import { startDateValidation } from "../../validators/booking/startDateValidation";

@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { toggleLoaderOff, toggleLoaderOn } from "../../store/loader";
 import { userRegister } from "../../services/authenticationService";
-import { useError } from "../../hooks/useError";
+import { useError } from "../../hooks/useError/useError";
 import { IRegisterFormErrors } from "../../interfaces/IRegisterFormErrors";
 import { firstNameValidation } from "../../validators/firstNameValidation";
 import { middleNameValidation } from "../../validators/middleNameValidation";

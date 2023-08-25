@@ -2,7 +2,7 @@ import React, { FormEventHandler, useState } from "react";
 import styles from "./PropertyCreate.module.scss";
 import { useForm } from "../../hooks/useForm";
 import IPropertyCreateForm from "../../interfaces/IPropertyCreateForm";
-import { useError } from "../../hooks/useError";
+import { useError } from "../../hooks/useError/useError";
 import IPropertyCreateFormErrors from "../../interfaces/IPropertyCreateFormErrors";
 import { propertyTitleValidation } from "../../validators/property/propertyTitleValidation";
 import { townValidation } from "../../validators/property/townValidation";

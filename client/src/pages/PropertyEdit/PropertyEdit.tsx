@@ -7,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { editPropertyById, getLandlordPropertyById } from "../../services/propertyService";
 import { useForm } from "../../hooks/useForm";
 import IPropertyEditForm from "../../interfaces/IPropertyEditForm";
-import { useError } from "../../hooks/useError";
+import { useError } from "../../hooks/useError/useError";
 import IPropertyEditFormErrors from "../../interfaces/IPropertyEditFormErrors";
 import { propertyTitleValidation } from "../../validators/property/propertyTitleValidation";
 import { townValidation } from "../../validators/property/townValidation";

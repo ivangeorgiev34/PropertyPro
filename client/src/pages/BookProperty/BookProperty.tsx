@@ -3,7 +3,7 @@ import styles from "./BookProperty.module.scss";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
 import IBookPropertyForm from "../../interfaces/booking/IBookPropertyForm";
-import { useError } from "../../hooks/useError";
+import { useError } from "../../hooks/useError/useError";
 import IBookPropertyFormErrors from "../../interfaces/booking/IBookPropertyFormErrors";
 import { startDateValidation } from "../../validators/booking/startDateValidation";
 import { guestsValidation } from "../../validators/booking/guestsValidation";
@@ -74,12 +74,13 @@ export const BookProperty: React.FC = () => {
 
     return (
         <div className={styles.formWrapper}>
-            <form onSubmit={onFormSubmit} className={styles.cardForm}>
+            <form onSubmit={onFormSubmit} className={styles.cardForm} data-testid="form-test">
                 <h2>Create a booking</h2>
                 <hr />
                 <div className={styles.inputContainer}>
                     <label htmlFor="startDate">Start date:</label>
                     <input type="date" id="startDate" name="startDate"
+                        data-testid="start-date-test"
                         min={"2023-09-01"}
                         max={"2025-01-01"}
                         value={formValues.startDate}
