@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { Navigate, Outlet } from "react-router-dom";
-import { logout } from "../store/auth";
+import { logout } from "../../store/auth";
 export const PublicRouteGuard: React.FC = () => {
     const { expires } = useAppSelector((state) => state.auth)
     const dispatch = useAppDispatch();
