@@ -2,7 +2,7 @@ import React, { FormEventHandler, FormHTMLAttributes, useState } from "react";
 import styles from "./Login.module.scss"
 import { Link } from "react-router-dom";
 import { userLogin, userRegister } from "../../services/authenticationService";
-import { useForm } from "../../hooks/useForm";
+import { useForm } from "../../hooks/useForm/useForm";
 import { login } from "../../store/auth";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { useNavigate, NavigateOptions } from "react-router-dom";

@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { editBookingById, getBookingById } from "../../services/bookingService";
 import { toggleLoaderOff, toggleLoaderOn } from "../../store/loader";
 import IBookingEdit from "../../interfaces/booking/IBookingEdit";
-import { useForm } from "../../hooks/useForm";
+import { useForm } from "../../hooks/useForm/useForm";
 import IBookingEditForm from "../../interfaces/booking/IBookingEditForm";
 import { useError } from "../../hooks/useError/useError";
 import IBookingEditFormErrors from "../../interfaces/booking/IBookingEditFormErrors";

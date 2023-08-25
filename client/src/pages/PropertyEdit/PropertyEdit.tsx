@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { toggleLoaderOff, toggleLoaderOn } from "../../store/loader";
 import { useNavigate, useParams } from "react-router-dom";
 import { editPropertyById, getLandlordPropertyById } from "../../services/propertyService";
-import { useForm } from "../../hooks/useForm";
+import { useForm } from "../../hooks/useForm/useForm";
 import IPropertyEditForm from "../../interfaces/IPropertyEditForm";
 import { useError } from "../../hooks/useError/useError";
 import IPropertyEditFormErrors from "../../interfaces/IPropertyEditFormErrors";

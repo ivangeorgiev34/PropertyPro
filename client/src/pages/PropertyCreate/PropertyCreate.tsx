@@ -1,6 +1,6 @@
 import React, { FormEventHandler, useState } from "react";
 import styles from "./PropertyCreate.module.scss";
-import { useForm } from "../../hooks/useForm";
+import { useForm } from "../../hooks/useForm/useForm";
 import IPropertyCreateForm from "../../interfaces/IPropertyCreateForm";
 import { useError } from "../../hooks/useError/useError";
 import IPropertyCreateFormErrors from "../../interfaces/IPropertyCreateFormErrors";
@@ -71,7 +71,9 @@ export const PropertyCreate: React.FC = () => {
     };
 
     const firstImageChange = (e: React.FormEvent<HTMLInputElement>): void => {
-        if (e.currentTarget.files?.item(0) === null) {
+        const eventTarget = e.currentTarget as HTMLInputElement;
+        console.log(eventTarget);
+        if (eventTarget.files?.item(0) === null) {
             onFormErrorChange(e, "First image is required");
         } else {
             onFormErrorChange(e, "");
@@ -134,7 +136,7 @@ export const PropertyCreate: React.FC = () => {
                 <hr />
                 <div className={styles.imageContainer}>
                     <label htmlFor="firstImage">First image:</label>
-                    <input type="file" accept="image/png, image/jpg, image/jpeg" name="firstImage" onChange={(e) => {
+                    <input data-testid="first-image-input" type="file" accept="image/png, image/jpg, image/jpeg" name="firstImage" onChange={(e) => {
                         firstImageChange(e);
                         onFormChangeImage(e);
                     }} />

@@ -3,7 +3,7 @@ import IProfileInfo from "../../interfaces/IProfileInfo";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { useNavigate, useParams } from "react-router-dom";
 import IProfileEdit from "../../interfaces/IProfileEdit";
-import { useForm } from "../../hooks/useForm";
+import { useForm } from "../../hooks/useForm/useForm";
 import { useError } from "../../hooks/useError/useError";
 import styles from "./ProfileEdit.module.scss";
 import IProfileEditErrors from "../../interfaces/IProfileEditErrors";

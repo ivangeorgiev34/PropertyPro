@@ -1,7 +1,7 @@
 import React, { FormEventHandler, useState } from "react";
 import styles from "./BookProperty.module.scss";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useForm } from "../../hooks/useForm";
+import { useForm } from "../../hooks/useForm/useForm";
 import IBookPropertyForm from "../../interfaces/booking/IBookPropertyForm";
 import { useError } from "../../hooks/useError/useError";
 import IBookPropertyFormErrors from "../../interfaces/booking/IBookPropertyFormErrors";
