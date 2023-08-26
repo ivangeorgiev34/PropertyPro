@@ -139,7 +139,7 @@ describe("Review", () => {
         fireEvent.click(deleteBtn);
 
         const actualResult = window.location.href;
-        const expectedResult = "http://localhost/"
+        const expectedResult = "http://localhost/";
 
         expect(actualResult).toBe(expectedResult);
     });
