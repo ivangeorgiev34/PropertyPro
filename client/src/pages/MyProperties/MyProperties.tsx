@@ -3,15 +3,14 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { getLandlordsProperties, getPropertiesBySearch } from "../../services/propertyService";
 import styles from "./MyProperties.module.scss";
-import { error } from "console";
 import { Property } from "../../components/property/Property";
 import IProperty from "../../interfaces/IProperty";
 import { toggleLoaderOff, toggleLoaderOn } from "../../store/loader";
 
 export const MyProperties: React.FC = () => {
 
-    const { role, id, token } = useAppSelector((state) => state.auth);
     const navigate = useNavigate();
+    const { role, id, token } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
     const [myProperties, setMyProperties] = useState<IProperty[] | null>(null);
     const [searchOption, setSearchOption] = useState<string>("Title");
@@ -24,6 +23,8 @@ export const MyProperties: React.FC = () => {
     useEffect(() => {
 
         dispatch(toggleLoaderOn());
+
+        setSearchParams("");
 
         if (role !== "Landlord") {
             navigate("/unauthorized");
@@ -50,9 +51,7 @@ export const MyProperties: React.FC = () => {
             })
             .finally(() => {
                 dispatch(toggleLoaderOff());
-            })
-
-        setSearchParams("");
+            });
     }, []);
 
     const onSeacrhSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -67,19 +66,19 @@ export const MyProperties: React.FC = () => {
 
             if (response.status === "Error") {
                 setMyProperties([]);
-                setSearchErrors(state => [...state, response.message])
+                setSearchErrors(state => [...state, response.message]);
             } else if (response.status === "Success") {
                 setMyProperties(response.content.properties);
-                setTotalProperties(response.content.totalPropertiesCount)
+                setTotalProperties(response.content.totalPropertiesCount);
             }
         } catch (error: any) {
-            setSearchErrors(state => [...state, error])
+            setSearchErrors(state => [...state, error]);
         } finally {
             dispatch(toggleLoaderOff());
         }
 
         setSearchParams(`${searchOption.toLowerCase()}=${searchValue}`);
-    }
+    };
 
     const onViewAllBtnClick = () => {
         dispatch(toggleLoaderOn());
@@ -113,10 +112,10 @@ export const MyProperties: React.FC = () => {
             })
             .finally(() => {
                 dispatch(toggleLoaderOff());
-            })
+            });
 
         setSearchParams("");
-    }
+    };
 
     const onNextPageClick = async () => {
         dispatch(toggleLoaderOn());
@@ -130,15 +129,15 @@ export const MyProperties: React.FC = () => {
 
                 if (response.status === "Error") {
                     setMyProperties([]);
-                    setSearchErrors(state => [...state, response.message])
+                    setSearchErrors(state => [...state, response.message]);
                     setTotalProperties(0);
                 } else if (response.status === "Success") {
                     setMyProperties(response.content.properties);
-                    setTotalProperties(response.content.totalPropertiesCount)
+                    setTotalProperties(response.content.totalPropertiesCount);
                     setPage(state => state + 1);
                 }
             } catch (error: any) {
-                setSearchErrors(state => [...state, error])
+                setSearchErrors(state => [...state, error]);
             } finally {
                 dispatch(toggleLoaderOff());
             }
@@ -152,14 +151,14 @@ export const MyProperties: React.FC = () => {
 
                 if (response.status === "Error") {
                     setMyProperties([]);
-                    setSearchErrors(state => [...state, response.message])
+                    setSearchErrors(state => [...state, response.message]);
                 } else if (response.status === "Success") {
                     setMyProperties(response.content.properties);
-                    setTotalProperties(response.content.totalPropertiesCount)
+                    setTotalProperties(response.content.totalPropertiesCount);
                     setPage(state => state + 1);
                 }
             } catch (error: any) {
-                setSearchErrors(state => [...state, error])
+                setSearchErrors(state => [...state, error]);
             } finally {
                 dispatch(toggleLoaderOff());
             }
@@ -167,7 +166,7 @@ export const MyProperties: React.FC = () => {
             setSearchParams(`${searchOption.toLowerCase()}=${searchValue}&page=${page + 1}`);
 
         }
-    }
+    };
 
     const onPreviousPageClick = async () => {
         dispatch(toggleLoaderOn());
@@ -181,15 +180,15 @@ export const MyProperties: React.FC = () => {
 
                 if (response.status === "Error") {
                     setMyProperties([]);
-                    setSearchErrors(state => [...state, response.message])
+                    setSearchErrors(state => [...state, response.message]);
                     setTotalProperties(0);
                 } else if (response.status === "Success") {
                     setMyProperties(response.content.properties);
-                    setTotalProperties(response.content.totalPropertiesCount)
+                    setTotalProperties(response.content.totalPropertiesCount);
                     setPage(state => state - 1);
                 }
             } catch (error: any) {
-                setSearchErrors(state => [...state, error])
+                setSearchErrors(state => [...state, error]);
             } finally {
                 dispatch(toggleLoaderOff());
             }
@@ -207,14 +206,14 @@ export const MyProperties: React.FC = () => {
 
                 if (response.status === "Error") {
                     setMyProperties([]);
-                    setSearchErrors(state => [...state, response.message])
+                    setSearchErrors(state => [...state, response.message]);
                 } else if (response.status === "Success") {
                     setMyProperties(response.content.properties);
-                    setTotalProperties(response.content.totalPropertiesCount)
+                    setTotalProperties(response.content.totalPropertiesCount);
                     setPage(state => state - 1);
                 }
             } catch (error: any) {
-                setSearchErrors(state => [...state, error])
+                setSearchErrors(state => [...state, error]);
             } finally {
                 dispatch(toggleLoaderOff());
             }
@@ -225,7 +224,7 @@ export const MyProperties: React.FC = () => {
                 setSearchParams(`${searchOption.toLowerCase()}=${searchValue}&page=${page - 1}`);
             }
         }
-    }
+    };
 
     return (
         <React.Fragment>
@@ -271,4 +270,4 @@ export const MyProperties: React.FC = () => {
             </div>
         </React.Fragment>
     );
-}
+};
