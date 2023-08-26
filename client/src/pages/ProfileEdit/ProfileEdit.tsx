@@ -59,7 +59,7 @@ export const ProfileEdit: React.FC = () => {
     useEffect(() => {
 
         if (userId !== id || userId === null || id === null) {
-            setIsAuthorized(false);
+            navigate("/unauthorized");
         } else {
 
             setProfileInfo({
@@ -78,7 +78,7 @@ export const ProfileEdit: React.FC = () => {
 
         dispatch(toggleLoaderOn());
 
-        e.preventDefault()
+        e.preventDefault();
 
         setErrors([]);
 
@@ -141,7 +141,7 @@ export const ProfileEdit: React.FC = () => {
         }
 
         return false;
-    }
+    };
 
     const fileInputChange = (e: React.FormEvent<HTMLInputElement>): void => {
         if (e.currentTarget.files?.item(0) !== null) {
