@@ -16,14 +16,14 @@ import IResponse from "../../interfaces/IResponse";
 
 export const BookingEdit: React.FC = () => {
 
-    const [booking, setBooking] = useState<IBookingEdit | null>(null)
+    const [booking, setBooking] = useState<IBookingEdit | null>(null);
     const { role, token } = useAppSelector(state => state.auth);
     const { formValues, onFormChange, setDefaultValues } = useForm<IBookingEditForm | null>(null);
     const { formErrors, onFormErrorChange } = useError<IBookingEditFormErrors>({
         startDate: "",
         endDate: "",
         guests: ""
-    })
+    });
     const [editError, setEditError] = useState<string>("");
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -35,9 +35,9 @@ export const BookingEdit: React.FC = () => {
                 startDate: `${new Date(booking.startDate).getFullYear().toString()}-${(new Date(booking.startDate).getMonth() + 1).toString()}-${new Date(booking.startDate).getDate().toString()}`,
                 endDate: `${new Date(booking.endDate).getFullYear().toString()}-${(new Date(booking.endDate).getMonth() + 1).toString()}-${new Date(booking.endDate).getDate().toString()}`,
                 guests: booking.guests,
-            })
+            });
         }
-    }, [booking])
+    }, [booking]);
 
     useEffect(() => {
 
@@ -60,7 +60,7 @@ export const BookingEdit: React.FC = () => {
             })
             .finally(() => {
                 dispatch(toggleLoaderOff());
-            })
+            });
 
     }, []);
 
@@ -134,4 +134,4 @@ export const BookingEdit: React.FC = () => {
                 : null}
         </React.Fragment>
     );
-}
+};
