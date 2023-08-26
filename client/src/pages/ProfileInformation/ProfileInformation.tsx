@@ -44,7 +44,7 @@ export const ProfileInformation: React.FC = () => {
     return (
         <React.Fragment>
             {isAuthorized === false
-                ? <Navigate to={"/unauthotized"} />
+                ? <Navigate to={"/unauthorized"} />
                 :
                 <div className={styles.cardWrapper}>
                     <section className={styles.card}>
