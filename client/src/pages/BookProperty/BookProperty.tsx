@@ -91,6 +91,7 @@ export const BookProperty: React.FC = () => {
                 <div className={styles.inputContainer}>
                     <label htmlFor="endDate">End date:</label>
                     <input type="date" id="endDate" name="endDate"
+                        data-testid="end-date-test"
                         min={"2023-09-01"}
                         max={"2025-01-01"}
                         value={formValues.endDate}
