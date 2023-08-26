@@ -1,4 +1,4 @@
-import React, { FormEventHandler, useState } from "react";
+import React, { FormEventHandler, useEffect, useState } from "react";
 import styles from "./BookProperty.module.scss";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "../../hooks/useForm/useForm";
@@ -15,7 +15,7 @@ import { createBooking } from "../../services/bookingService";
 export const BookProperty: React.FC = () => {
     const { propertyId } = useParams();
     const dispatch = useAppDispatch();
-    const { token } = useAppSelector(state => state.auth);
+    const { token, role } = useAppSelector(state => state.auth);
     const navigate = useNavigate();
     const [errors, setErrors] = useState<string[]>([]);
 
@@ -29,7 +29,13 @@ export const BookProperty: React.FC = () => {
         startDate: "",
         endDate: "",
         guests: ""
-    })
+    });
+
+    useEffect(() => {
+        if (role !== "Tenant") {
+            navigate("/unauthorized");
+        }
+    }, []);
 
     const areFormValuesIncorrect = (): boolean => {
         for (let key in formErrors) {
@@ -68,7 +74,7 @@ export const BookProperty: React.FC = () => {
                 setErrors(state => [...state, err]);
 
                 dispatch(toggleLoaderOff());
-            })
+            });
 
     };
 
