@@ -1,10 +1,10 @@
-import { screen, render, fireEvent, waitFor } from "@testing-library/react"
-import { Provider } from "react-redux"
-import { BrowserRouter } from "react-router-dom"
-import { TenantHome } from "./TenantHome"
-import { store } from "../../../../store/store"
-import { login, logout } from "../../../../store/auth"
-import * as propertyService from "../../../../services/propertyService"
+import { screen, render, fireEvent, waitFor } from "@testing-library/react";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+import { TenantHome } from "./TenantHome";
+import { store } from "../../../../store/store";
+import { login, logout } from "../../../../store/auth";
+import * as propertyService from "../../../../services/propertyService";
 
 describe("Tenant home", () => {
 
@@ -123,8 +123,8 @@ describe("Tenant home", () => {
 
         waitFor(() => {
             expect(actualResult).toBe(expectedResult);
-        })
-    })
+        });
+    });
 
     test("token is expired should redirect to login", () => {
 
@@ -173,7 +173,7 @@ describe("Tenant home", () => {
                     <TenantHome />
                 </BrowserRouter>
             </Provider>
-        )
+        );
 
         const propertyTitleHeadingsCount = (await screen.findAllByRole("heading")).length;
         expect(propertyTitleHeadingsCount).toBe(2);
@@ -200,7 +200,7 @@ describe("Tenant home", () => {
 
         expect(propertyTitleHeadingsCount).toBe(0);
         expect(errorMessageSpan).toBeInTheDocument();
-    })
+    });
 
     test("search should set page to 1", () => {
 
@@ -278,7 +278,7 @@ describe("Tenant home", () => {
         store.dispatch(login({
             role: "Tenant",
             expires: new Date(2025, 10, 10).toString()
-        }))
+        }));
 
         render(
             <Provider store={store}>
@@ -299,7 +299,7 @@ describe("Tenant home", () => {
         fireEvent.click(searchBtn);
 
         const actualResult = window.location.href;
-        const expectedResult = "http://localhost/?title=search"
+        const expectedResult = "http://localhost/?title=search";
 
         waitFor(() => {
             expect(actualResult).toBe(expectedResult);
@@ -459,7 +459,7 @@ describe("Tenant home", () => {
 
         waitFor(() => {
             expect(actualResult).toBe(expectedResult);
-        })
+        });
     });
 
     test("next page button click should increase page number to url when search field is empty", async () => {
@@ -487,7 +487,7 @@ describe("Tenant home", () => {
             const pageNumberSpan = await screen.findByText(2);
 
             expect(pageNumberSpan).toBeInTheDocument();
-        })
+        });
     });
 
     test("next page button click should change url correctly when search field is not empty", async () => {
