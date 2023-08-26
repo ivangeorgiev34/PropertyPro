@@ -31,7 +31,7 @@ describe("Landlord home", () => {
         const expectedResult = "http://localhost/unauthorized";
 
         expect(actualResult).toBe(expectedResult);
-    })
+    });
 
     test("token is invalid should redirect to login page", () => {
 
@@ -55,7 +55,7 @@ describe("Landlord home", () => {
 
         expect(actualResult).toBe(expectedResult);
         expect(authState.auth.id).toBeNull();
-    })
+    });
 
     test("create property link should redirect correctly", () => {
 
@@ -105,6 +105,6 @@ describe("Landlord home", () => {
         const expectedResult = "http://localhost/my-properties";
 
         expect(actualResult).toBe(expectedResult);
-    })
+    });
 
-})
+});
