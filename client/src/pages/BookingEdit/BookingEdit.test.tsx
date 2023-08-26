@@ -86,7 +86,7 @@ describe("Booking edit", () => {
             .mockResolvedValue({
                 status: "Error",
                 message: "error message"
-            })
+            });
 
         render(
             <Provider store={store}>
