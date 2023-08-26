@@ -1,4 +1,4 @@
-import React, { FormEventHandler, useState } from "react";
+import React, { FormEventHandler, useEffect, useState } from "react";
 import styles from "./PropertyCreate.module.scss";
 import { useForm } from "../../hooks/useForm/useForm";
 import IPropertyCreateForm from "../../interfaces/IPropertyCreateForm";
@@ -21,8 +21,14 @@ export const PropertyCreate: React.FC = () => {
 
     const [errors, setErrors] = useState<string[]>([]);
     const dispatch = useAppDispatch();
-    const { token } = useAppSelector(state => state.auth);
+    const { token, role } = useAppSelector(state => state.auth);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (role !== "Landlord") {
+            navigate("/unauthorized");
+        }
+    }, []);
 
     const { formValues, onFormChange, onFormChangeImage } = useForm<IPropertyCreateForm>({
         title: "",
@@ -117,7 +123,7 @@ export const PropertyCreate: React.FC = () => {
                 if (res.status === "Success") {
                     navigate("/my-properties");
                 } else if (res.status === "Error") {
-                    setErrors(state => [...state, res.message])
+                    setErrors(state => [...state, res.message]);
                 }
 
                 dispatch(toggleLoaderOff());
@@ -126,7 +132,7 @@ export const PropertyCreate: React.FC = () => {
                 setErrors(state => [...state, err]);
 
                 dispatch(toggleLoaderOff());
-            })
+            });
 
     };
     return (
@@ -246,4 +252,4 @@ export const PropertyCreate: React.FC = () => {
             </form>
         </div>
     );
-}
+};
