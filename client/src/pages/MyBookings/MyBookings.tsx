@@ -9,11 +9,10 @@ import { Booking } from "../../components/booking/Booking";
 
 export const MyBookings: React.FC = () => {
 
-    const { role, token, id } = useAppSelector((state) => state.auth)
+    const { role, token } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [myBookings, setMyBookings] = useState<IMyBookings[]>([]);
-    const [errors, setErrors] = useState<string[]>([]);
     const [searchOption, setSearchOption] = useState<string>("Title");
     const [searchValue, setSearchValue] = useState<string>("");
     const [searchErrors, setSearchErrors] = useState<string[]>([]);
@@ -25,19 +24,18 @@ export const MyBookings: React.FC = () => {
 
         dispatch(toggleLoaderOn());
 
+        setSearchParams("");
+
         if (role !== "Tenant") {
             navigate("/unauthorized");
         }
 
         setSearchErrors([]);
-        setErrors([]);
 
         getUsersBookings(token!, 1)
             .then(res => {
                 if (res.status === "Error") {
-
                     setMyBookings([]);
-                    setErrors(state => [...state, res.message]);
                     setTotalBookings(0);
 
                 } else if (res.status === "Success") {
@@ -49,13 +47,9 @@ export const MyBookings: React.FC = () => {
                 dispatch(toggleLoaderOff());
             })
             .catch(err => {
-                setErrors(state => [...state, err]);
                 dispatch(toggleLoaderOff());
             });
-
-        setSearchParams("");
-
-    }, [])
+    }, []);
 
     const onViewAllBtnClick = () => {
         dispatch(toggleLoaderOn());
@@ -63,7 +57,7 @@ export const MyBookings: React.FC = () => {
         setSearchErrors([]);
 
         if (role !== "Tenant") {
-            navigate("unauthorized");
+            navigate("/unauthorized");
         }
 
         setPage(1);
@@ -72,22 +66,18 @@ export const MyBookings: React.FC = () => {
 
         getUsersBookings(token!, 1)
             .then(res => {
-                if (res.status === "Error") {
-                    setErrors(state => [...state, res.message]);
-
-                } else if (res.status === "Success") {
+                if (res.status === "Success") {
                     setMyBookings(res.content.bookings);
                     setTotalBookings(res.content.totalBookingsCount);
                 }
                 dispatch(toggleLoaderOff());
             })
             .catch(err => {
-                setErrors(state => [...state, err]);
                 dispatch(toggleLoaderOff());
             });
 
         setSearchParams("");
-    }
+    };
 
     const onSeacrhSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         dispatch(toggleLoaderOn());
@@ -118,7 +108,7 @@ export const MyBookings: React.FC = () => {
         }
 
         setSearchParams(`${searchOption.toLowerCase()}=${searchValue}`);
-    }
+    };
 
     const onNextPageClick = async () => {
 
@@ -134,7 +124,7 @@ export const MyBookings: React.FC = () => {
 
                 if (response.status === "Success") {
                     setPage(page => page + 1);
-                    setMyBookings(response.content.bookings)
+                    setMyBookings(response.content.bookings);
                 } else if (response.status === "Error") {
                     setSearchErrors(state => [...state, response.message]);
                     setMyBookings([]);
@@ -156,7 +146,7 @@ export const MyBookings: React.FC = () => {
 
                 if (response.status === "Success") {
                     setPage(page => page + 1);
-                    setMyBookings(response.content.bookings)
+                    setMyBookings(response.content.bookings);
                 } else if (response.status === "Error") {
                     setSearchErrors(state => [...state, response.message]);
                     setMyBookings([]);
@@ -171,7 +161,7 @@ export const MyBookings: React.FC = () => {
             setSearchParams(`${searchOption.toLowerCase()}=${searchValue}&page=${page + 1}`);
 
         }
-    }
+    };
 
     const onPreviousPageClick = async () => {
         dispatch(toggleLoaderOn());
@@ -186,7 +176,7 @@ export const MyBookings: React.FC = () => {
 
                 if (response.status === "Success") {
                     setPage(page => page - 1);
-                    setMyBookings(response.content.bookings)
+                    setMyBookings(response.content.bookings);
                 } else if (response.status === "Error") {
                     setSearchErrors(state => [...state, response.message]);
                     setMyBookings([]);
@@ -212,7 +202,7 @@ export const MyBookings: React.FC = () => {
 
                 if (response.status === "Success") {
                     setPage(page => page - 1);
-                    setMyBookings(response.content.bookings)
+                    setMyBookings(response.content.bookings);
                 } else if (response.status === "Error") {
                     setSearchErrors(state => [...state, response.message]);
                     setMyBookings([]);
@@ -231,11 +221,12 @@ export const MyBookings: React.FC = () => {
             }
 
         }
-    }
+    };
 
     return (
         <div className={styles.bookingCardsWrapper}>
             <form className={styles.searchBarContainer}
+                data-testid="search-form"
                 onSubmit={onSeacrhSubmit}>
                 <input type="text" placeholder="Search" className={styles.searchInput}
                     value={searchValue}
@@ -280,4 +271,4 @@ export const MyBookings: React.FC = () => {
             </div>
         </div>
     );
-}
+};
