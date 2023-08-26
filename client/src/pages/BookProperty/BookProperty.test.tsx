@@ -5,12 +5,18 @@ import { BookProperty } from "./BookProperty";
 import { store } from "../../store/store";
 import * as bookingService from "../../services/bookingService";
 import { useForm } from "../../hooks/useForm/useForm";
+import { logout } from "../../store/auth";
+import { act } from "react-dom/test-utils";
 
 describe("Book property", () => {
 
     afterEach(() => {
+        act(() => {
+            store.dispatch(logout());
+        });
+
         jest.clearAllMocks();
-    })
+    });
 
     test("areFormValuesIncorrect should disable book button when there is a form error", async () => {
 
@@ -37,7 +43,7 @@ describe("Book property", () => {
         }
 
         await waitFor(() => {
-            expect(screen.getByRole("button").getAttribute("disabled")).toBe("true")
+            expect(screen.getByRole("button").getAttribute("disabled")).toBe("true");
         });
     });
 
@@ -90,7 +96,7 @@ describe("Book property", () => {
         });
         fireEvent.blur(startDateInput);
 
-        const startDateErrorSpan = await screen.findByText(/Date must be before 1st of January 2025/i)
+        const startDateErrorSpan = await screen.findByText(/Date must be before 1st of January 2025/i);
 
         await waitFor(() => {
             expect(startDateErrorSpan).toBeInTheDocument();
@@ -117,7 +123,7 @@ describe("Book property", () => {
         });
         fireEvent.blur(startDateInput);
 
-        const startDateErrorSpan = await screen.findByText(/Date must be before 1st of January 2025/i)
+        const startDateErrorSpan = await screen.findByText(/Date must be before 1st of January 2025/i);
 
         await waitFor(() => {
             expect(startDateErrorSpan).toBeInTheDocument();
@@ -144,7 +150,7 @@ describe("Book property", () => {
         });
         fireEvent.blur(guestsInpput);
 
-        const guestsInpputErrorSpan = await screen.findByText(/Guests must be more than zero/i)
+        const guestsInpputErrorSpan = await screen.findByText(/Guests must be more than zero/i);
 
         await waitFor(() => {
             expect(guestsInpputErrorSpan).toBeInTheDocument();
@@ -188,7 +194,7 @@ describe("Book property", () => {
                 endDate: "",
                 guests: "5"
             });
-        })
+        });
     });
 
     test("submit of form should set errors when request response is error", async () => {
