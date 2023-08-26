@@ -8,6 +8,10 @@ import auth from "../../store/auth";
 
 describe("Login", () => {
 
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
     test("areFormValuesIncorrect should disable login button when there is a form error", async () => {
 
         render(
