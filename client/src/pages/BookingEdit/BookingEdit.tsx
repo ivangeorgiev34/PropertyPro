@@ -98,7 +98,7 @@ export const BookingEdit: React.FC = () => {
         <React.Fragment>
             {booking !== null
                 ? <div className={styles.bookingEditCardWrapper}>
-                    <form className={styles.bookingEditCard} onSubmit={onEditBookingFormSubmit}>
+                    <form data-testid="edit-booking-form" className={styles.bookingEditCard} onSubmit={onEditBookingFormSubmit}>
                         <h2>Edit booking</h2>
                         <hr />
                         <div className={styles.inputContainer}>
