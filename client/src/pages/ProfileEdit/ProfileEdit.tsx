@@ -57,7 +57,6 @@ export const ProfileEdit: React.FC = () => {
 
     useEffect(() => {
         if (userId !== id || userId === null || id === null) {
-            console.log(userId);
             navigate("/unauthorized");
         } else {
 
