@@ -78,7 +78,7 @@ export const PropertyCreate: React.FC = () => {
 
     const firstImageChange = (e: React.FormEvent<HTMLInputElement>): void => {
         const eventTarget = e.currentTarget as HTMLInputElement;
-        console.log(eventTarget);
+
         if (eventTarget.files?.item(0) === null) {
             onFormErrorChange(e, "First image is required");
         } else {
@@ -137,7 +137,7 @@ export const PropertyCreate: React.FC = () => {
     };
     return (
         <div className={styles.cardWrapper}>
-            <form onSubmit={onFormSubmit} className={styles.card}>
+            <form onSubmit={onFormSubmit} className={styles.card} data-testid={"property-create-form"}>
                 <h2>Create property</h2>
                 <hr />
                 <div className={styles.imageContainer}>
