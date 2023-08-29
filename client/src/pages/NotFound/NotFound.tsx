@@ -8,8 +8,8 @@ export const NotFound: React.FC = () => {
             <div className={styles.errorContainer}>
                 <h2 className={styles.errorMessage}>404 Not Found</h2>
                 <span className={styles.errorMessage}>The resource you are searching for, doesn't exist</span>
-                <Link to={"/home"}>Back to home</Link>
+                <Link to={"/"}>Back to home</Link>
             </div>
         </div>
-    )
+    );
 };
