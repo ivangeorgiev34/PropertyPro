@@ -75,15 +75,13 @@ export const MyProperties: React.FC = () => {
             setSearchErrors(state => [...state, error]);
         } finally {
             dispatch(toggleLoaderOff());
+            setSearchParams(`${searchOption.toLowerCase()}=${searchValue}`);
         }
-
-        setSearchParams(`${searchOption.toLowerCase()}=${searchValue}`);
     };
 
     const onViewAllBtnClick = () => {
-        dispatch(toggleLoaderOn());
 
-        setSearchErrors([]);
+        dispatch(toggleLoaderOn());
 
         if (role !== "Landlord") {
             navigate("/unauthorized");
@@ -112,9 +110,8 @@ export const MyProperties: React.FC = () => {
             })
             .finally(() => {
                 dispatch(toggleLoaderOff());
+                setSearchParams("");
             });
-
-        setSearchParams("");
     };
 
     const onNextPageClick = async () => {
@@ -128,8 +125,8 @@ export const MyProperties: React.FC = () => {
                 const response = await getLandlordsProperties(id!, token!, page + 1);
 
                 if (response.status === "Error") {
-                    setMyProperties([]);
                     setSearchErrors(state => [...state, response.message]);
+                    setMyProperties([]);
                     setTotalProperties(0);
                 } else if (response.status === "Success") {
                     setMyProperties(response.content.properties);
@@ -230,6 +227,7 @@ export const MyProperties: React.FC = () => {
         <React.Fragment>
             <div className={styles.myPropertiesWrapper}>
                 <form className={styles.searchBarContainer}
+                    data-testid="search-form"
                     onSubmit={onSeacrhSubmit}>
                     <input type="text" placeholder="Search" className={styles.searchInput}
                         value={searchValue}
@@ -252,7 +250,7 @@ export const MyProperties: React.FC = () => {
                     })}
                 </ul>
                 <div className={styles.propertyCardsContainer}>
-                    {myProperties?.map((p: IProperty) => <Property key={p.id} {...p} />)}
+                    {myProperties?.map((p: IProperty, index) => <Property key={index} {...p} />)}
                 </div>
                 <div className={styles.paginationBtns}>
                     <button className={styles.paginationBtn}
