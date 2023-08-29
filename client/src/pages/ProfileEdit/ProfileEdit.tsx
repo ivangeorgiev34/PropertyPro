@@ -36,7 +36,6 @@ export const ProfileEdit: React.FC = () => {
 
     const [picture, setPicture] = useState<File>();
     const [errors, setErrors] = useState<string[]>([]);
-    const [isAuthorized, setIsAuthorized] = useState(true);
     const [profileInfo, setProfileInfo] = useState<IProfileEdit>();
 
     const { formValues, onFormChange } = useForm<IProfileEdit>({
@@ -57,8 +56,8 @@ export const ProfileEdit: React.FC = () => {
     });
 
     useEffect(() => {
-
         if (userId !== id || userId === null || id === null) {
+            console.log(userId);
             navigate("/unauthorized");
         } else {
 
@@ -144,18 +143,19 @@ export const ProfileEdit: React.FC = () => {
     };
 
     const fileInputChange = (e: React.FormEvent<HTMLInputElement>): void => {
-        if (e.currentTarget.files?.item(0) !== null) {
+        if (e.currentTarget.files![0] !== null) {
             setPicture(e.currentTarget.files![0]);
         }
     };
 
     return (
         <div className={styles.formWrapper}>
-            <form className={styles.editProfileForm} onSubmit={onEditProfileForm}>
+            <form className={styles.editProfileForm} onSubmit={onEditProfileForm} data-testid="edit-profile-form">
                 <h2>Edit your profile</h2>
                 <div className={styles.inputContainer}>
                     <input onChange={fileInputChange} id="profilePicture" name="profilePicture" type="file"
-                        accept="image/png, image/jpg, image/jpeg" />
+                        accept="image/png, image/jpg, image/jpeg"
+                        data-testid="file-input" />
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="firstName">First name:</label>
