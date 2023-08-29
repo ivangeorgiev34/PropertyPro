@@ -3,14 +3,18 @@ import { store } from "../../store/store";
 import { login, logout } from "../../store/auth";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { BrowserRouter, MemoryRouter, useParams } from "react-router-dom";
+import { BrowserRouter, MemoryRouter, Route, Routes, useParams } from "react-router-dom";
 import { ProfileEdit } from "./ProfileEdit";
 import * as profileService from "../../services/profileService";
 import { RouteObject } from "react-router-dom";
 
 describe("Profile edit", () => {
     beforeEach(() => {
-        window.location.href = "http://localhost/profile/9912f704-ad61-465d-9d2b-0e78d8a16307";
+        const newPath = "/profile/edit/9912f704-ad61-465d-9d2b-0e78d8a16307";
+
+        const newURL = window.location.origin + newPath;
+
+        history.pushState({}, '', newURL);
     });
 
     afterEach(() => {
@@ -68,6 +72,97 @@ describe("Profile edit", () => {
         const expectedResult = "ivan";
 
         expect(firstNameInput.value).toBe(expectedResult);
+    });
+
+    test("edit profile form submit should redirect to profile information page url", async () => {
+        act(() => {
+            store.dispatch(login({
+                id: "9912f704-ad61-465d-9d2b-0e78d8a16307",
+                role: "Landlord",
+                firstName: "ivan",
+                middleName: "petrov",
+                lastName: "georgiev",
+                gender: "Male",
+                age: 20
+            }));
+        });
+
+        jest.spyOn(profileService, "editProfile")
+            .mockResolvedValueOnce({
+                status: "Success",
+                content: {
+                    user: {
+                        firstName: "ivan",
+                        middleName: "petrov",
+                        lastName: "ivanov",
+                        age: 23,
+                        profilePicture: "",
+                        gender: "male"
+                    }
+                }
+            });
+
+        render(
+            <Provider store={store}>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/profile/edit/:userId" element={<ProfileEdit />} />
+                    </Routes>
+                </BrowserRouter>
+            </Provider>
+        );
+
+        const editProfileEdit = screen.getByTestId("edit-profile-form");
+        act(() => {
+            fireEvent.submit(editProfileEdit);
+        });
+
+        const expectedResult = "/profile/9912f704-ad61-465d-9d2b-0e78d8a16307";
+
+        await waitFor(() => {
+            expect(window.location.pathname).toBe(expectedResult);
+        });
+    });
+
+    test("edit profile form submit should set errors", async () => {
+        act(() => {
+            store.dispatch(login({
+                id: "9912f704-ad61-465d-9d2b-0e78d8a16307",
+                role: "Landlord",
+                firstName: "ivan",
+                middleName: "petrov",
+                lastName: "georgiev",
+                gender: "Male",
+                age: 20
+            }));
+        });
+
+        jest.spyOn(profileService, "editProfile")
+            .mockResolvedValueOnce({
+                status: "Error",
+                message: "error message"
+            });
+
+        render(
+            <Provider store={store}>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/profile/edit/:userId" element={<ProfileEdit />} />
+                    </Routes>
+                </BrowserRouter>
+            </Provider>
+        );
+
+        const editProfileEdit = screen.getByTestId("edit-profile-form");
+        act(() => {
+            fireEvent.submit(editProfileEdit);
+        });
+
+        const errorSpan = await screen.findByText(/error message/i);
+
+        await waitFor(() => {
+            expect(errorSpan).toBeInTheDocument();
+        });
     });
 
     test("areFormValuesIncorrect should disable edit button when there is input error", () => {
