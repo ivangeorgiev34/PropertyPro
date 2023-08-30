@@ -22,7 +22,7 @@ export const PropertyEdit: React.FC = () => {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { propertyId } = useParams()
+    const { propertyId } = useParams();
     const [property, setProperty] = useState<IPropertyDetails | null>(null);
     const { id, role, token } = useAppSelector(state => state.auth);
     const [errors, setErrors] = useState<string[]>([]);
@@ -61,13 +61,13 @@ export const PropertyEdit: React.FC = () => {
                 thirdImage: null
             });
         }
-    }, [property])
+    }, [property]);
 
     useEffect(() => {
         dispatch(toggleLoaderOn());
 
         if (role !== "Landlord") {
-            navigate("/unauthorized")
+            navigate("/unauthorized");
         }
 
         getLandlordPropertyById(propertyId!, token!)
@@ -167,7 +167,7 @@ export const PropertyEdit: React.FC = () => {
                 setErrors(state => [...state, error]);
 
                 dispatch(toggleLoaderOff());
-            })
+            });
 
     };
 
@@ -176,7 +176,7 @@ export const PropertyEdit: React.FC = () => {
             {property !== null && formValues !== null
                 ?
                 <div className={styles.cardWrapper}>
-                    <form onSubmit={onFormSubmit} className={styles.card}>
+                    <form onSubmit={onFormSubmit} className={styles.card} data-testid="edit-property-form">
                         <div className={styles.imageContainer}>
                             <label htmlFor="firstImage">First image:</label>
                             <input type="file" accept="image/png, image/jpg, image/jpeg" name="firstImage" onChange={(e) => {
