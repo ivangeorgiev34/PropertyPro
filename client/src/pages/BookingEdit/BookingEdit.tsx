@@ -9,7 +9,7 @@ import { useForm } from "../../hooks/useForm/useForm";
 import IBookingEditForm from "../../interfaces/booking/IBookingEditForm";
 import { useError } from "../../hooks/useError/useError";
 import IBookingEditFormErrors from "../../interfaces/booking/IBookingEditFormErrors";
-import { guestsValidation } from "../../validators/booking/guestsValidation";
+import { guestsValidation } from "../../validators/booking/guestValidation/guestsValidation";
 import { startDateValidation } from "../../validators/booking/startDateValidation";
 import { endDateValidation } from "../../validators/booking/endDateValidation/endDateValidation";
 import IResponse from "../../interfaces/IResponse";
