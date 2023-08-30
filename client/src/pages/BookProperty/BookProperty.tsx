@@ -5,7 +5,7 @@ import { useForm } from "../../hooks/useForm/useForm";
 import IBookPropertyForm from "../../interfaces/booking/IBookPropertyForm";
 import { useError } from "../../hooks/useError/useError";
 import IBookPropertyFormErrors from "../../interfaces/booking/IBookPropertyFormErrors";
-import { startDateValidation } from "../../validators/booking/startDateValidation";
+import { startDateValidation } from "../../validators/booking/startDateValidation/startDateValidation";
 import { guestsValidation } from "../../validators/booking/guestValidation/guestsValidation";
 import { endDateValidation } from "../../validators/booking/endDateValidation/endDateValidation";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
