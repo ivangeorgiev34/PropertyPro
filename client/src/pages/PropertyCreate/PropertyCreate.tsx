@@ -11,7 +11,7 @@ import { guestPricePerNightValidation } from "../../validators/property/guestPri
 import { maxGuestsCountValidation } from "../../validators/property/maxGuestsCountValidation";
 import { bedroomsCountValidation } from "../../validators/property/bedroomsCountValidation";
 import { bedsCountValidation } from "../../validators/property/bedsCountValidation";
-import { bathroomsCountValidation } from "../../validators/property/bathroomsCountValidation";
+import { bathroomsCountValidation } from "../../validators/property/bathroomsCountValidation/bathroomsCountValidation";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { toggleLoaderOff, toggleLoaderOn } from "../../store/loader";
 import { createProperty } from "../../services/propertyService";

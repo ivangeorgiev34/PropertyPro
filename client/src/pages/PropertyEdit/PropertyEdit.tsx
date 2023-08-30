@@ -15,7 +15,7 @@ import { countryValidation } from "../../validators/property/countryValidation";
 import { guestPricePerNightValidation } from "../../validators/property/guestPricePerNightValidation";
 import { maxGuestsCountValidation } from "../../validators/property/maxGuestsCountValidation";
 import { bedroomsCountValidation } from "../../validators/property/bedroomsCountValidation";
-import { bathroomsCountValidation } from "../../validators/property/bathroomsCountValidation";
+import { bathroomsCountValidation } from "../../validators/property/bathroomsCountValidation/bathroomsCountValidation";
 import { bedsCountValidation } from "../../validators/property/bedsCountValidation";
 
 export const PropertyEdit: React.FC = () => {
