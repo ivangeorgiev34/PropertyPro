@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ReviewCreate.module.scss";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { toggleLoaderOff, toggleLoaderOn } from "../../store/loader";
@@ -13,9 +13,14 @@ export const ReviewCreate: React.FC = () => {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { token } = useAppSelector(state => state.auth);
+    const { token, role } = useAppSelector(state => state.auth);
     const { propertyId } = useParams();
 
+    useEffect(() => {
+        if (role !== "Tenant") {
+            navigate("/unauthorized");
+        }
+    });
 
     const generateStars = (): React.ReactNode => {
         const starsArray = Array.from<HTMLElement>({ length: 5 }).map((el, index) => {
@@ -30,6 +35,7 @@ export const ReviewCreate: React.FC = () => {
                         value={ratingValue}
                         onClick={() => setRating(ratingValue)} />
                     <i
+                        data-testid={`star-${ratingValue}`}
                         key={`${index}`}
                         className={`fa-solid fa-star ${ratingValue <= (hoverRating || rating)
                             ? styles.yellowStar
@@ -42,7 +48,7 @@ export const ReviewCreate: React.FC = () => {
         });
 
         return starsArray;
-    }
+    };
 
     const onCreateReviewFormSubmit: React.FormEventHandler<HTMLFormElement> = async (e: React.FormEvent<HTMLFormElement>) => {
 
@@ -61,7 +67,6 @@ export const ReviewCreate: React.FC = () => {
             } else if (response.status === "Error") {
                 setErrors(state => [...state, response.message]);
             }
-            //check the generate stars function to understand it better
 
         } catch (error: any) {
             setErrors(state => [...state, error]);
@@ -69,11 +74,12 @@ export const ReviewCreate: React.FC = () => {
             dispatch(toggleLoaderOff());
         }
 
-    }
+    };
 
     return (
         <div className={styles.reviewCreateWrapper}>
-            <form className={styles.reviewCreateCard} onSubmit={onCreateReviewFormSubmit}>
+            <form className={styles.reviewCreateCard} onSubmit={onCreateReviewFormSubmit}
+                data-testid="create-review-form">
                 <h1>Create review</h1>
                 <hr />
                 <div className={styles.stars}>
@@ -100,6 +106,6 @@ export const ReviewCreate: React.FC = () => {
                 </ul>
                 <button className={styles.createReviewBtn}>Create</button>
             </form>
-        </div>
+        </div >
     );
-}
+};
