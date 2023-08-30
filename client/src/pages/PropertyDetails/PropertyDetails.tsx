@@ -13,7 +13,7 @@ import { spawn } from "child_process";
 import { Review } from "../../components/review/Review";
 
 export const PropertyDetails: React.FC = () => {
-    const { id, token, role } = useAppSelector((store) => store.auth)
+    const { id, token, role } = useAppSelector((store) => store.auth);
     const { propertyId } = useParams();
     const [propertyDeatils, setPropertyDetails] = useState<IPropertyDetails | null>(null);
     const [currentImageCarousel, setCurrentImageCarousel] = useState<number>(1);
@@ -42,7 +42,7 @@ export const PropertyDetails: React.FC = () => {
             })
             .catch(error => {
                 navigate("/notfound");
-            })
+            });
 
         getPropertyReviews(propertyId!, token!)
             .then(res => {
@@ -58,7 +58,7 @@ export const PropertyDetails: React.FC = () => {
                 setReviewsError(err);
 
                 dispatch(toggleLoaderOff());
-            })
+            });
     }, []);
 
     const rightArrowBtnClick = () => {
@@ -71,7 +71,7 @@ export const PropertyDetails: React.FC = () => {
         }
 
         setCurrentImageCarousel(state => state + 1);
-    }
+    };
 
     const leftArrowBtnClick = (): void => {
         if (currentImageCarousel === 1) {
@@ -83,14 +83,14 @@ export const PropertyDetails: React.FC = () => {
         }
 
         setCurrentImageCarousel(state => state - 1);
-    }
+    };
 
     const onDeleteBtnClick = (): void => {
 
         if (window.confirm("Are you sure you want to delete this property?")) {
 
             dispatch(toggleLoaderOn());
-
+            console.log(22);
             setDeleteError(null);
 
             deletePropertyById(propertyDeatils?.id!, token!)
@@ -107,7 +107,7 @@ export const PropertyDetails: React.FC = () => {
                     setDeleteError(err);
 
                     dispatch(toggleLoaderOff());
-                })
+                });
 
         }
     };
@@ -137,6 +137,7 @@ export const PropertyDetails: React.FC = () => {
                         </button>
                         <div className={styles.imageSelectedContainer}>
                             <div
+                                data-testid="first-dot"
                                 className={`${styles.imageSelector} 
                 ${currentImageCarousel === 1
                                         ? styles.imageSelected
@@ -144,6 +145,7 @@ export const PropertyDetails: React.FC = () => {
 
                             </div>
                             <div
+                                data-testid="second-dot"
                                 className={`${styles.imageSelector} 
                 ${currentImageCarousel === 2
                                         ? styles.imageSelected
@@ -151,6 +153,7 @@ export const PropertyDetails: React.FC = () => {
 
                             </div>
                             <div
+                                data-testid="third-dot"
                                 className={`${styles.imageSelector} 
                 ${currentImageCarousel === 3
                                         ? styles.imageSelected
@@ -160,6 +163,7 @@ export const PropertyDetails: React.FC = () => {
                         </div>
                         {currentImageCarousel === 1
                             ? <img
+                                data-testid="first-image"
                                 className={styles.propertyImage}
                                 src={propertyDeatils?.firstImage === null
                                     || propertyDeatils?.firstImage === undefined
@@ -168,6 +172,7 @@ export const PropertyDetails: React.FC = () => {
                                 alt="" />
                             : currentImageCarousel === 2
                                 ? <img
+                                    data-testid="second-image"
                                     className={styles.propertyImage}
                                     src={propertyDeatils?.secondImage === null
                                         || propertyDeatils?.secondImage === undefined
@@ -176,6 +181,7 @@ export const PropertyDetails: React.FC = () => {
                                     alt="" />
                                 : currentImageCarousel === 3
                                     ? <img
+                                        data-testid="third-image"
                                         className={styles.propertyImage}
                                         src={propertyDeatils?.thirdImage === null
                                             || propertyDeatils?.thirdImage === undefined
@@ -200,7 +206,10 @@ export const PropertyDetails: React.FC = () => {
                     {propertyDeatils?.landlord.id === id
                         ? <div className={styles.btnsContainer}>
                             <Link to={`/property/edit/${propertyDeatils.id}`} className={styles.editBtn}>Edit</Link>
-                            <button className={styles.deleteBtn} onClick={onDeleteBtnClick}>Delete</button>
+                            <button className={styles.deleteBtn} onClick={onDeleteBtnClick}
+                                data-testid="delete-btn">
+                                Delete
+                            </button>
                         </div>
                         : role === "Tenant"
                             ? <Link to={`/property/book/${propertyDeatils.id}`}
