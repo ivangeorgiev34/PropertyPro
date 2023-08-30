@@ -11,7 +11,7 @@ import { useError } from "../../hooks/useError/useError";
 import IBookingEditFormErrors from "../../interfaces/booking/IBookingEditFormErrors";
 import { guestsValidation } from "../../validators/booking/guestsValidation";
 import { startDateValidation } from "../../validators/booking/startDateValidation";
-import { endDateValidation } from "../../validators/booking/endDateValidation";
+import { endDateValidation } from "../../validators/booking/endDateValidation/endDateValidation";
 import IResponse from "../../interfaces/IResponse";
 
 export const BookingEdit: React.FC = () => {

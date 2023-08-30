@@ -7,7 +7,7 @@ import { useError } from "../../hooks/useError/useError";
 import IBookPropertyFormErrors from "../../interfaces/booking/IBookPropertyFormErrors";
 import { startDateValidation } from "../../validators/booking/startDateValidation";
 import { guestsValidation } from "../../validators/booking/guestsValidation";
-import { endDateValidation } from "../../validators/booking/endDateValidation";
+import { endDateValidation } from "../../validators/booking/endDateValidation/endDateValidation";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { toggleLoaderOff, toggleLoaderOn } from "../../store/loader";
 import { createBooking } from "../../services/bookingService";
