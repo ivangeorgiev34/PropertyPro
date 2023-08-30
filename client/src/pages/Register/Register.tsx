@@ -65,7 +65,7 @@ export const Register: React.FC = () => {
 
         userRegister(formValues, role)
             .then(res => {
-                console.log(res);
+
                 if (res.status === "Error") {
 
                     setErrors(state => [...state, res.message]);
@@ -99,7 +99,7 @@ export const Register: React.FC = () => {
         }
 
         return false;
-    }
+    };
 
     return (
         <div className={styles.wrapper}>
@@ -124,7 +124,7 @@ export const Register: React.FC = () => {
                         </button>
                     </div>
                 </div>
-                <form className={styles.registerForm} onSubmit={onRegisterFormSubmit}>
+                <form className={styles.registerForm} onSubmit={onRegisterFormSubmit} data-testid="register-form">
                     <h2 className={styles.registerFormHeading}>Register in PropertyPro</h2>
                     <div className={styles.firstNameContainer}>
                         <label htmlFor="firstName">First name:</label>
@@ -212,4 +212,4 @@ export const Register: React.FC = () => {
             </div>
         </div>
     );
-}
+};
