@@ -46,8 +46,8 @@ export const ReviewEdit: React.FC = () => {
                 navigate("/notfound");
 
                 dispatch(toggleLoaderOff());
-            })
-    }, [])
+            });
+    }, []);
 
     const generateStars = (): React.ReactNode => {
         const starsArray = Array.from<HTMLElement>({ length: 5 }).map((el, index) => {
@@ -62,6 +62,7 @@ export const ReviewEdit: React.FC = () => {
                         value={ratingValue}
                         onClick={() => setRating(ratingValue)} />
                     <i
+                        data-testid={`star-${ratingValue}`}
                         key={`${index}`}
                         className={`fa-solid fa-star ${ratingValue <= (hoverRating || rating)
                             ? styles.yellowStar
@@ -74,7 +75,7 @@ export const ReviewEdit: React.FC = () => {
         });
 
         return starsArray;
-    }
+    };
 
     const onFormSubmit: React.FormEventHandler<HTMLFormElement> = async (e: React.FormEvent<HTMLFormElement>) => {
 
@@ -103,7 +104,7 @@ export const ReviewEdit: React.FC = () => {
 
     return (
         <div className={styles.editReviewCardWrapper}>
-            <form className={styles.editReviewCard} onSubmit={onFormSubmit}>
+            <form className={styles.editReviewCard} onSubmit={onFormSubmit} data-testid="edit-review-form">
                 <h2>Edit review</h2>
                 <hr />
                 <div className={styles.stars}>
