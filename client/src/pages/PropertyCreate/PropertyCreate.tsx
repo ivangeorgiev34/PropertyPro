@@ -9,7 +9,7 @@ import { townValidation } from "../../validators/property/townValidation";
 import { countryValidation } from "../../validators/property/countryValidation";
 import { guestPricePerNightValidation } from "../../validators/property/guestPricePerNightValidation";
 import { maxGuestsCountValidation } from "../../validators/property/maxGuestsCountValidation";
-import { bedroomsCountValidation } from "../../validators/property/bedroomsCountValidation";
+import { bedroomsCountValidation } from "../../validators/property/bedroomsCountValidation/bedroomsCountValidation";
 import { bedsCountValidation } from "../../validators/property/bedsCountValidation/bedsCountValidation";
 import { bathroomsCountValidation } from "../../validators/property/bathroomsCountValidation/bathroomsCountValidation";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
