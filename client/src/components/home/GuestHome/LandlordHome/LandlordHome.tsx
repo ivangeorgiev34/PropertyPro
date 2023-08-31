@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import styles from "./Landlord.module.scss";
 import { useEffect, useState } from "react";
 import { logout } from "../../../../store/auth";
-import { tokenExpiresValidation } from "../../../../validators/tokenExpiresValidation";
+import { tokenExpiresValidation } from "../../../../validators/profile/tokenExpiresValidation/tokenExpiresValidation";
 
 export const LandlordHome: React.FC = () => {
 
@@ -24,7 +24,7 @@ export const LandlordHome: React.FC = () => {
             navigate("/login");
         }
 
-    }, [])
+    }, []);
 
     return (
         <div className={styles.landlordHomeContainer}>
@@ -46,4 +46,4 @@ export const LandlordHome: React.FC = () => {
             </div>
         </div>
     );
-}
+};

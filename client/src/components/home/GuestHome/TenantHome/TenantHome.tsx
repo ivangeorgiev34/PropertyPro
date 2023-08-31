@@ -8,7 +8,7 @@ import { getAllProperties, getAllPropertiesBySearch } from "../../../../services
 import { Property } from "../../../property/Property";
 import { versions } from "process";
 import { logout } from "../../../../store/auth";
-import { tokenExpiresValidation } from "../../../../validators/tokenExpiresValidation";
+import { tokenExpiresValidation } from "../../../../validators/profile/tokenExpiresValidation/tokenExpiresValidation";
 
 export const TenantHome: React.FC = () => {
     const { token, role, expires } = useAppSelector(state => state.auth);
@@ -61,7 +61,7 @@ export const TenantHome: React.FC = () => {
 
         setSearchParams("");
 
-    }, [])
+    }, []);
 
     const onSeacrhSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         dispatch(toggleLoaderOn());
@@ -81,7 +81,7 @@ export const TenantHome: React.FC = () => {
 
             if (response.status === "Error") {
                 setAllProperties([]);
-                setSearchErrors(state => [...state, response.message])
+                setSearchErrors(state => [...state, response.message]);
             } else if (response.status === "Success") {
                 setAllProperties(response.content.properties);
                 setTotalProperties(response.content.totalPropertiesCount);
@@ -93,7 +93,7 @@ export const TenantHome: React.FC = () => {
         }
 
         setSearchParams(`${searchOption.toLowerCase()}=${searchValue}`);
-    }
+    };
 
     const onViewAllBtnClick = () => {
         dispatch(toggleLoaderOn());
@@ -128,7 +128,7 @@ export const TenantHome: React.FC = () => {
             });
 
         setSearchParams("");
-    }
+    };
 
     const onNextPageClick = async () => {
         dispatch(toggleLoaderOn());
@@ -144,7 +144,7 @@ export const TenantHome: React.FC = () => {
 
                 if (response.status === "Error") {
                     setAllProperties([]);
-                    setSearchErrors(state => [...state, response.message])
+                    setSearchErrors(state => [...state, response.message]);
                 } else if (response.status === "Success") {
                     setAllProperties(response.content.properties);
                     setTotalProperties(response.content.totalPropertiesCount);
@@ -163,7 +163,7 @@ export const TenantHome: React.FC = () => {
 
                 if (response.status === "Error") {
                     setAllProperties([]);
-                    setSearchErrors(state => [...state, response.message])
+                    setSearchErrors(state => [...state, response.message]);
                 } else if (response.status === "Success") {
                     setAllProperties(response.content.properties);
                     setTotalProperties(response.content.totalPropertiesCount);
@@ -176,7 +176,7 @@ export const TenantHome: React.FC = () => {
                 dispatch(toggleLoaderOff());
             }
         }
-    }
+    };
 
     const onPreviousPageClick = async () => {
         dispatch(toggleLoaderOn());
@@ -192,7 +192,7 @@ export const TenantHome: React.FC = () => {
 
                 if (response.status === "Error") {
                     setAllProperties([]);
-                    setSearchErrors(state => [...state, response.message])
+                    setSearchErrors(state => [...state, response.message]);
                 } else if (response.status === "Success") {
                     setAllProperties(response.content.properties);
                     setTotalProperties(response.content.totalPropertiesCount);
@@ -218,7 +218,7 @@ export const TenantHome: React.FC = () => {
 
                 if (response.status === "Error") {
                     setAllProperties([]);
-                    setSearchErrors(state => [...state, response.message])
+                    setSearchErrors(state => [...state, response.message]);
                 } else if (response.status === "Success") {
                     setAllProperties(response.content.properties);
                     setTotalProperties(response.content.totalPropertiesCount);
@@ -237,7 +237,7 @@ export const TenantHome: React.FC = () => {
                 dispatch(toggleLoaderOff());
             }
         }
-    }
+    };
 
     return (
         <React.Fragment>
@@ -297,4 +297,4 @@ export const TenantHome: React.FC = () => {
             </div>
         </React.Fragment>
     );
-}
+};
