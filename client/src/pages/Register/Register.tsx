@@ -15,7 +15,7 @@ import { ageValidation } from "../../validators/profile/ageValidation/ageValidat
 import { emailValidation } from "../../validators/profile/emailValidation/emailValidation";
 import { passwordValidation } from "../../validators/profile/passwordValidation/passwordValidation";
 import { passwordsMatchValidation } from "../../validators/profile/passwordsMatchValidation/passwordsMatchValidation";
-import { usernameValidation } from "../../validators/usernameValidation";
+import { usernameValidation } from "../../validators/profile/usernameValidation/usernameValidation";
 import { phoneNumberValidation } from "../../validators/profile/phoneNumberValidation/phoneNumberValidation";
 
 export const Register: React.FC = () => {
