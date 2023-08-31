@@ -61,13 +61,17 @@ namespace PropertyPro.Core.Services
 			await repo.SaveChangesAsync();
 		}
 
-		public async Task<ReviewDto> EditReviewAsync(EditReviewDto editReviewDto, string reviewId)
+		public async Task<ReviewDto> EditReviewAsync(EditReviewDto editReviewDto, string reviewId, string userId)
 		{
 			var review = await GetReviewByIdAsync(reviewId);
 
 			if (review == null)
 			{
 				throw new NullReferenceException("Review cannot be found");
+			}
+			else if (review.Tenant.UserId.ToString() != userId)
+			{
+				throw new InvalidOperationException("User doesn't own this review");
 			}
 
 			review.Stars = editReviewDto.Stars;
