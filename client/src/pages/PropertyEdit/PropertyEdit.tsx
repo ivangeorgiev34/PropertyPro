@@ -16,7 +16,7 @@ import { guestPricePerNightValidation } from "../../validators/property/guestPri
 import { maxGuestsCountValidation } from "../../validators/property/maxGuestsCountValidation";
 import { bedroomsCountValidation } from "../../validators/property/bedroomsCountValidation";
 import { bathroomsCountValidation } from "../../validators/property/bathroomsCountValidation/bathroomsCountValidation";
-import { bedsCountValidation } from "../../validators/property/bedsCountValidation";
+import { bedsCountValidation } from "../../validators/property/bedsCountValidation/bedsCountValidation";
 
 export const PropertyEdit: React.FC = () => {
 
