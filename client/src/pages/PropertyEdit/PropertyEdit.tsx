@@ -9,7 +9,7 @@ import { useForm } from "../../hooks/useForm/useForm";
 import IPropertyEditForm from "../../interfaces/IPropertyEditForm";
 import { useError } from "../../hooks/useError/useError";
 import IPropertyEditFormErrors from "../../interfaces/IPropertyEditFormErrors";
-import { propertyTitleValidation } from "../../validators/property/propertyTitleValidation";
+import { propertyTitleValidation } from "../../validators/property/propertyTitleValidation/propertyTitleValidation";
 import { townValidation } from "../../validators/property/townValidation";
 import { countryValidation } from "../../validators/property/countryValidation/countryValidation";
 import { guestPricePerNightValidation } from "../../validators/property/guestPricePerNightValidation/guestPricePerNightValidation";

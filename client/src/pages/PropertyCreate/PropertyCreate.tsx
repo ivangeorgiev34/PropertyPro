@@ -4,7 +4,7 @@ import { useForm } from "../../hooks/useForm/useForm";
 import IPropertyCreateForm from "../../interfaces/IPropertyCreateForm";
 import { useError } from "../../hooks/useError/useError";
 import IPropertyCreateFormErrors from "../../interfaces/IPropertyCreateFormErrors";
-import { propertyTitleValidation } from "../../validators/property/propertyTitleValidation";
+import { propertyTitleValidation } from "../../validators/property/propertyTitleValidation/propertyTitleValidation";
 import { townValidation } from "../../validators/property/townValidation";
 import { countryValidation } from "../../validators/property/countryValidation/countryValidation";
 import { guestPricePerNightValidation } from "../../validators/property/guestPricePerNightValidation/guestPricePerNightValidation";
