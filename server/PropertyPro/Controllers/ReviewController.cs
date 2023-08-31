@@ -10,149 +10,151 @@ using PropertyPro.Utilities;
 
 namespace PropertyPro.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ReviewController : BaseController
-    {
-        private readonly IPropertyService propertyService;
-        private readonly IReviewService reviewService;
-        public ReviewController(IPropertyService _propertyService,
-            IReviewService _reviewService)
-        {
-            this.propertyService = _propertyService;
-            this.reviewService = _reviewService;
-        }
+	[Route("api/[controller]")]
+	[ApiController]
+	public class ReviewController : BaseController
+	{
+		private readonly IPropertyService propertyService;
+		private readonly IReviewService reviewService;
+		public ReviewController(IPropertyService _propertyService,
+			IReviewService _reviewService)
+		{
+			this.propertyService = _propertyService;
+			this.reviewService = _reviewService;
+		}
 
-        [HttpPost]
-        [Route("create/{propertyId}")]
-        [Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> CreateReview(CreateReviewDto createReviewDto, string propertyId)
-        {
-            if (IsIdValidGuidAndNotNull(propertyId) == false
-                || await propertyService.PropertyExistsAsync(propertyId) == false)
-            {
-                return BadRequest(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "Property doesn't exist"
-                });
-            }
+		[HttpPost]
+		[Route("create/{propertyId}")]
+		[Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<IActionResult> CreateReview(CreateReviewDto createReviewDto, string propertyId)
+		{
+			if (IsIdValidGuidAndNotNull(propertyId) == false
+				|| await propertyService.PropertyExistsAsync(propertyId) == false)
+			{
+				return BadRequest(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "Property doesn't exist"
+				});
+			}
 
-            var userId = GetUserId(HttpContext);
+			var userId = GetUserId(HttpContext);
 
-            var review = await reviewService.CreateReviewAsync(createReviewDto, userId!, propertyId);
+			var review = await reviewService.CreateReviewAsync(createReviewDto, userId!, propertyId);
 
-            return Ok(new Response()
-            {
-                Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
-                Message = "Review created successfully",
-                Content = new
-                {
-                    Review = review
-                }
-            });
+			return Ok(new Response()
+			{
+				Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+				Message = "Review created successfully",
+				Content = new
+				{
+					Review = review
+				}
+			});
 
-        }
+		}
 
-        [HttpPut]
-        [Route("edit/{reviewId}")]
-        [Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> EditReview(EditReviewDto editReviewDto, string reviewId) 
-        {
-            if (IsIdValidGuidAndNotNull(reviewId) == false || await reviewService.ReviewExistsAsync(reviewId) == false)
-            {
-                return BadRequest(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "Review doesn't exist"
-                });
-            }
+		[HttpPut]
+		[Route("edit/{reviewId}")]
+		[Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<IActionResult> EditReview(EditReviewDto editReviewDto, string reviewId)
+		{
+			if (IsIdValidGuidAndNotNull(reviewId) == false || await reviewService.ReviewExistsAsync(reviewId) == false)
+			{
+				return BadRequest(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "Review doesn't exist"
+				});
+			}
 
-            try
-            {
-                var editedReview = await reviewService.EditReviewAsync(editReviewDto, reviewId);
+			var userId = GetUserId(HttpContext);
 
-                return Ok(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
-                    Message = "Review edited successfully",
-                    Content = new
-                    {
-                        Review = editedReview
-                    }
-                });
-            }
-            catch (NullReferenceException e)
-            {
-                return NotFound(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = e.Message
-                });
-            }
-        }
+			try
+			{
+				var editedReview = await reviewService.EditReviewAsync(editReviewDto, reviewId, userId!);
 
-        [HttpDelete]
-        [Route("delete/{reviewId}")]
-        [Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> DeleteReview(string reviewId)
-        {
-            if (IsIdValidGuidAndNotNull(reviewId) == false || await reviewService.ReviewExistsAsync(reviewId) == false)
-            {
-                return BadRequest(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "Review doesn't exist"
-                });
-            }
+				return Ok(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+					Message = "Review edited successfully",
+					Content = new
+					{
+						Review = editedReview
+					}
+				});
+			}
+			catch (NullReferenceException e)
+			{
+				return NotFound(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = e.Message
+				});
+			}
+		}
 
-            try
-            {
-                await reviewService.DeleteReviewByIdAsync(reviewId);
+		[HttpDelete]
+		[Route("delete/{reviewId}")]
+		[Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<IActionResult> DeleteReview(string reviewId)
+		{
+			if (IsIdValidGuidAndNotNull(reviewId) == false || await reviewService.ReviewExistsAsync(reviewId) == false)
+			{
+				return BadRequest(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "Review doesn't exist"
+				});
+			}
 
-                return NoContent();
-            }
-            catch (NullReferenceException e)
-            {
-                return BadRequest(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = e.Message
-                });
-            }
-        }
+			try
+			{
+				await reviewService.DeleteReviewByIdAsync(reviewId);
 
-        [HttpGet]
-        [Route("{reviewId}")]
-        [Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetReviewById(string reviewId)
-        {
-            if (IsIdValidGuidAndNotNull(reviewId) == false || await reviewService.ReviewExistsAsync(reviewId) == false)
-            {
-                return BadRequest(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "Review doesn't exist"
-                });
-            }
+				return NoContent();
+			}
+			catch (NullReferenceException e)
+			{
+				return BadRequest(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = e.Message
+				});
+			}
+		}
 
-            var review = await reviewService.GetReviewDtoByIdAsync(reviewId);
+		[HttpGet]
+		[Route("{reviewId}")]
+		[Authorize(Roles = "Tenant", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		public async Task<IActionResult> GetReviewById(string reviewId)
+		{
+			if (IsIdValidGuidAndNotNull(reviewId) == false || await reviewService.ReviewExistsAsync(reviewId) == false)
+			{
+				return BadRequest(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "Review doesn't exist"
+				});
+			}
 
-            return review == null
-                ? BadRequest(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
-                    Message = "Review doesn't exist"
-                })
-                : Ok(new Response()
-                {
-                    Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
-                    Message = "Review found",
-                    Content = new
-                    {
-                        Review = review
-                    }
-                });
-        }
-    }
+			var review = await reviewService.GetReviewDtoByIdAsync(reviewId);
+
+			return review == null
+				? BadRequest(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_ERROR,
+					Message = "Review doesn't exist"
+				})
+				: Ok(new Response()
+				{
+					Status = ApplicationConstants.Response.RESPONSE_STATUS_SUCCESS,
+					Message = "Review found",
+					Content = new
+					{
+						Review = review
+					}
+				});
+		}
+	}
 }
