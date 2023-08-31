@@ -9,12 +9,12 @@ import { userRegister } from "../../services/authenticationService";
 import { useError } from "../../hooks/useError/useError";
 import { IRegisterFormErrors } from "../../interfaces/IRegisterFormErrors";
 import { firstNameValidation } from "../../validators/profile/firstNameValidation/firstNameValidation";
-import { middleNameValidation } from "../../validators/middleNameValidation";
+import { middleNameValidation } from "../../validators/profile/middleNameValidation/middleNameValidation";
 import { lastNameValidation } from "../../validators/profile/lastNameValidation/lastNameValidation";
 import { ageValidation } from "../../validators/profile/ageValidation/ageValidation";
 import { emailValidation } from "../../validators/profile/emailValidation/emailValidation";
-import { passwordValidation } from "../../validators/passwordValidation";
-import { passwordsMatchValidation } from "../../validators/passwordsMatchValidation";
+import { passwordValidation } from "../../validators/profile/passwordValidation/passwordValidation";
+import { passwordsMatchValidation } from "../../validators/profile/passwordsMatchValidation/passwordsMatchValidation";
 import { usernameValidation } from "../../validators/usernameValidation";
 import { phoneNumberValidation } from "../../validators/phoneNumberValidation";
 
