@@ -7,7 +7,7 @@ import IPropertyCreateFormErrors from "../../interfaces/IPropertyCreateFormError
 import { propertyTitleValidation } from "../../validators/property/propertyTitleValidation";
 import { townValidation } from "../../validators/property/townValidation";
 import { countryValidation } from "../../validators/property/countryValidation/countryValidation";
-import { guestPricePerNightValidation } from "../../validators/property/guestPricePerNightValidation";
+import { guestPricePerNightValidation } from "../../validators/property/guestPricePerNightValidation/guestPricePerNightValidation";
 import { maxGuestsCountValidation } from "../../validators/property/maxGuestsCountValidation";
 import { bedroomsCountValidation } from "../../validators/property/bedroomsCountValidation/bedroomsCountValidation";
 import { bedsCountValidation } from "../../validators/property/bedsCountValidation/bedsCountValidation";
