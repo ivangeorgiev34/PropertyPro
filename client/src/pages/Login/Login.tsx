@@ -10,7 +10,7 @@ import { toggleLoaderOff, toggleLoaderOn } from "../../store/loader";
 import ILoginForm from "../../interfaces/ILoginForm";
 import { useError } from "../../hooks/useError/useError";
 import { emailValidation } from "../../validators/profile/emailValidation/emailValidation";
-import { passwordValidation } from "../../validators/passwordValidation";
+import { passwordValidation } from "../../validators/profile/passwordValidation/passwordValidation";
 import { spawn } from "child_process";
 
 
