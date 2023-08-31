@@ -11,7 +11,7 @@ import { IRegisterFormErrors } from "../../interfaces/IRegisterFormErrors";
 import { firstNameValidation } from "../../validators/firstNameValidation";
 import { middleNameValidation } from "../../validators/middleNameValidation";
 import { lastNameValidation } from "../../validators/lastNameValidation";
-import { ageValidation } from "../../validators/ageValidation";
+import { ageValidation } from "../../validators/profile/ageValidation/ageValidation";
 import { emailValidation } from "../../validators/emailValidation";
 import { passwordValidation } from "../../validators/passwordValidation";
 import { passwordsMatchValidation } from "../../validators/passwordsMatchValidation";

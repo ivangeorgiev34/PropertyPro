@@ -13,7 +13,7 @@ import { updateUserInformation } from "../../store/auth";
 import { firstNameValidation } from "../../validators/firstNameValidation";
 import { middleNameValidation } from "../../validators/middleNameValidation";
 import { lastNameValidation } from "../../validators/lastNameValidation";
-import { ageValidation } from "../../validators/ageValidation";
+import { ageValidation } from "../../validators/profile/ageValidation/ageValidation";
 
 export const ProfileEdit: React.FC = () => {
 
