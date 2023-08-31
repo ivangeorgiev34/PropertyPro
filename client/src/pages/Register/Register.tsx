@@ -12,7 +12,7 @@ import { firstNameValidation } from "../../validators/firstNameValidation";
 import { middleNameValidation } from "../../validators/middleNameValidation";
 import { lastNameValidation } from "../../validators/lastNameValidation";
 import { ageValidation } from "../../validators/profile/ageValidation/ageValidation";
-import { emailValidation } from "../../validators/emailValidation";
+import { emailValidation } from "../../validators/profile/emailValidation/emailValidation";
 import { passwordValidation } from "../../validators/passwordValidation";
 import { passwordsMatchValidation } from "../../validators/passwordsMatchValidation";
 import { usernameValidation } from "../../validators/usernameValidation";
