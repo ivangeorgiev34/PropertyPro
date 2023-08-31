@@ -10,7 +10,7 @@ import { useError } from "../../hooks/useError/useError";
 import { IRegisterFormErrors } from "../../interfaces/IRegisterFormErrors";
 import { firstNameValidation } from "../../validators/profile/firstNameValidation/firstNameValidation";
 import { middleNameValidation } from "../../validators/middleNameValidation";
-import { lastNameValidation } from "../../validators/lastNameValidation";
+import { lastNameValidation } from "../../validators/profile/lastNameValidation/lastNameValidation";
 import { ageValidation } from "../../validators/profile/ageValidation/ageValidation";
 import { emailValidation } from "../../validators/profile/emailValidation/emailValidation";
 import { passwordValidation } from "../../validators/passwordValidation";

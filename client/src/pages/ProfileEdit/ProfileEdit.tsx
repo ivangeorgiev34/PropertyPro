@@ -12,7 +12,7 @@ import { editProfile } from "../../services/profileService";
 import { updateUserInformation } from "../../store/auth";
 import { firstNameValidation } from "../../validators/profile/firstNameValidation/firstNameValidation";
 import { middleNameValidation } from "../../validators/middleNameValidation";
-import { lastNameValidation } from "../../validators/lastNameValidation";
+import { lastNameValidation } from "../../validators/profile/lastNameValidation/lastNameValidation";
 import { ageValidation } from "../../validators/profile/ageValidation/ageValidation";
 
 export const ProfileEdit: React.FC = () => {
