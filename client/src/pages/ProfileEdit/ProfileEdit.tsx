@@ -10,7 +10,7 @@ import IProfileEditErrors from "../../interfaces/IProfileEditErrors";
 import { toggleLoaderOff, toggleLoaderOn } from "../../store/loader";
 import { editProfile } from "../../services/profileService";
 import { updateUserInformation } from "../../store/auth";
-import { firstNameValidation } from "../../validators/firstNameValidation";
+import { firstNameValidation } from "../../validators/profile/firstNameValidation/firstNameValidation";
 import { middleNameValidation } from "../../validators/middleNameValidation";
 import { lastNameValidation } from "../../validators/lastNameValidation";
 import { ageValidation } from "../../validators/profile/ageValidation/ageValidation";
