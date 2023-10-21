@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PropertyPro.Infrastructure.Data;
 
@@ -12,10 +11,9 @@ using PropertyPro.Infrastructure.Data;
 namespace PropertyPro.Infrastructure.Migrations
 {
     [DbContext(typeof(PropertyProDbContext))]
-    [Migration("20230619095324_UserPrimaryKeyChanged")]
-    partial class UserPrimaryKeyChanged
+    partial class PropertyProDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,6 +165,9 @@ namespace PropertyPro.Infrastructure.Migrations
                     b.Property<int>("Guests")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("PropertyId")
                         .HasColumnType("uniqueidentifier");
 
@@ -223,11 +224,27 @@ namespace PropertyPro.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("FirstImage")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<decimal>("GuestPricePerNight")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("LandlordId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("MaxGuestsCount")
                         .HasColumnType("int");
+
+                    b.Property<byte[]>("SecondImage")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("ThirdImage")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -257,6 +274,9 @@ namespace PropertyPro.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<Guid?>("LandlordId")
                         .HasColumnType("uniqueidentifier");

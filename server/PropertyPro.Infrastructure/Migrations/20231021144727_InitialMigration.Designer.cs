@@ -12,8 +12,8 @@ using PropertyPro.Infrastructure.Data;
 namespace PropertyPro.Infrastructure.Migrations
 {
     [DbContext(typeof(PropertyProDbContext))]
-    [Migration("20230621112329_AddImagesToPropertyEntity")]
-    partial class AddImagesToPropertyEntity
+    [Migration("20231021144727_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -167,6 +167,9 @@ namespace PropertyPro.Infrastructure.Migrations
                     b.Property<int>("Guests")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("PropertyId")
                         .HasColumnType("uniqueidentifier");
 
@@ -227,6 +230,12 @@ namespace PropertyPro.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<decimal>("GuestPricePerNight")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("LandlordId")
                         .HasColumnType("uniqueidentifier");
 
@@ -267,6 +276,9 @@ namespace PropertyPro.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<Guid?>("LandlordId")
                         .HasColumnType("uniqueidentifier");
