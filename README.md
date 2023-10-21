@@ -56,6 +56,8 @@ The following endpoints are supported:
 - Redux
 - React Router DOM
 - React Intersection Observer
+- React Testing Library
+- Jest
 - NUnit
 - Moq
 - MockQueryable.Moq

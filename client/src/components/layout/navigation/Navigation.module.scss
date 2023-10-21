@@ -14,10 +14,12 @@
     column-gap: 30px;
     .navBarItem {
       list-style: none;
+      text-align: center;
     }
 
     .greeting {
       cursor: pointer;
+      text-align: center;
     }
   }
 
@@ -89,4 +91,10 @@
   font-weight: 600;
   text-decoration: none;
   font-size: 20px;
+}
+
+@media screen and (max-width: 800px) {
+  .greeting {
+    display: none;
+  }
 }
