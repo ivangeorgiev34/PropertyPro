@@ -1,5 +1,5 @@
 # PropertyPro
-PropertyPro is property rental app accessable to landlords who post their properties for rental, and tenants who can book and review properties. The application was built with ASP.NET Core Web API and React.js. It also has a tested back-end.
+PropertyPro is responsive property rental app accessable to landlords who post their properties for rental, and tenants who can book and review properties. The application was built with ASP.NET Core Web API and React.js. It also has a tested front-end and back-end.
 ## Table of contents
 - [Users and roles](#users-and-roles)
 - [RESTful API](#restful-api)
