@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using PropertyPro.Constants;
 using PropertyPro.Core.Contracts;
@@ -90,11 +89,11 @@ namespace PropertyPro.Controllers
 
             if (userExists != null)
             {
-                return StatusCode(StatusCodes.Status400BadRequest,new Response()
+                return StatusCode(StatusCodes.Status400BadRequest, new Response()
                 {
                     Status = "Error",
                     Message = "User already exists"
-				});
+                });
             }
 
             var user = new User()
@@ -139,12 +138,12 @@ namespace PropertyPro.Controllers
 
             if (userExists != null)
             {
-				return StatusCode(StatusCodes.Status400BadRequest, new Response()
-				{
-					Status = "Error",
-					Message = "User already exists"
-				});
-			}
+                return StatusCode(StatusCodes.Status400BadRequest, new Response()
+                {
+                    Status = "Error",
+                    Message = "User already exists"
+                });
+            }
 
             var user = new User()
             {
