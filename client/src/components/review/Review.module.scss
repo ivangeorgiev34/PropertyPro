@@ -41,6 +41,12 @@
       .yellowStar {
         color: rgb(237, 190, 0);
       }
+
+      div {
+        i {
+          font-size: 14px;
+        }
+      }
     }
 
     .tenantProfilePicture {
@@ -61,8 +67,9 @@
 
     .reviewBtnsContainer {
       display: flex;
-      flex-flow: row nowrap;
+      flex-flow: row wrap;
       justify-content: space-evenly;
+      gap: 10px;
 
       .reviewEditBtn {
         all: unset;
