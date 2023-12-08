@@ -38,6 +38,7 @@ export const MyBookings: React.FC = () => {
         if (res.status === "Error") {
           setMyBookings([]);
           setTotalBookings(0);
+          setSearchErrors((errors) => [...errors, "You have no bookings"]);
         } else if (res.status === "Success") {
           setMyBookings(res.content.bookings);
           setTotalBookings(res.content.totalBookingsCount);
@@ -64,13 +65,20 @@ export const MyBookings: React.FC = () => {
 
     getUsersBookings(token!, 1)
       .then((res) => {
-        if (res.status === "Success") {
+        if (res.status === "Error") {
+          setMyBookings([]);
+          setTotalBookings(0);
+          setSearchErrors((errors) => [...errors, "You have no bookings"]);
+        } else if (res.status === "Success") {
           setMyBookings(res.content.bookings);
           setTotalBookings(res.content.totalBookingsCount);
         }
+
         dispatch(toggleLoaderOff());
       })
       .catch((err) => {
+        setSearchErrors((errors) => [...errors, "You have no bookings"]);
+        console.log(1);
         dispatch(toggleLoaderOff());
       });
 
