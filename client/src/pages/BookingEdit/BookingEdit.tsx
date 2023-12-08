@@ -32,8 +32,8 @@ export const BookingEdit: React.FC = () => {
   useMemo(() => {
     if (booking !== null) {
       setDefaultValues({
-        startDate: new Date(booking.startDate).toISOString().split("T")[0],
-        endDate: new Date(booking.endDate).toISOString().split("T")[0],
+        startDate: new Date(booking.startDate).toLocaleDateString("en-CA"),
+        endDate: new Date(booking.endDate).toLocaleDateString("en-CA"),
         guests: booking.guests,
       });
     }
