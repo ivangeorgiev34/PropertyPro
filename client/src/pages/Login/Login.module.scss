@@ -38,10 +38,15 @@
         width: 100%;
         height: 25px;
         border: 1px solid rgb(69, 69, 69);
+        border-radius: 5px;
 
         &:focus {
           box-shadow: globalStyles.$boxShadow;
           outline: none;
+        }
+
+        &:not(:focus) {
+          opacity: 0.5;
         }
       }
     }
@@ -57,10 +62,15 @@
         width: 100%;
         height: 25px;
         border: 1px solid rgb(69, 69, 69);
+        border-radius: 5px;
 
         &:focus {
           box-shadow: globalStyles.$boxShadow;
           outline: none;
+        }
+
+        &:not(:focus) {
+          opacity: 0.5;
         }
       }
     }
