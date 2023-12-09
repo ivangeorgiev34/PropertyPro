@@ -5,7 +5,8 @@ import { useInView } from "react-intersection-observer";
 
 export const GuestHome: React.FC = () => {
   const { ref, inView } = useInView({
-    threshold: 0.1,
+    threshold: 0.3,
+    initialInView: true,
   });
   return (
     <main>

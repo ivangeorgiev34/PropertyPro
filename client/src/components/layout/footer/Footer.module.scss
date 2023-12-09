@@ -18,6 +18,11 @@
     margin: 0;
     list-style-type: none;
     li {
+      a {
+        text-decoration: none;
+        color: white;
+      }
+
       display: inline-block;
       &:hover {
         transform: translateY(-5px);

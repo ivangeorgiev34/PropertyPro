@@ -8,6 +8,7 @@
 
   .propertyImageCarousel {
     position: relative;
+    width: 100%;
 
     .imageSelectedContainer {
       display: flex;
@@ -90,7 +91,7 @@
         border: 1px solid globalVariables.$formBorderColor;
         background-color: white;
         width: 40%;
-        padding: 30px;
+        padding: 20px;
 
         span {
           font-size: 18px;
