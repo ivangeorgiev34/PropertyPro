@@ -278,7 +278,7 @@ namespace PropertyPro.Core.Services
                     Town = p.Town,
                     AverageRating = p.Reviews == null
                     ? 0.00d
-                    : p.Reviews.Count == 0
+                    : p.Reviews.Where(r => r.IsActive == true).ToArray().Length == 0
                     ? 0.00d
                     : p.Reviews.Where(r => r.IsActive == true).Sum(r => r.Stars) / p.Reviews.Where(r => r.IsActive == true).ToArray().Length,
                     ReviewsCount = p.Reviews != null ? p.Reviews.Where(r => r.IsActive == true).ToArray().Length : 0,
