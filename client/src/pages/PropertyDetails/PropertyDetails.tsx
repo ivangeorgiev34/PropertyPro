@@ -83,7 +83,6 @@ export const PropertyDetails: React.FC = () => {
   const onDeleteBtnClick = (): void => {
     if (window.confirm("Are you sure you want to delete this property?")) {
       dispatch(toggleLoaderOn());
-      console.log(22);
       setDeleteError(null);
 
       deletePropertyById(propertyDeatils?.id!, token!)
@@ -92,13 +91,12 @@ export const PropertyDetails: React.FC = () => {
             setDeleteError(res.message);
           }
 
-          navigate("/");
-
-          dispatch(toggleLoaderOff());
+          navigate("/my-properties");
         })
         .catch((err) => {
           setDeleteError(err);
-
+        })
+        .finally(() => {
           dispatch(toggleLoaderOff());
         });
     }
