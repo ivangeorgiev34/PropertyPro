@@ -104,6 +104,23 @@ export const PropertyDetails: React.FC = () => {
     }
   };
 
+  const onReviewDelete = (): void => {
+    getPropertyReviews(propertyId!, token!)
+      .then((res) => {
+        if (res.status === "Success") {
+          setReviews(res.content.reviews);
+        } else if (res.status === "Error") {
+          setReviewsError("Cannot load reviews of this property");
+        }
+      })
+      .catch((err) => {
+        setReviewsError(err);
+      })
+      .finally(() => {
+        dispatch(toggleLoaderOff());
+      });
+  };
+
   return (
     <React.Fragment>
       {propertyDeatils === null ? (
@@ -249,7 +266,9 @@ export const PropertyDetails: React.FC = () => {
             <div className={styles.reviewsContainer}>
               {reviews.length > 0 ? (
                 reviews.map((r: IReview) => {
-                  return <Review key={r.id} {...r} />;
+                  return (
+                    <Review key={r.id} {...r} onReviewDelete={onReviewDelete} />
+                  );
                 })
               ) : role === "Landlord" ? (
                 <h2>No reviews!</h2>
