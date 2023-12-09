@@ -232,6 +232,10 @@ export const MyBookings: React.FC = () => {
         if (res.status === "Success") {
           setMyBookings(res.content.bookings);
           setTotalBookings(res.content.totalBookingsCount);
+        } else if (res.status == "Error") {
+          setMyBookings(res.content.bookings);
+          setTotalBookings(0);
+          setSearchErrors((errors) => [...errors, "You have no bookings"]);
         }
       })
       .catch((err) => {})
